@@ -185,6 +185,19 @@ select.mini{font-size:14px;padding:9px 12px;border-radius:12px;border:1px solid 
 .empty p{margin:0;max-width:48ch;color:var(--ink-2)}
 .nomatch{padding:28px;text-align:center;color:var(--ink-3);background:var(--surface);border:1px solid var(--line);border-radius:18px}
 
+/* domains */
+.dom-box{margin:16px 0 4px;padding:16px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.dom-box label.dl{display:block;font-weight:600;font-size:14.5px;margin-bottom:6px}
+.dom-box textarea{width:100%;min-height:74px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font:inherit;font-size:15px;color:var(--ink);resize:vertical}
+.dom-box textarea:focus{outline:none;border-color:var(--h);box-shadow:0 0 0 3px color-mix(in srgb,var(--h) 22%,transparent)}
+.doms{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:14px;position:relative}
+.dom{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 8px;border-radius:16px;border:1px solid color-mix(in srgb,var(--h) 25%,var(--line));background:color-mix(in srgb,var(--h) 6%,var(--surface));cursor:pointer;font:inherit;font-weight:600;font-size:14px;color:var(--ink)}
+.dom .di{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--h) 14%,var(--surface));color:var(--h)}
+.dom .di .i{width:26px;height:26px}
+.dom[aria-expanded="true"]{background:var(--h);color:var(--on-accent);border-color:var(--h)}
+.dom[aria-expanded="true"] .di{background:rgba(255,255,255,.2);color:inherit}
+.dom-note{margin-top:12px;padding:14px;border-radius:14px;background:color-mix(in srgb,var(--h) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--h) 25%,var(--line))}
+.dom-note[hidden]{display:none}
 /* teachers */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .tcard{--tc:var(--tc0);display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:18px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--tc);cursor:pointer;transition:border-color .15s}
@@ -429,6 +442,10 @@ const ICONS={
   eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/>',
   target:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
   edit:'<path d="M4.5 19.5h3.8L19 8.8a2.4 2.4 0 0 0-3.4-3.4L4.9 16.1l-.4 3.4Z"/><path d="m14 7 3 3"/>',
+  d_ach:'<path d="M12 4 2.8 9 12 14l9.2-5L12 4Z"/><path d="M6.5 11.6V16c1.4 1.5 3.4 2.4 5.5 2.4s4.1-.9 5.5-2.4v-4.4"/><path d="M21.2 9v5.5"/>',
+  d_teach:'<path d="M4 5.5c2.8-.9 5.5-.6 8 1.2 2.5-1.8 5.2-2.1 8-1.2v12.5c-2.8-.9-5.5-.6-8 1.2-2.5-1.8-5.2-2.1-8-1.2V5.5Z"/><path d="M12 6.7v12.5"/>',
+  d_climate:'<path d="M12 3.5 4.5 6.3v5.4c0 4.3 3.1 7.4 7.5 8.8 4.4-1.4 7.5-4.5 7.5-8.8V6.3L12 3.5Z"/><path d="M12 15.4s-3-1.8-3-4a1.8 1.8 0 0 1 3-1.3 1.8 1.8 0 0 1 3 1.3c0 2.2-3 4-3 4Z"/>',
+  d_growth:'<path d="M12 20.5v-9"/><path d="M12 11.5c0-3.6 2.2-5.8 6.2-5.8 0 3.8-2.3 5.8-6.2 5.8Z"/><path d="M12 15c0-2.8-1.8-4.5-5.2-4.5 0 3 1.9 4.5 5.2 4.5Z"/><circle cx="12" cy="4.2" r="0"/>',
   mark:'<rect x="6.2" y="6.2" width="11.6" height="11.6"/><rect x="6.2" y="6.2" width="11.6" height="11.6" transform="rotate(45 12 12)"/><circle cx="12" cy="12" r="2.5"/>'
 };
 const ic=(n,cls)=>'<svg class="i'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" aria-hidden="true">'+ICONS[n]+'</svg>';
@@ -827,12 +844,24 @@ function renderHome(){
     '<nav class="shelf" aria-label="الملفات">'+ORDER.map(folderHTML).join('')+'</nav>'+glanceHTML()+'</div>';
   firstHome=false;
 }
+const DOMS=[{id:'ach',t:'الإنجاز الدراسي'},{id:'teach',t:'التدريس والتقويم'},{id:'climate',t:'المناخ المدرسي'},{id:'growth',t:'النمو الشخصي'}];
+const DOM_SECS=['plan','pd','achievement'];
+ui.dom={};
+function domHTML(k){
+  if(DOM_SECS.indexOf(k)<0)return '';
+  const st=state.settings,open=ui.dom[k]||'';
+  return '<div class="dom-box"><label class="dl" for="txt_'+k+'">شرح مبسط</label>'+
+    '<textarea id="txt_'+k+'" data-set="txt_'+k+'" placeholder="اكتبي هنا شرحاً مبسطاً عن هذا القسم...">'+esc(st['txt_'+k]||'')+'</textarea>'+
+    '<div class="doms" role="group" aria-label="المجالات">'+DOMS.map(d=>'<button type="button" class="dom" data-dom="'+d.id+'" aria-expanded="'+(open===d.id)+'"><span class="di">'+ic('d_'+d.id)+'</span>'+d.t+'</button>').join('')+'</div>'+
+    DOMS.map(d=>'<div class="dom-note" data-note="'+d.id+'"'+(open===d.id?'':' hidden')+'><label class="dl" for="txt_'+k+'_'+d.id+'">'+d.t+'</label><textarea id="txt_'+k+'_'+d.id+'" data-set="txt_'+k+'_'+d.id+'" placeholder="اكتبي هنا شرحاً مبسطاً عن «'+d.t+'»...">'+esc(st['txt_'+k+'_'+d.id]||'')+'</textarea></div>').join('')+'</div>';
+}
 function renderSection(k){
   const s=SECTIONS[k],u=ui[k];
   view.innerHTML='<section class="wrap sec" style="--h:var('+s.hue+')">'+
     '<div class="sec-head"><a class="crumb" href="#">'+ic('back')+'الرئيسية</a>'+
       '<div class="sec-title"><span class="sec-ico">'+ic(s.icon)+'</span><div><h1>'+esc(s.title)+'</h1><div class="count" id="secCount"></div></div>'+
       '<button type="button" class="btn solid" data-add>'+ic('plus')+esc(s.add)+'</button></div></div>'+
+    domHTML(k)+
     '<div class="toolbar"><label class="search">'+ic('search')+'<input type="search" data-search placeholder="بحث في '+esc(s.title)+'" value="'+esc(u.q)+'" aria-label="بحث"></label>'+(s.filters?s.filters(u):'')+'</div>'+
     '<div id="list"></div></section>';
   renderList();
@@ -1087,8 +1116,9 @@ function handleImport(input){
 
 /* ================= events ================= */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-settings],[data-add],[data-cycle],[data-id],button[data-f],[data-rm],[data-export],[data-allchips],[data-edit-vm],[data-zoom],[data-ph-rm]');
+  const t=e.target.closest('[data-settings],[data-add],[data-cycle],[data-id],button[data-f],[data-rm],[data-export],[data-allchips],[data-edit-vm],[data-zoom],[data-ph-rm],[data-dom]');
   if(!t)return;
+  if(t.matches('[data-dom]')){const k=route(),id=t.dataset.dom;ui.dom[k]=ui.dom[k]===id?'':id;$$('.dom',view).forEach(b=>b.setAttribute('aria-expanded',String(b.dataset.dom===ui.dom[k])));$$('.dom-note',view).forEach(n=>{n.hidden=n.dataset.note!==ui.dom[k];});return;}
   if(t.matches('[data-settings]'))return openSettings();
   if(t.matches('[data-edit-vm]'))return openVM();
   if(t.matches('[data-zoom]')){const r=find('meetings',t.dataset.zoom);if(r&&r.photo)openLB(r.photo);return;}

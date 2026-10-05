@@ -1,6 +1,6 @@
 /* منصة المعلم الأول — عمل بدون إنترنت.
    عند تعديل index.html غيّر رقم النسخة VER ليصل التحديث للمستخدمين. */
-const VER = 'stp-v1';
+const VER = 'stp-v2';
 const FONTS = 'stp-fonts';
 const SHELL = [
   './', './index.html', './manifest.webmanifest',
