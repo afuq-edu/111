@@ -1,6 +1,6 @@
 /* رحلة سلطانة: عامل الخدمة للعمل دون اتصال
    عند تعديل أي ملف ارفعي رقم الإصدار حتى يحصل الطلبة على النسخة الجديدة */
-const VERSION = 'sultana-v2';
+const VERSION = 'sultana-v3';
 const SHELL = [
   './',
   './index.html',
