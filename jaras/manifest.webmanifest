@@ -1,0 +1,21 @@
+{
+  "name": "جَرَس — جدول المعلم الذكي",
+  "short_name": "جَرَس",
+  "description": "جدول حصص المعلم مع عدّاد ذكي وتنبيهات قبل بداية الحصة ونهايتها",
+  "lang": "ar",
+  "dir": "rtl",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#0B1113",
+  "theme_color": "#0B1113",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
