@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>طريقة تثبيت منصة اللغة الإنجليزية</title>
+<style>
+:root{--bg:#f6f5fa;--card:#fff;--ink:#1f1b3a;--muted:#5b567a;--line:#dcd8ea;--brand:#352d6e;--saffron:#e2a42b;--soft:#fbf1da}
+@media (prefers-color-scheme:dark){:root{--bg:#14121f;--card:#1d1a2c;--ink:#ece9f7;--muted:#aaa4c8;--line:#363150;--brand:#2a2456;--saffron:#f0b84a;--soft:#3a2f17}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,"Geeza Pro",sans-serif;line-height:1.8;font-size:16px}
+header{background:var(--brand);color:#fff;padding:28px 16px}
+header div,main{max-width:860px;margin:0 auto}
+h1{margin:0;font-size:26px}
+header p{margin:4px 0 0;opacity:.85}
+main{padding:24px 16px 60px;display:grid;gap:18px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+h2{margin:0 0 8px;font-size:20px;display:flex;gap:10px;align-items:center}
+h2 span{background:var(--saffron);color:#1d1a2c;width:30px;height:30px;border-radius:50%;display:inline-grid;place-items:center;font-size:15px;flex:none}
+h3{margin:14px 0 4px;font-size:16.5px}
+ol,ul{margin:0;padding-inline-start:22px}
+li{margin:3px 0}
+.note{background:var(--soft);border-radius:10px;padding:12px 16px}
+code,.en{direction:ltr;unicode-bidi:isolate}
+code{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.grid>div{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<header><div><h1>طريقة تثبيت منصة مادة اللغة الإنجليزية</h1><p>مدرسة الحواري بن محمد الأزدي (5-8) · العام الدراسي 2026/2027</p></div></header>
+<main>
+
+<section class="note">
+<b>الفكرة باختصار:</b> المنصة تطبيق ويب يُثبَّت على الجوال والحاسوب. لكي يظهر خيار التثبيت يجب أن تُفتح من رابط إنترنت آمن (يبدأ بـ <code>https</code>)، لذلك ترفع مجلد <code>english-platform</code> مرة واحدة إلى موقع استضافة مجاني، ثم تفتح الرابط على كل جهاز وتثبّته. بعد التثبيت تعمل المنصة دون إنترنت.
+</section>
+
+<section>
+<h2><span>1</span>فك ضغط الملف</h2>
+<ol>
+<li>فك ضغط ملف <code>zip</code> على الحاسوب.</li>
+<li>ستجد مجلدًا اسمه <code>english-platform</code> فيه المنصة (<code>index.html</code>) والأيقونات وملفات التثبيت. لا تغيّر أسماء الملفات داخله.</li>
+</ol>
+</section>
+
+<section>
+<h2><span>2</span>ارفع المجلد إلى رابط مجاني (مرة واحدة)</h2>
+<h3>الطريقة الأسهل: Netlify Drop</h3>
+<ol>
+<li>من الحاسوب افتح <code>https://app.netlify.com/drop</code></li>
+<li>أنشئ حسابًا مجانيًا (يمكن الدخول بحساب Google).</li>
+<li>اسحب مجلد <code>english-platform</code> وأفلته في الصفحة.</li>
+<li>بعد ثوانٍ يظهر رابط مثل <code>https://اسم-عشوائي.netlify.app</code>. يمكنك تغيير الاسم من «Site configuration» ثم «Change site name»، مثلًا <code>hawari-english</code>.</li>
+</ol>
+<h3>طريقة بديلة: GitHub Pages</h3>
+<ol>
+<li>أنشئ مستودعًا جديدًا عامًّا في <code>github.com</code>.</li>
+<li>ارفع محتويات مجلد <code>english-platform</code> (وليس المجلد نفسه) عبر «Add file» ثم «Upload files».</li>
+<li>من «Settings» ثم «Pages» اختر الفرع <code>main</code> والمجلد <code>/ (root)</code> واحفظ.</li>
+<li>يظهر الرابط بعد دقيقة أو دقيقتين.</li>
+</ol>
+</section>
+
+<section>
+<h2><span>3</span>ثبّت المنصة على كل جهاز</h2>
+<div class="grid">
+<div><h3>آيفون وآيباد</h3><ol><li>افتح الرابط في <span class="en">Safari</span>.</li><li>اضغط زر المشاركة (المربع والسهم للأعلى).</li><li>اختر «إضافة إلى الشاشة الرئيسية» ثم «إضافة».</li></ol></div>
+<div><h3>أندرويد</h3><ol><li>افتح الرابط في <span class="en">Chrome</span>.</li><li>اضغط زر «ثبّت المنصة على جهازك» في أعلى المنصة ثم «تثبيت الآن»، أو القائمة (⋮) ثم «تثبيت التطبيق».</li><li>تظهر الأيقونة مع تطبيقاتك.</li></ol></div>
+<div><h3>ويندوز وماك</h3><ol><li>افتح الرابط في <span class="en">Chrome</span> أو <span class="en">Edge</span>.</li><li>اضغط أيقونة التثبيت في يمين شريط العنوان، أو زر «تثبيت الآن» داخل المنصة.</li><li>تفتح المنصة في نافذة مستقلة وتظهر في قائمة البرامج.</li></ol></div>
+</div>
+</section>
+
+<section>
+<h2><span>4</span>بياناتك وصورك</h2>
+<ul>
+<li>كل ما تدخله من خطط ومبادرات واجتماعات وصور يُحفظ على الجهاز نفسه، ولا يُرفع إلى موقع الاستضافة.</li>
+<li>لكل جهاز بياناته الخاصة. لنقلها إلى جهاز آخر استخدم «تصدير نسخة احتياطية» ثم «استيراد نسخة احتياطية» في أعلى المنصة.</li>
+<li>صدّر نسخة احتياطية بانتظام، خاصة قبل حذف التطبيق أو مسح بيانات المتصفح أو تغيير الرابط، لأن الرابط الجديد يبدأ ببيانات فارغة.</li>
+<li>من يفتح الرابط يرى المنصة فارغة من بياناتك، لأنها محفوظة على جهازك فقط.</li>
+</ul>
+</section>
+
+<section>
+<h2><span>5</span>تحديث المنصة لاحقًا</h2>
+<p style="margin:0">عند وصول نسخة جديدة، ارفع المجلد الجديد إلى الموقع نفسه (في Netlify من «Deploys» اسحب المجلد مرة أخرى). يتحدث التطبيق على الأجهزة تلقائيًا عند فتحه مع الإنترنت، وتبقى البيانات كما هي.</p>
+</section>
+
+<p class="muted" style="text-align:center;font-size:14px;margin:0">إعداد: المعلم الأول عيسى الجهضمي</p>
+</main>
+</body>
+</html>

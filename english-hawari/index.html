@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#352d6e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="منصة الإنجليزي">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}</style>
+<title>منصة اللغة الإنجليزية بمدرسة الحواري</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;600;700&display=swap">
+<style>
+/* Layout: indigo masthead band, sticky tab rail, single working column; status encoded as colored chips and domain stripes */
+:root{
+  --bg:#f6f5fa; --surface:#ffffff; --surface-2:#efedf6; --line:#dcd8ea;
+  --ink:#1f1b3a; --ink-2:#5b567a; --brand:#352d6e; --brand-ink:#ffffff;
+  --saffron:#e2a42b; --saffron-soft:#fbf1da;
+  --d1:#a2357a; --d2:#b5611f; --d3:#2d6a9a; --d4:#2f7a4c; --d5:#5a4aa8;
+  --ok:#2f7a4c; --ok-soft:#e1f2e7; --warn:#a86a0c; --warn-soft:#fbefd6;
+  --bad:#b23a3a; --bad-soft:#f8e1e1; --idle:#6d6889; --idle-soft:#ebe9f2;
+  --font-display:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --font-body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14121f; --surface:#1d1a2c; --surface-2:#262238; --line:#363150;
+  --ink:#ece9f7; --ink-2:#aaa4c8; --brand:#2a2456; --brand-ink:#f3f0ff;
+  --saffron:#f0b84a; --saffron-soft:#3a2f17;
+  --d1:#e07ab8; --d2:#e3955a; --d3:#6fa8d8; --d4:#6cc08b; --d5:#a597ee;
+  --ok:#6cc08b; --ok-soft:#1d3527; --warn:#f0b84a; --warn-soft:#3a2f17;
+  --bad:#ee8080; --bad-soft:#3e2222; --idle:#aaa4c8; --idle-soft:#2b2740;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14121f; --surface:#1d1a2c; --surface-2:#262238; --line:#363150;
+  --ink:#ece9f7; --ink-2:#aaa4c8; --brand:#2a2456; --brand-ink:#f3f0ff;
+  --saffron:#f0b84a; --saffron-soft:#3a2f17;
+  --d1:#e07ab8; --d2:#e3955a; --d3:#6fa8d8; --d4:#6cc08b; --d5:#a597ee;
+  --ok:#6cc08b; --ok-soft:#1d3527; --warn:#f0b84a; --warn-soft:#3a2f17;
+  --bad:#ee8080; --bad-soft:#3e2222; --idle:#aaa4c8; --idle-soft:#2b2740;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.7;direction:rtl}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brand)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.35}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.en{direction:ltr;unicode-bidi:isolate}
+
+/* masthead */
+.mast{background:var(--brand);color:var(--brand-ink)}
+.mast .wrap{padding-block:22px 18px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:flex-end;justify-content:space-between}
+.mast small{display:block;opacity:.75;font-size:12.5px;letter-spacing:.2px}
+.mast h1{font-size:clamp(22px,3.4vw,32px);font-weight:700}
+.mast h1 span{color:var(--saffron)}
+.mast .who{font-size:13.5px;opacity:.9;display:grid;gap:2px}
+.mast .who b{font-weight:600}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs button{border:0;background:none;padding:12px 14px;cursor:pointer;color:var(--ink-2);font-weight:500;white-space:nowrap;border-bottom:3px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--saffron);font-weight:700}
+.tabs button:hover{color:var(--ink)}
+
+main .wrap{padding-block:24px 60px;display:grid;gap:28px}
+section[hidden]{display:none!important}
+.sec{display:grid;gap:18px}
+.sec-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;justify-content:space-between}
+.sec-h h2{font-size:22px}
+.sec-h p{margin:0;color:var(--ink-2);font-size:13.5px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.panel h3{font-size:16.5px;margin-bottom:10px}
+.muted{color:var(--ink-2)}
+.notice{background:var(--saffron-soft);border:1px solid color-mix(in srgb,var(--saffron) 45%,transparent);border-radius:var(--radius);padding:10px 14px;font-size:13.5px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;display:grid;gap:2px}
+.kpi b{font-size:28px;font-family:var(--font-display);font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi span{font-size:13px;color:var(--ink-2)}
+.kpi.hl b{color:var(--ok)}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:18px}
+.grid2>*{min-width:0}
+
+/* domain progress */
+.dprog{display:grid;gap:12px}
+.drow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center}
+.drow .lbl{font-weight:600;font-size:14px;display:flex;gap:8px;align-items:center}
+.dot{width:10px;height:10px;border-radius:3px;flex:none}
+.bar{grid-column:1/-1;height:10px;border-radius:5px;background:var(--surface-2);display:flex;overflow:hidden}
+.bar i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* priorities */
+.prio{display:grid;gap:12px;counter-reset:p}
+.prio div{display:grid;grid-template-columns:30px 1fr;gap:10px}
+.prio div::before{counter-increment:p;content:counter(p);width:28px;height:28px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:700;font-size:13px}
+:root[data-theme="dark"] .prio div::before{background:var(--saffron);color:#1d1a2c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .prio div::before{background:var(--saffron);color:#1d1a2c}}
+.prio b{display:block;font-size:14.5px}
+.prio p{margin:0;color:var(--ink-2);font-size:13.5px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--surface-2);font-weight:600;font-size:13px;color:var(--ink-2);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tfoot td{font-weight:700;background:var(--saffron-soft)}
+td.n,th.n{text-align:center;font-variant-numeric:tabular-nums}
+.low{color:var(--bad);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-block;padding:1px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini{height:8px;border-radius:4px;background:var(--surface-2);position:relative;min-width:120px}
+.mini i{position:absolute;inset-block:0;inset-inline-start:0;border-radius:4px;background:var(--d2)}
+.mini u{position:absolute;inset-block:-3px;width:2px;background:var(--ok)}
+td input{width:100%;min-width:90px;border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:5px 8px}
+
+/* status pill / select */
+.st{appearance:none;border:1px solid transparent;border-radius:999px;padding:3px 12px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.st[data-v="idle"]{background-color:var(--idle-soft);color:var(--idle)}
+.st[data-v="prog"]{background-color:var(--warn-soft);color:var(--warn)}
+.st[data-v="done"]{background-color:var(--ok-soft);color:var(--ok)}
+.st[data-v="late"]{background-color:var(--bad-soft);color:var(--bad)}
+.st:disabled{cursor:default;opacity:.9}
+
+/* plan */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters select,.filters input{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 10px;min-width:0}
+.filters input{flex:1 1 200px}
+.domain-h{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius);color:#fff;font-family:var(--font-display);font-size:16.5px;font-weight:600}
+.goals{display:grid;gap:10px}
+.goal{background:var(--surface);border:1px solid var(--line);border-inline-start:5px solid var(--dc);border-radius:var(--radius)}
+.goal>summary{list-style:none;cursor:pointer;padding:14px 16px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 12px;align-items:start}
+.goal>summary::-webkit-details-marker{display:none}
+.gno{font-family:var(--font-display);font-weight:700;color:var(--dc);font-size:18px;min-width:26px;font-variant-numeric:tabular-nums}
+.gtxt{font-size:14.5px}
+.gmeta{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--ink-2)}
+.gmeta .chip{border-color:transparent}
+.goal-body{padding:0 16px 16px;display:grid;gap:14px}
+.goal-body ul{margin:0;padding-inline-start:20px;display:grid;gap:3px;font-size:14px}
+.goal-body ul li::marker{color:var(--dc)}
+.goal-body label{font-size:13px;font-weight:600;color:var(--ink-2);display:grid;gap:4px}
+textarea{width:100%;min-height:64px;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;resize:vertical}
+.saved{font-size:12px;color:var(--ok);min-height:1em}
+.empty-f{padding:24px;text-align:center;color:var(--ink-2)}
+
+/* initiatives */
+.ini-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px}
+.ini-form label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.ini-form .wide{grid-column:1/-1}
+.ini-form input,.ini-form select{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;width:100%}
+.btn{border:0;border-radius:8px;padding:9px 18px;font-weight:600;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+:root[data-theme="dark"] .btn{background:var(--saffron);color:#1d1a2c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{background:var(--saffron);color:#1d1a2c}}
+.btn.ghost{background:transparent;color:var(--ink-2);border:1px solid var(--line)}
+.btn.danger{background:var(--bad);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ini-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px}
+.ini{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--dc,var(--saffron));border-radius:var(--radius);padding:14px 16px;display:grid;gap:8px;align-content:start}
+.ini h3{font-size:16px}
+.ini p{margin:0;font-size:14px}
+.ini .meta{display:flex;flex-wrap:wrap;gap:6px;font-size:12.5px}
+.ini-empty{border:2px dashed var(--line);border-radius:var(--radius);padding:34px 20px;text-align:center;color:var(--ink-2);display:grid;gap:6px;justify-items:center}
+.ini-empty b{color:var(--ink);font-family:var(--font-display);font-size:17px}
+
+/* photos */
+.picker{display:flex;flex-wrap:wrap;gap:8px}
+.thumb{position:relative;width:88px;height:88px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2)}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb button{position:absolute;top:4px;inset-inline-end:4px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(15,12,30,.7);color:#fff;cursor:pointer;font-size:15px;line-height:24px;padding:0}
+.addph{position:relative;width:88px;height:88px;border:2px dashed var(--line);border-radius:8px;display:grid;place-items:center;align-content:center;gap:2px;cursor:pointer;color:var(--ink-2);font-size:12px;text-align:center;font-weight:600}
+.addph b{font-size:22px;line-height:1;color:var(--ink)}
+.addph input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.addph:focus-within{outline:2px solid var(--saffron);outline-offset:2px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}
+.gal button{padding:0;border:0;border-radius:8px;overflow:hidden;aspect-ratio:1;cursor:zoom-in;background:var(--surface-2);display:block;width:100%}
+.gal img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-big{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.gal-group{display:grid;gap:10px}
+.gal-group h3{font-size:16px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.gal-group h3 small{font-family:var(--font-body);font-weight:400;color:var(--ink-2);font-size:13px}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(12,10,22,.94);color:#fff;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 12px) max(16px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 14px) max(16px,env(safe-area-inset-left,0px))}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain;margin:auto;display:block;border-radius:6px}
+.lightbox .lb-top,.lightbox .lb-bot{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
+.lightbox button{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}
+.upl{font-size:13px;color:var(--warn);font-weight:600}
+
+/* meetings */
+.meet{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);display:grid;grid-template-columns:auto minmax(0,1fr);overflow:hidden}
+.mdate{background:var(--brand);color:var(--brand-ink);padding:14px 12px;text-align:center;display:grid;align-content:start;gap:0;min-width:84px}
+.mdate b{font-family:var(--font-display);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.mdate span{font-size:12.5px;opacity:.9}
+.mbody{padding:14px 16px;display:grid;gap:10px;min-width:0}
+.mbody h3{font-size:17px}
+.mbody h4{margin:0;font-size:13px;color:var(--ink-2);font-weight:600}
+.mbody ul{margin:0;padding-inline-start:20px;font-size:14px}
+.mbody p{margin:0;font-size:14px}
+.meet-list{display:grid;gap:12px}
+.att{display:flex;flex-wrap:wrap;gap:6px 14px}
+.att label{display:inline-flex;gap:6px;align-items:center;font-weight:500;color:var(--ink);font-size:13.5px}
+.att input{width:auto}
+.ini .gal,.mbody .gal{margin-top:2px}
+
+/* install */
+.mast .inst{background:var(--saffron);color:#1d1a2c;border:0;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:13.5px}
+.install{display:grid;gap:14px}
+.install .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.install .steps>div{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;background:var(--bg)}
+.install h4{margin:0 0 6px;font-size:14.5px}
+.install ol{margin:0;padding-inline-start:20px;font-size:13.5px;display:grid;gap:3px}
+.linkbox{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.linkbox code{direction:ltr;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:13px;user-select:all;overflow-wrap:anywhere}
+
+.foot{color:var(--ink-2);font-size:12.5px;text-align:center}
+@media (max-width:560px){.goal>summary{grid-template-columns:auto minmax(0,1fr)}.goal>summary .st{grid-column:2;justify-self:start}}
+@media (prefers-reduced-motion:no-preference){.goal-body{animation:fade .18s ease}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+</style>
+
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <div>
+      <small>وزارة التربية والتعليم · المديرية العامة للتربية والتعليم بمحافظة شمال الشرقية</small>
+      <h1>منصة مادة <span>اللغة الإنجليزية</span></h1>
+      <small>مدرسة الحواري بن محمد الأزدي (5-8) · الخطة الإجرائية السنوية 2026/2027</small>
+    </div>
+    <div class="who">
+      <div>المعلم الأول: <b>أ. عيسى الجهضمي</b></div>
+      <div>مدير المدرسة: <b>أ. حمود الشبيبي</b> · مشرف المادة: <b>أ. صالح الحبسي</b></div>
+      <div>المنهج: <b class="en">Team Together Oman (5-8)</b></div>
+      <div><button class="inst" type="button" id="inst-btn" aria-controls="install" aria-expanded="false">ثبّت المنصة على جهازك</button></div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="أقسام المنصة">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="home" aria-selected="true">الرئيسية</button>
+    <button role="tab" data-tab="plan" aria-selected="false">الخطة الإجرائية</button>
+    <button role="tab" data-tab="initiatives" aria-selected="false">المبادرات</button>
+    <button role="tab" data-tab="meetings" aria-selected="false">الاجتماعات</button>
+    <button role="tab" data-tab="gallery" aria-selected="false">معرض الصور</button>
+    <button role="tab" data-tab="teachers" aria-selected="false">المعلمون والشعب</button>
+    <button role="tab" data-tab="results" aria-selected="false">النتائج والمستهدفات</button>
+    <button role="tab" data-tab="pd" aria-selected="false">الإنماء المهني</button>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+  <div id="store-note" class="notice" hidden></div>
+  <div class="panel" id="backup" hidden style="display:grid;gap:10px">
+    <h3 style="margin:0">حفظ البيانات والنسخ الاحتياطي</h3>
+    <p class="muted" style="margin:0;font-size:13.5px">ما تدخله يُحفظ تلقائيًا على هذا الجهاز. لنقل بياناتك وصورك إلى جهاز آخر أو حمايتها من الضياع، صدّر نسخة احتياطية بانتظام ثم استوردها في الجهاز الآخر.</p>
+    <div class="actions">
+      <button class="btn" type="button" id="bk-exp">تصدير نسخة احتياطية</button>
+      <label class="btn ghost" style="position:relative;overflow:hidden">استيراد نسخة احتياطية<input type="file" accept="application/json,.json" id="bk-imp" style="position:absolute;inset:0;opacity:0;cursor:pointer"></label>
+      <span class="saved" id="bk-msg"></span>
+    </div>
+    <div class="actions" id="bk-confirm" hidden>
+      <span style="font-size:13.5px">سيستبدل الاستيراد كل البيانات والصور الحالية في هذا الجهاز بمحتوى النسخة. متابعة؟</span>
+      <button class="btn danger" type="button" id="bk-yes">استبدال البيانات</button>
+      <button class="btn ghost" type="button" id="bk-no">إلغاء</button>
+    </div>
+  </div>
+
+  <div class="panel install" id="install" hidden>
+    <div class="sec-h"><h3 style="margin:0">ثبّت المنصة على جهازك</h3><button class="btn ghost" type="button" id="inst-close">إغلاق</button></div>
+    <p class="muted" style="margin:0;font-size:13.5px">بعد التثبيت تظهر المنصة أيقونةً على الشاشة الرئيسية أو سطح المكتب، وتفتح في نافذة مستقلة وتعمل دون إنترنت.</p>
+    <div class="actions"><button class="btn" type="button" id="pwa-install" hidden>تثبيت الآن</button><span class="saved" id="pwa-msg"></span></div>
+    <div class="steps">
+      <div><h4>آيفون وآيباد</h4><ol><li>افتح رابط المنصة في متصفح <span class="en">Safari</span>.</li><li>اضغط زر المشاركة (المربع والسهم للأعلى).</li><li>اختر «إضافة إلى الشاشة الرئيسية» ثم «إضافة».</li></ol></div>
+      <div><h4>أندرويد</h4><ol><li>افتح رابط المنصة في متصفح <span class="en">Chrome</span>.</li><li>اضغط «تثبيت الآن» أعلاه، أو القائمة (⋮) ثم «تثبيت التطبيق».</li><li>وافق على التثبيت، وستجد الأيقونة مع تطبيقاتك.</li></ol></div>
+      <div><h4>الحاسوب (ويندوز أو ماك)</h4><ol><li>افتح رابط المنصة في <span class="en">Chrome</span> أو <span class="en">Edge</span>.</li><li>اضغط «تثبيت الآن» أعلاه، أو أيقونة التثبيت في شريط العنوان.</li><li>تفتح المنصة في نافذة خاصة، وتظهر في قائمة البرامج.</li></ol></div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <section class="sec" id="tab-home">
+    <div class="kpis">
+      <div class="kpi"><b class="num">777</b><span>طالبًا</span></div>
+      <div class="kpi"><b class="num">23</b><span>شعبة</span></div>
+      <div class="kpi"><b class="num">7</b><span>معلمين</span></div>
+      <div class="kpi"><b class="num">36.9%</b><span>نسبة الإتقان العام الماضي (5-8)</span></div>
+      <div class="kpi hl"><b class="num">41.9%</b><span>المستهدف هذا العام (5-8)</span></div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>تقدم تنفيذ الخطة</h3>
+        <p class="muted" style="margin:0 0 12px;font-size:13.5px" id="overall-line">—</p>
+        <div class="dprog" id="dprog"></div>
+        <div class="legend" style="margin-top:12px">
+          <span><i class="dot" style="background:var(--ok)"></i>منجز</span>
+          <span><i class="dot" style="background:var(--warn)"></i>قيد التنفيذ</span>
+          <span><i class="dot" style="background:var(--bad)"></i>متأخر</span>
+          <span><i class="dot" style="background:var(--idle-soft);border:1px solid var(--line)"></i>لم يبدأ</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>أولويات المادة 2026/2027</h3>
+        <div class="prio">
+          <div><span><b>رفع نسبة الإتقان العامة في المادة</b><p>36.9% العام الماضي (258 طالبًا من 700)، والمستهدف 41.9% على الأقل.</p></span></div>
+          <div><span><b>معالجة الفاقد التعليمي لدى دفعة الصف السابع</b><p>حققت 31.7% حين كانت في الصف السادس، وهي أدنى نسبة بين جميع المواد.</p></span></div>
+          <div><span><b>تأسيس طلبة الصف الخامس الجدد</b><p>قادمون من الحلقة الأولى، ويُبنى خط الأساس لهم من الاختبار التشخيصي مع التركيز على القراءة والمفردات.</p></span></div>
+          <div><span><b>تفعيل التقويم التكويني واتخاذ القرار بالبيانات</b><p>تحليل كل اختبار قصير خلال أسبوعين وتحديث الخطط العلاجية بناء على النتائج.</p></span></div>
+          <div><span><b>توظيف التقنية والتطبيقات التفاعلية والذكاء الاصطناعي</b><p>برامج تفاعلية لدروس <span class="en">Team Together</span>، ومنصة نور، وأدوات الذكاء الاصطناعي.</p></span></div>
+          <div><span><b>تعزيز الشراكة مع أولياء الأمور</b><p>إشراك أولياء أمور الطلبة دون المستوى بتقارير وبطاقات أداء دورية.</p></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>أهداف يجري تنفيذها الآن</h3>
+      <p class="muted" style="margin:0 0 10px;font-size:13.5px" id="now-line"></p>
+      <div class="tbl"><table><thead><tr><th class="n">م</th><th>الهدف</th><th>من</th><th>إلى</th><th>الموقف</th></tr></thead><tbody id="now-body"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- PLAN -->
+  <section class="sec" id="tab-plan" hidden>
+    <div class="sec-h">
+      <h2>الخطة الإجرائية السنوية</h2>
+      <p>38 هدفًا في المجالات الإشرافية الخمسة. حدّث الموقف التنفيذي والملاحظات لكل هدف، ويُحفظ التحديث تلقائيًا.</p>
+    </div>
+    <div class="filters">
+      <select id="f-domain" aria-label="المجال"><option value="">كل المجالات</option></select>
+      <select id="f-status" aria-label="الموقف التنفيذي"><option value="">كل الحالات</option></select>
+      <input id="f-q" type="search" placeholder="ابحث في الأهداف والأنشطة" aria-label="بحث">
+    </div>
+    <div id="plan-list" class="goals"></div>
+  </section>
+
+  <!-- INITIATIVES -->
+  <section class="sec" id="tab-initiatives" hidden>
+    <div class="sec-h">
+      <h2>المبادرات</h2>
+      <p>أضف مبادرات المادة يدويًا. تظهر هنا لكل من يفتح المنصة.</p>
+    </div>
+    <form class="panel ini-form" id="ini-form" autocomplete="off">
+      <label class="wide">عنوان المبادرة<input id="i-title" required maxlength="140"></label>
+      <label>المجال<select id="i-domain"></select></label>
+      <label>المسؤول<select id="i-owner"></select></label>
+      <label>الفئة المستهدفة<input id="i-target" placeholder="مثال: الصف السابع، أولياء الأمور" maxlength="140"></label>
+      <label>الحالة<select id="i-status"></select></label>
+      <label>تاريخ البداية<input id="i-from" type="date"></label>
+      <label>تاريخ النهاية<input id="i-to" type="date"></label>
+      <label class="wide">الوصف والأنشطة<textarea id="i-desc" maxlength="2000"></textarea></label>
+      <label class="wide">مؤشر النجاح<input id="i-kpi" placeholder="مثال: مشاركة 70% من الطلبة المستهدفين" maxlength="240"></label>
+      <div class="wide photo-field" data-kind="ini"><b style="font-size:13px" class="muted">صور المبادرة</b><div class="picker" id="pick-ini"></div></div>
+      <div class="actions wide">
+        <button class="btn" type="submit" id="i-save">إضافة المبادرة</button>
+        <button class="btn ghost" type="button" id="i-cancel" hidden>إلغاء التعديل</button>
+        <span class="saved" id="i-msg"></span>
+      </div>
+    </form>
+    <div id="ini-list" class="ini-list"></div>
+  </section>
+
+  <!-- MEETINGS -->
+  <section class="sec" id="tab-meetings" hidden>
+    <div class="sec-h">
+      <h2>اجتماعات المادة</h2>
+      <p>سجّل كل اجتماع بتاريخه وأهدافه وقراراته، وأرفق صوره.</p>
+    </div>
+    <form class="panel ini-form" id="m-form" autocomplete="off">
+      <label class="wide">عنوان الاجتماع<input id="m-title" required maxlength="140" placeholder="مثال: اجتماع مناقشة نتائج الاختبار التشخيصي"></label>
+      <label>التاريخ<input id="m-date" type="date" required></label>
+      <label>الوقت<input id="m-time" type="time"></label>
+      <label>المكان<input id="m-place" maxlength="100" placeholder="مثال: غرفة مصادر التعلم"></label>
+      <label>نوع الاجتماع<select id="m-type"><option>اجتماع دوري للمادة</option><option>حلقة نقاشية</option><option>ورشة عمل</option><option>لقاء مجتمع التعلم المهني</option><option>اجتماع منسقي الصفوف</option><option>لقاء أولياء الأمور</option><option>أخرى</option></select></label>
+      <div class="wide"><b style="font-size:13px" class="muted">الحضور</b><div class="att" id="m-att"></div></div>
+      <label class="wide">أهداف الاجتماع<textarea id="m-goals" maxlength="3000" placeholder="اكتب كل هدف في سطر"></textarea></label>
+      <label class="wide">القرارات والتوصيات<textarea id="m-outcomes" maxlength="3000" placeholder="اكتب كل قرار أو توصية في سطر"></textarea></label>
+      <div class="wide photo-field" data-kind="meet"><b style="font-size:13px" class="muted">صور الاجتماع</b><div class="picker" id="pick-meet"></div></div>
+      <div class="actions wide">
+        <button class="btn" type="submit" id="m-save">حفظ الاجتماع</button>
+        <button class="btn ghost" type="button" id="m-cancel" hidden>إلغاء التعديل</button>
+        <span class="saved" id="m-msg"></span>
+      </div>
+    </form>
+    <div id="m-list" class="meet-list"></div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="sec" id="tab-gallery" hidden>
+    <div class="sec-h">
+      <h2>معرض الصور</h2>
+      <p>كل صور الاجتماعات والمبادرات في مكان واحد، مرتبة من الأحدث.</p>
+    </div>
+    <div id="gal-list" class="sec"></div>
+  </section>
+
+  <!-- TEACHERS -->
+  <section class="sec" id="tab-teachers" hidden>
+    <div class="sec-h"><h2>معلمو المادة وتوزيع الأنصبة</h2><p>الجدول (1) من الخطة</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th>اسم المعلم</th><th>الوظيفة</th><th>الشعب</th><th class="n">العدد</th><th>مهمة إضافية</th></tr></thead>
+      <tbody id="t-body"></tbody>
+      <tfoot><tr><td>المجموع</td><td>7 معلمين</td><td>الخامس 6 · السادس 6 · السابع 6 · الثامن 5</td><td class="n">23</td><td></td></tr></tfoot>
+    </table></div>
+    <div class="sec-h"><h2>جدول تبادل الزيارات</h2><p>الجدول (5): زيارة في كل فصل لكل طرف</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th class="n">م</th><th>المعلم</th><th>يتبادل الزيارة مع</th><th>محور الزيارة</th><th>الفصل الأول</th><th>الفصل الثاني</th></tr></thead>
+      <tbody id="v-body"></tbody>
+    </table></div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="sec" id="tab-results" hidden>
+    <div class="sec-h"><h2>نتائج العام الماضي والمستهدفات</h2><p>الجدول (2): نسبة الإتقان 2025/2026 والمستهدف 2026/2027 (+5 نقاط)</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th>الصف</th><th class="n">عدد الطلبة</th><th class="n">المتقنون</th><th class="n">نسبة الإتقان</th><th>الواقع والمستهدف</th><th class="n">المستهدف</th><th>هذه الدفعة الآن</th></tr></thead>
+      <tbody id="r-body"></tbody>
+      <tfoot><tr><td>الصفوف 5-8</td><td class="n">700</td><td class="n">258</td><td class="n">36.9%</td><td></td><td class="n">41.9%</td><td></td></tr></tfoot>
+    </table></div>
+    <p class="muted" style="margin:-6px 0 0;font-size:13px">المستهدف محسوب على مستوى الصف نفسه، وتُتابع كل دفعة أيضًا: دفعة الصف السابع الحالية حققت 31.7% العام الماضي، ولذلك خُصص لها برنامج علاجي مركّز.</p>
+    <div class="sec-h"><h2>مقارنة بالمواد الأخرى</h2><p>الجدول (3): نسبة الإتقان 2025/2026، والأحمر أدنى نسبة في الصف</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th>الصف</th><th class="n">اللغة الإنجليزية</th><th class="n">التربية الإسلامية</th><th class="n">اللغة العربية</th><th class="n">الرياضيات</th><th class="n">العلوم</th><th class="n">الدراسات الاجتماعية</th></tr></thead>
+      <tbody id="c-body"></tbody>
+    </table></div>
+    <div class="sec-h"><h2>نتائج الاختبار التشخيصي للعام الحالي</h2><p>الجدول (6): تُعبأ بعد التحليل، وتُحفظ تلقائيًا</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th>الصف</th><th>متوسط الدرجة</th><th>نسبة دون المستوى</th><th>المهارة الأضعف</th><th>المهارة الأقوى</th></tr></thead>
+      <tbody id="d-body"></tbody>
+    </table></div>
+  </section>
+
+  <!-- PD -->
+  <section class="sec" id="tab-pd" hidden>
+    <div class="sec-h"><h2>البرامج التدريبية المقترحة لمعلمي المادة</h2><p>الجدول (4): حدّث موقف كل برنامج</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th class="n">م</th><th>البرنامج</th><th>المستهدفون</th><th>المنفذ</th><th>التوقيت</th><th>الموقف</th></tr></thead>
+      <tbody id="pd-body"></tbody>
+    </table></div>
+  </section>
+
+  <p class="foot">إعداد: المعلم الأول عيسى الجهضمي · مدرسة الحواري بن محمد الأزدي (5-8) · العام الدراسي 2026/2027</p>
+</div>
+</main>
+
+<div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="عرض الصورة">
+  <div class="lb-top"><span id="lb-cap"></span><button type="button" id="lb-close">إغلاق</button></div>
+  <img id="lb-img" alt="">
+  <div class="lb-bot"><button type="button" id="lb-prev">السابقة</button><span id="lb-n" class="num"></span><button type="button" id="lb-next">التالية</button></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const STATUS=[["idle","لم يبدأ"],["prog","قيد التنفيذ"],["done","منجز"],["late","متأخر"]];
+const STATUS_L=Object.fromEntries(STATUS);
+const DOMAINS=[
+  {id:"d1",name:"المجال الأول: التدريس والتقويم",c:"var(--d1)",from:1,to:11},
+  {id:"d2",name:"المجال الثاني: الإنجاز الدراسي",c:"var(--d2)",from:12,to:17},
+  {id:"d3",name:"المجال الثالث: النمو الشخصي للطلبة",c:"var(--d3)",from:18,to:19},
+  {id:"d4",name:"المجال الرابع: مناخ المدرسة وبيئة التعلم",c:"var(--d4)",from:20,to:23},
+  {id:"d5",name:"المجال الخامس: القيادة والإدارة والحوكمة",c:"var(--d5)",from:24,to:38}
+];
+const PROG="التقدم الدراسي (المستويات التحصيلية بمرور الوقت)";
+// [goal, activities "|"-separated, from, to, standard]
+const G=[
+["تعريف معلمي المادة (7 معلمين) بمستجدات مناهج سلسلة Team Together Oman للصفوف 5-8 والخطط الزمنية الواردة في النشرات التوجيهية خلال شهر سبتمبر 2026، وتوثيق اللقاء بمحضر رسمي، مع تحقيق نسبة حضور لا تقل عن 95%.","متابعة النشرات التوجيهية الأحدث للمادة للعام 2026/2027 وتحديد مستجداتها لكل صف.|تنفيذ حلقة نقاشية لمعلمي المادة حول مستجدات المناهج والتوزيع الزمني للصفوف 5-8.|تزويد كل معلم بملخص مكتوب لمستجدات الصفوف التي يدرّسها.|توثيق الحلقة بمحضر وكشف حضور.","2026/9/1","2026/9/30","تخطيط المنهاج الدراسي"],
+["تعريف معلمي المادة بمخرجات التعلم لكل وحدة في الصفوف 5-8 خلال الأسبوع الأول من كل فصل دراسي، على أن يتم توثيق الحضور والتفاعل بنسبة لا تقل عن 95%.","عقد عرض توضيحي حول مخرجات التعلم لكل صف، يقدّمه منسق كل صف لزملائه.|توجيه المعلمين لربط مخرجات التعلم بالواقع المعاصر من خلال المواقف الصفية والأنشطة الصفية واللاصفية.|متابعة تحقيق المخرجات من خلال السجلات المصاحبة والزيارات الصفية والتغذية الراجعة المباشرة.|تنفيذ لقاءات طلابية (عينة من كل صف) للتعرف على الصعوبات المرتبطة بالمنهج ومعالجتها.","أول أسبوع من كل فصل","ثاني أسبوع من كل فصل","تخطيط المنهاج الدراسي"],
+["مواءمة خطط التدريس الفصلية للصفوف 5-8 وفق التوزيع الزمني المعتمد، ومتابعة تنفيذها بشكل منتظم بمعدل مرتين شهريًا حتى نهاية كل فصل دراسي، مع توثيق الملاحظات في سجل المتابعة.","وضع خطط التدريس الفصلية لكل صف وفق التوزيع الزمني المعتمد في النشرة التوجيهية.|تكليف منسق لكل صف بمتابعة سير المنهج: الخامس (علي الشبيبي)، السادس (القيصر الغافري)، السابع (عمر البوسعيدي)، الثامن (هشام الحبسي).|متابعة سجلات تحضير الدروس على منصة نور كل أسبوعين.|عقد اجتماع منسقي الصفوف شهريًا لمراجعة سير الخطط وتعديل المسار عند الحاجة.|تنفيذ جولات تعلم لمتابعة تنفيذ المنهج وفق الخطة الفصلية.","2026/9/5","2027/5/15","تخطيط المنهاج الدراسي"],
+["تنظيم الوسائل التعليمية الخاصة بالمادة وتصنيفها إلكترونيًا وورقيًا خلال الفصل الدراسي الأول، ومتابعة توظيفها من قبل معلمي المادة بشكل فاعل بنسبة لا تقل عن 70% من الدروس، من خلال الملاحظات الصفية والتقارير الدورية.","حصر الموارد التعليمية في سجل عهدة المادة (بطاقات مصورة، ملصقات، أقراص الاستماع، المصادر الرقمية للسلسلة).|إنشاء مجلد إلكتروني مشترك للمادة مصنف حسب الصف والوحدة، يضم البرامج التفاعلية والعروض.|تسليم الوسائل لمعلمي المادة كعهدة وتوثيق الاستلام (كشف تسليم).|متابعة توظيف الوسائل في الزيارات الصفية ومتابعة خطط الدروس.|استلام عهدة المادة بنهاية كل فصل دراسي وحفظها (كشف استلام).","2026/9/1","2027/5/15","فاعلية التدريس"],
+["التعريف بوثيقة تقويم تعلم الطلبة وأدواتها ومستجداتها خلال شهر سبتمبر 2026، وتوثيق الفعالية بمحضر ونشرة داخلية، مع تحقيق نسبة حضور لا تقل عن 90% من معلمي المادة.","عقد لقاء تربوي مع معلمي المادة للتعرف على مستجدات وثيقة التقويم وآلية تطبيق أدوات التقويم المستمر للصفوف 5-8.|التأكد من تسليم وثائق التقويم الأحدث لجميع معلمي المادة.|إعداد نشرة داخلية تلخص أدوات التقويم وأوزانها لكل صف.|متابعة تطبيق أدوات التقويم المستمر في المواقف الصفية من خلال الزيارات ومتابعة أعمال الطلبة.","2026/9/1","2026/9/30","التقويم ومساندة التعلم"],
+["متابعة التزام جميع معلمي المادة بتنفيذ خطة التقويم الزمنية خلال العام الدراسي، مع توثيق الملاحظات في سجل المتابعة الشهري، بنسبة التزام لا تقل عن 90% من معلمي المادة.","متابعة تفعيل سجلات الدرجات في المواقف التعليمية خلال الزيارات الصفية.|مراجعة سجلات الدرجات شهريًا من قبل المعلم الأول.|متابعة تنفيذ الاختبارات القصيرة حسب الخطة الزمنية ورصد الدرجات مباشرة.|توجيه المعلمين لإدخال التقارير الوصفية لأداء الطلبة خلال فترات الصلاحية المتاحة كل فصل.|تسجيل ملاحظات المتابعة في سجل متابعة المعلمين (Teacher Follow-up Record).","2026/9/15","2027/5/15","التقويم ومساندة التعلم"],
+["تنفيذ برنامج تدريبي لمعلمي المادة خلال شهر أكتوبر 2026 لتطوير مهاراتهم في إعداد الاختبارات القصيرة وتحليلها وفق وثيقة تقويم تعلم الطلبة، ومراجعة جميع الاختبارات قبل تطبيقها، بنسبة مشاركة والتزام لا تقل عن 90%.","تنفيذ حلقة نقاشية حول مواصفات الاختبارات القصيرة والنهائية للصفوف 5-8.|تنفيذ ورشة عمل تفاعلية بعنوان «إعداد الاختبارات القصيرة وفق وثيقة تقويم تعلم الطلبة».|مراجعة الاختبارات القصيرة التي يعدها المعلمون قبل تطبيقها وتقديم تغذية راجعة تطويرية.|مراجعة تقارير تحليل الاختبارات التي يعدها المعلمون مع تغذية راجعة.|توثيق البرنامج بكشوف حضور ومحاضر وتقارير متابعة.","2026/10/1","2027/5/10","قيادة التعليم والتعلم"],
+["رفع كفاءة معلمي المادة في توظيف أدوات التقويم التكويني داخل الحصة الصفية خلال العام الدراسي، بما يسهم في تحسن نتائج الطلبة في الاختبارات القصيرة بنسبة لا تقل عن 10% مقارنة بالاختبار القصير الأول، مع توثيق الأثر في سجل الأداء الأكاديمي.","تزويد المعلمين بنشرة «Formative Assessment Toolkit»: بطاقات الخروج، السبورات الصغيرة، إشارات المرور، Think-Pair-Share.|تنفيذ ورشة عمل تفاعلية حول أدوات التقويم التكويني ونمذجتها.|تنفيذ تبادل زيارات لمشاهدة تطبيقات أدوات التقويم (وفق جدول تبادل الزيارات).|مراجعة عينات من الأنشطة التقويمية وتقديم تغذية راجعة تطويرية.|متابعة توظيف أدوات التقويم في خطط التدريس اليومية متابعة نصف شهرية.|زيارات صفية لمتابعة نقل أثر التدريب (استمارة نقل أثر التدريب + تغذية راجعة).","2026/11/1","2027/5/15","قيادة التعليم والتعلم"],
+["تطبيق اختبارات تشخيصية في المادة لجميع طلبة الصفوف 5-8 (777 طالبًا) خلال شهر سبتمبر 2026 لتحديد مستوياتهم في المهارات الأساسية، وتحليل النتائج بنسبة إنجاز لا تقل عن 95% من الطلبة المستهدفين، وتوثيقها في كشف خاص.","إعداد اختبار تشخيصي لكل صف من قبل منسق الصف ومراجعته من المعلم الأول.|تطبيق الاختبارات خلال أول أسبوعين من سبتمبر.|رصد النتائج في كشف خاص لكل شعبة (23 شعبة).|تحليل النتائج حسب المهارات (Reading – Writing – Listening – Speaking – Grammar/Vocabulary) لتحديد نقاط القوة والضعف.|تصنيف الطلبة في مستويات تحصيلية، وتحديد ذوي الأداء المنخفض لاستهدافهم بخطط علاجية، واعتماد النتائج خط أساس لطلبة الصف الخامس الجدد.","2026/9/1","2026/9/30","التقويم ومساندة التعلم"],
+["إعداد بنك أسئلة للمادة بمواصفات ذات جودة يضم ما لا يقل عن 60 سؤالًا لكل صف (240 سؤالًا للصفوف 5-8) خلال الفصل الدراسي الأول، يُستكمل بوحدات الفصل الثاني، ويُحفظ في ملف إلكتروني مشترك مع معلمي المادة.","عقد اجتماع تعريفي حول مستويات الأسئلة المعرفية وفق تصنيف بلوم.|وضع مواصفات البنك بحيث تتوزع الأسئلة على مستويات التفكير وتغطي جميع الوحدات ومهارات اللغة (Reading – Listening – Grammar/Vocabulary – Writing – Speaking).|توزيع مهام الإعداد على منسقي الصفوف: الخامس (علي الشبيبي)، السادس (القيصر الغافري)، السابع (عمر البوسعيدي وأحمد الجندي)، الثامن (هشام الحبسي وسعيد الشبيبي).|تشكيل لجنة مراجعة (المعلم الأول + معلم من صف آخر) لتدقيق المحتوى.|تجميع البنك في ملف إلكتروني مشترك كمرجع مدقق، وتفعيله في الحصص الدراسية وحصص الاحتياط.","2026/9/15","2027/5/15","التقويم ومساندة التعلم"],
+["تنفيذ برنامج تحفيزي شامل لتهيئة طلبة الصفوف 5-8 لاختبارات نهاية كل فصل دراسي، مع توثيق كافة الأنشطة والفعاليات من خلال نشر تقارير وأخبار رسمية في المدرسة.","إعداد أو انتقاء اختبارات تدريبية (Mock Exams) بمستوى مناسب لكل صف.|مراجعة الاختبارات التدريبية من قبل المعلم الأول قبل تنفيذها.|تحديد مواعيد موحدة لتنفيذ الاختبارات التدريبية لجميع الشعب.|تنفيذ لقاء مع الطلبة لتوضيح كيفية التعامل مع الورقة الامتحانية.|تطبيق الاختبارات التدريبية بظروف الاختبار النهائي، وتصحيحها، وتقديم التغذية الراجعة.|تنفيذ لقاءات تحفيزية للطلبة استعدادًا للاختبارات النهائية.","الفصل الأول: 2026/11/15 · الفصل الثاني: 2027/4/1","الفصل الأول: 2026/12/31 · الفصل الثاني: 2027/5/31","التقويم ومساندة التعلم"],
+["رفع نسبة الإتقان في المادة بما لا يقل عن 5 نقاط مئوية مقارنة بالعام الماضي لكل صف: الخامس من 37.4% إلى 42.4%، السادس من 31.7% إلى 36.7%، السابع من 37.9% إلى 42.9%، الثامن من 42.3% إلى 47.3%، وعلى مستوى الصفوف 5-8 من 36.9% إلى 41.9% على الأقل.","الاطلاع على نتيجة المادة للعام الماضي (الجدول 2) ومناقشتها مع معلمي المادة.|عقد اجتماعات دورية مع المعلمين لضمان تنفيذ أدوات التقويم بالشكل الصحيح.|تحليل الاختبارات التشخيصية وفرز الطلبة حسب المستويات.|عقد حلقة نقاشية لإعداد الخطط العلاجية والإثرائية للطلبة المستهدفين (IPP).|تنفيذ حصص تقوية داخل الصف وخارجه، وتفعيل التعلم المدمج عبر منصة نور.|تزويد الطلبة ببرامج تفاعلية للتدريب المستمر على مفردات وقواعد كل وحدة.|مواءمة أنشطة المنهج لتحاكي أسئلة الاختبارات النهائية.|متابعة المعلم الأول لتطبيق مشاريع رفع التحصيل خلال الزيارات الصفية.","2026/9/1","2027/6/30","التحصيل الدراسي والتقدم الدراسي"],
+["تنفيذ برنامج علاجي مركّز لطلبة الصف السابع (أدنى نسبة إتقان العام الماضي: 31.7% حين كانوا في الصف السادس) وللطلبة دون المستوى في جميع الصفوف، بهدف تحسن النتائج التحصيلية لما لا يقل عن 70% من الطلبة المستهدفين وفق نتائج الاختبارات القبلية والبعدية.","إعداد الخطط العلاجية الفردية (IPP) للطلبة المستهدفين بالتعاون مع معلمي الصف السابع (عمر البوسعيدي وأحمد الجندي).|تنفيذ برنامج «Read to Succeed» لتقوية القراءة والصوتيات للطلبة الضعاف في الصفين 5 و7.|تفعيل برنامج الطالب المعلم (Peer Tutoring) داخل الشعب.|تنفيذ اختبارات وأنشطة تقييمية لقياس مستويات الطلبة إثر تطبيق البرامج.|رصد التقدم في كشوف خاصة لحساب الفارق في التحصيل (بداية – نهاية العام).|رصد ملاحظات التطبيق لكل برنامج لتجويده مستقبلًا.","2026/10/1","2027/5/15",PROG],
+["تحليل نتائج الاختبارات القصيرة للصفوف 5-8 خلال أسبوعين من تاريخ إجراء كل اختبار خلال العام الدراسي، مع إعداد تقارير تحليلية توضح نقاط القوة والضعف وتقديم توصيات لتحسين الأداء، وتوثيقها للرجوع إليها.","تحليل النتائج فور الانتهاء من التصحيح باستخدام Excel لاستخراج البيانات الإحصائية لكل شعبة.|تمثيل البيانات في مخططات بيانية تسهل قراءتها.|عقد حلقة نقاشية مع معلمي المادة لتحديد المهارات ذات المستوى المرتفع والمتدني وربطها بمستوى أسئلة الاختبار.|تقديم توصيات لتحسين الخطط الفردية وأساليب التدريس.|إعداد التقارير ومناقشتها مع مشرف المادة الأستاذ صالح الحبسي.","2026/10/15","2027/5/15",PROG],
+["تحليل نتائج اختبارات نهاية كل فصل دراسي خلال أسبوعين من تاريخ اعتماد النتائج ومقارنتها بنتائج العام الماضي، مع إعداد تقارير تحليلية توضح نقاط القوة والضعف وتقدم توصيات لتحسين الأداء التعليمي.","تحليل نتائج الاختبارات النهائية لكل صف وشعبة باستخدام Excel.|مقارنة نسب الإتقان بخط الأساس (نتائج 2025/2026) وبالمستهدفات.|عقد اجتماع تربوي مع معلمي المادة لعرض النتائج وتفسيرها.|تحديد جوانب الإجادة والضعف وربطها بمستوى أسئلة الاختبارات وتقديم توصيات.|إعداد تقارير التحليل ومناقشتها مع مشرف المادة.","الفصل الأول: 2027/1/5 · الفصل الثاني: 2027/6/5","الفصل الأول: 2027/1/20 · الفصل الثاني: 2027/6/20",PROG],
+["تنفيذ فحص وتدقيق لأعمال التقويم المستمر المنفذة من قبل معلمي المادة بواقع مراجعة واحدة كل شهرين، للتأكد من دقة التقييم ومطابقة أدوات التقويم لوثيقة تقويم تعلم الطلبة، مع توثيق الملاحظات في سجل المتابعة بنسبة التزام لا تقل عن 80%.","تحليل عينات عشوائية من الأنشطة التقويمية الصفية واللاصفية في منتصف كل فصل.|مطابقة الدرجات المعطاة للطلبة في أدلة التعلم مع الدرجات المرصودة في السجلات.|تشكيل فرق مصغرة لتدقيق سجلات درجات جميع الشعب (23 شعبة) قبل اعتماد الدرجات النهائية بنهاية كل فصل.","2026/10/15","2027/5/25","عدالة التحصيل الدراسي"],
+["توظيف ما لا يقل عن 70% من طلبة الصفوف 5-8 لمهارات المستقبل في المواقف التعليمية الصفية واللاصفية بمستوى إتقان «مجيد»، وقياسها عبر أدوات تقييم متفق عليها خلال العام الدراسي.","تصميم خطة أنشطة تتضمن مهارات المستقبل (التفكير الناقد، حل المشكلات، الإبداع، التعاون، الثقافة الرقمية) وإدراجها في خطط الدروس.|تنفيذ أنشطة صفية: مناقشات، عروض تقديمية، تعلم قائم على المشروعات مرتبط بموضوعات الوحدات.|دمج أدوات التكنولوجيا: العروض التفاعلية والتصميم الرقمي وتطبيقات الذكاء الاصطناعي بإشراف المعلم.|تصميم استمارات ملاحظة صفية لقياس إتقان المهارات.|عقد لقاءات متابعة شهرية لمراجعة تقدم الطلبة، وإبراز النماذج المتميزة.|تنفيذ استبيان رضا للطلبة والمعلمين لقياس الأثر وتطوير الخطة.","2026/10/1","2027/5/15","مهارات التعلم"],
+["تعزيز القيم الإنسانية المشاركة والهوية والمواطنة من خلال تنفيذ 3 أنشطة صفية ولاصفية باللغة الإنجليزية مرتبطة بموضوعات السلسلة والمناسبات الوطنية، بمشاركة لا تقل عن 60% من طلبة الصفوف 5-8.","تفعيل المناسبات المرتبطة بالمنهج والتي تعزز الهوية والمواطنة، وفي مقدمتها العيد الوطني (20 نوفمبر).|تنفيذ نشاط «My Country Oman»: عروض ومطويات يعدها الطلبة باللغة الإنجليزية عن معالم عُمان.|اعتماد 3 استراتيجيات صفية تعزز القيم (لعب الأدوار، القصة القيمية، الحوار الموجه).|تنظيم مسابقة كتابة «Proud to be Omani» للصفين 7 و8.","2026/11/1","2027/4/30","الهوية والمواطنة / القيم والسلوك"],
+["تنظيم وتنفيذ ما لا يقل عن 3 فعاليات مدرسية باللغة الإنجليزية خلال العام الدراسي لتعزيز القيم ومهارات اللغة، بمشاركة الطلبة والمعلمين، وتوثيقها بتقارير، بنسبة تفاعل لا تقل عن 70% من الفئة المستهدفة.","تنظيم إذاعة مدرسية باللغة الإنجليزية شهريًا، يتناوب عليها معلمو المادة وشعبهم.|تنظيم يوم مفتوح للغة الإنجليزية (English Day) بمشاركة جميع الصفوف.|تنظيم ركن «English Corner» أسبوعي في الفسحة للمحادثة.|توثيق الفعاليات بالتقارير والأخبار المدرسية.","2026/10/1","2027/4/30","الهوية والمواطنة / القيم والسلوك"],
+["رفع نسبة رضا الطلبة والمعلمين عن البيئة التعليمية في المادة إلى 80% بنهاية العام الدراسي.","المشاركة في تطبيق استبانات رضا المستفيد للطلبة والمعلمين على البوابة التعليمية.|تحليل نتائج الاستبانات ومعالجة الجوانب ذات الرضا المنخفض.","تاريخ فتح الصلاحية","تاريخ غلق الصلاحية","جودة بيئة التعلم"],
+["تهيئة طلبة الصف الثامن (5 شعب) للانتقال إلى الصف التاسع من خلال تنفيذ 3 برامج توعوية وتدريبية خلال الفصل الدراسي الثاني، تركز على متطلبات المرحلة المقبلة في المادة ومهارات التكيف، مع قياس أثرها عبر استبانة رضا لا تقل نسبتها عن 80%.","تنفيذ ورشة بعنوان «Ready for Grade 9: What to Expect».|تنفيذ حلقة نقاشية بعنوان «مهارات التعلم الذاتي في اللغة الإنجليزية».|تنفيذ محاضرة بعنوان «إدارة الوقت والاستعداد للاختبارات».|تصميم وتنفيذ استبانات رضا المستفيد وتحليل نتائجها لتطوير البرامج مستقبلًا.","2027/2/15","2027/5/15","الدعم والرعاية"],
+["تنفيذ ما لا يقل عن 3 مسابقات منهجية وغير منهجية في المادة خلال العام الدراسي، تهدف إلى تعزيز دافعية الطلبة للتعلم، مع ضمان مشاركة ما لا يقل عن 70% من المستهدفين وتوثيق النتائج.","تحليل واقع الطلبة (المجيدين/الموهوبين/المتأخرين) لتصميم مسابقات تستهدف فئات مختلفة.|وضع معايير تقييم واقعية لكل مسابقة، والإعلان عنها حسب الخطة الزمنية.|مسابقة التهجئة «Spelling Bee» للصفوف 5-8 (نوفمبر).|تحدي القراءة «Reading Challenge» على مستوى الشعب (ديسمبر – مارس).|تحدي المجموعات للمفردات والقواعد باستخدام البرامج التفاعلية (كل فصل).|تكريم الفائزين والمشاركين لرفع دافعيتهم.","2026/11/1","2027/4/30","تعزيز مواهب الطلبة وقدراتهم"],
+["إبراز أعمال الطلبة ومشاريعهم المتميزة في المادة من خلال تنفيذ ما لا يقل عن معرضين (معرض لكل فصل دراسي)، بهدف تحفيزهم على الإبداع والمنافسة الإيجابية، مع ضمان مشاركة لا تقل عن 60% من الطلبة المستهدفين.","تنفيذ المشاريع المنهجية المرتبطة بوحدات السلسلة في شكل منافسات صفية بمعايير محددة.|اختيار المشاريع المتميزة والإعلان عنها في الطابور المدرسي.|عرض المشاريع في لوحة اللغة الإنجليزية وحسابات المدرسة مقرونة بأسماء الطلبة.|توثيق المعرضين بتقارير وصور.","2026/12/1","2027/5/15","تعزيز مواهب الطلبة وقدراتهم"],
+["جمع وتوثيق البيانات الأساسية المتعلقة بعمل معلمي المادة بنسبة إنجاز 100% خلال الأسبوع الثاني من الفصل الدراسي الأول، وحفظها في ملف إلكتروني موحد.","عقد اجتماع بمعلمي المادة لتنظيم العمل وتوزيع الأدوار والمنسقين.|تحديث قاعدة بيانات معلمي المادة (7 معلمين).|تحديد المناهج والأنصبة لكل معلم (23 شعبة)، الجدول 1.|حصر الكتب الدراسية وأدلة المعلم والوسائل التعليمية (المتوفر والعجز).","2026/8/25","2026/9/15","حوكمة"],
+["إعداد واعتماد خطط العمل السنوية للمادة خلال ثلاثة أسابيع من بدء العام الدراسي، وتوثيقها في ملف المادة بنسبة إنجاز 100%.","الاطلاع على الخطة العامة للمدرسة وتقارير تطوير الأداء وتحليل نتائج العام الماضي.|عقد اجتماع بمعلمي المادة لمناقشة مقترحات خطط العمل.|وضع الخطط السنوية: الخطة العامة للمادة، خطة الإنماء المهني وجدول تبادل الزيارات، خطة التحصيل الدراسي، خطة الزيارات الإشرافية.|إدخال الخطة الإنمائية وخطة المعلم الأول على البوابة التعليمية.|اعتماد الخطط من إدارة المدرسة والمشرف التربوي.","2026/8/25","2026/9/30","الكفاية الإدارية (مهام ومسؤوليات)"],
+["متابعة توزيع الطبعات الأحدث من كتب سلسلة Team Together Oman للطلبة بنسبة 100% خلال أول أسبوعين من بداية كل فصل دراسي.","التحقق من طبعات الكتب المعتمدة للعام الحالي لكل صف.|تسليم جميع الطلبة الكتب (كتاب الطالب وكتاب النشاط) وفق كشوف تسليم.|حصر العجز إن وجد، ومتابعة تغطيته بالتنسيق مع إدارة المدرسة وقسم المخازن.","بداية كل فصل","نهاية الأسبوع الثاني","القيادة والإدارة والحوكمة"],
+["تحديد الاحتياجات التدريبية لمعلمي المادة قبل نهاية الأسبوع الثاني من شهر سبتمبر، وتحليل النتائج لإعداد تقرير معتمد يشمل جميع المعلمين بنسبة استجابة لا تقل عن 90%.","استخراج تقارير تطوير الأداء السنوية لتحليل الاحتياجات.|استطلاع آراء المعلمين (التقييم الذاتي) عبر استبانة إلكترونية ولقاءات فردية.|تحليل الحاجات وفق متطلبات التعليم المستجدة وبناء خطة الإنماء المهني (الجدول 4).","2026/9/1","2026/9/14","قيادة التغيير"],
+["تنظيم سجلات المعلم الأول (الإدارية والفنية) إلكترونيًا بما يسهل المتابعة والتقييم الدوري خلال العام الدراسي، بنسبة إنجاز لا تقل عن 90% بنهاية كل فصل دراسي.","إعداد سجلات المعلم الأول بصيغة إلكترونية: السجل العام (بيانات المادة)، سجل التحصيل الدراسي، سجل الإنماء المهني، سجل الزيارات الإشرافية.|اعتماد السجلات من مدير المدرسة (الأستاذ حمود الشبيبي) والمشرف التربوي (الأستاذ صالح الحبسي).|تحديث السجلات وتفعيلها طوال العام الدراسي.","2026/9/1","2027/6/30","الكفاية الإدارية"],
+["متابعة تنفيذ خطط العمل السنوية للمادة مع معلميها بشكل شهري خلال العام الدراسي وتوثيقها في سجلات خاصة، على أن تصل نسبة الإنجاز المحققة في تنفيذ الخطط إلى 90% على الأقل بنهاية العام.","الإشراف على تنفيذ الخطط حسب الجداول الزمنية (خطة الإنماء المهني، خطة التحصيل الدراسي، خطة الزيارات الإشرافية).|تنفيذ زيارتين إشرافيتين على الأقل لكل معلم في كل فصل (استطلاعية وتقويمية) وفق استمارات مخصصة.|تقديم التغذية الراجعة للمعلمين بعد كل زيارة.|تحديث حالة التنفيذ لبنود كل خطة في سجلات المتابعة والبوابة التعليمية بشكل منتظم.","2026/9/15","2027/6/30","حوكمة"],
+["تنمية المهارات والمعارف الفنية والإدارية للمعلم الأول من خلال حضور 3 برامج تدريبية تخصصية على الأقل، وقيادة مبادرة مهنية واحدة للمادة خلال العام الدراسي، بهدف تعزيز الدور القيادي وتحسين الأداء الإشرافي.","تحديد المجالات التطويرية الخاصة بالمعلم الأول من خلال تحليل الأداء الذاتي، ووضع خطة شخصية للتطوير المهني.|حضور برنامج المعلمين الأوائل بالمعهد التخصصي للتدريب المهني للمعلمين.|حضور دورة في تحليل البيانات التربوية باستخدام Excel.|حضور ورشة في توظيف الذكاء الاصطناعي في التعليم.|مبادرة «الدروس التفاعلية»: إنتاج برامج تفاعلية لدروس سلسلة Team Together للصفوف 5-8 ومشاركتها مع معلمي المادة وتدريبهم عليها.|تبادل الخبرات مع المعلمين الأوائل للمواد الأخرى بالمدرسة، وتبادل الزيارات مع معلمين أوائل من مدارس أخرى.","2026/9/1","2027/5/15","الكفاية الإدارية"],
+["تفعيل مجتمع التعلم المهني لمعلمي المادة من خلال تنفيذ ما لا يقل عن 4 لقاءات تخصصية خلال العام الدراسي (لقاءان في كل فصل) تهدف إلى تطوير الممارسات التدريسية ومشاركة أفضل الاستراتيجيات، مع توثيق مخرجاتها في تقارير مهنية ونشرها في أخبار المدرسة.","تشكيل مجتمع التعلم المهني للمادة بأهداف واضحة للعام الحالي، وتعيين منسق له.|بناء جدول واضح للقاءات وتحديد هدف تطويري لكل جلسة.|اللقاء الأول: تحليل نتائج التشخيصي وبناء الخطط العلاجية.|اللقاء الثاني: التقويم التكويني ومشاركة تجارب المعلمين.|اللقاء الثالث: التعليم المتمايز داخل الشعبة.|اللقاء الرابع: الذكاء الاصطناعي والبرامج التفاعلية في تدريس الإنجليزية.|دعوة خبير خارجي (مشرف/معلم أول) لتقديم ورشة في أحد اللقاءات.|توثيق الأعمال بالتقارير وكشوف الحضور، وقياس الأثر ووضع تقرير ختامي بالتوصيات.","2026/10/1","2027/5/15","قيادة التعليم والتعلم"],
+["تمكين معلمي المادة من توظيف تطبيقات الذكاء الاصطناعي والتقنيات الحديثة في المواقف الصفية بشكل فاعل بمعدل لا يقل عن 3 مرات شهريًا لكل معلم خلال العام الدراسي، مع توثيق الممارسات وأثرها التعليمي في سجل المتابعة.","تزويد المعلمين بنشرة حول تطبيقات الذكاء الاصطناعي المفيدة لمعلم اللغة الإنجليزية وضوابط استخدامها.|تنفيذ دورة تدريبية تطبيقية (الجدول 4) يقدّمها المعلم الأول بالتعاون مع منسق التقنيات (أحمد الجندي).|تنفيذ ورشة تدريس مصغر لنمذجة توظيف البرامج التفاعلية في الحصة.|متابعة سجلات خطط الدروس اليومية وتقديم التغذية الراجعة حول التقنيات المستخدمة.|زيارات صفية لمتابعة نقل أثر التدريب (استمارة نقل أثر التدريب + تغذية راجعة).","2026/10/15","2027/5/15","قيادة التعليم والتعلم"],
+["تعزيز توظيف استراتيجيات التدريس الحديثة في حصص المادة من خلال دعم المعلمين وتنفيذ برنامج تبادل الزيارات، بما يحقق زيادة لا تقل عن 10% في عدد الحصص التي تُستخدم فيها هذه الاستراتيجيات، وفق نتائج الزيارات الصفية والتوثيق في سجل المتابعة.","الاطلاع على الممارسات التدريسية المتميزة وتحليلها.|تنفيذ ورش حول التعلم النشط والتعليم المتمايز وتعليم القراءة.|تنفيذ تبادل الزيارات بين المعلمين وفق جدول تبادل الزيارات (الجدول 5)، بواقع زيارة لكل معلم في كل فصل.|تنفيذ حصص تطبيقية يقدمها المعلم الأول لنمذجة الاستراتيجيات المتميزة.|رصد نسبة الحصص التي وُظّفت فيها الاستراتيجيات في بداية العام ونهايته للمقارنة.","2026/10/1","2027/5/15","فاعلية التدريس"],
+["متابعة تنفيذ معلمي المادة لأهدافهم الفردية في منظومة إجادة خلال فترتي قياس الأداء، لضمان تحقيق نسبة التزام لا تقل عن 90%، وتوثيق ذلك في سجل الأداء الفردي لكل معلم.","مراجعة خطط إجادة لمعلمي المادة قبل اعتمادها من المسؤول المباشر.|متابعة تنفيذ المعلمين لإجراءات الخطة مع تقديم التغذية الراجعة أثناء التطبيق.|مراجعة الأداء الفعلي لمعلمي المادة قبل اعتماده من المسؤول المباشر.","بداية كل فترة","نهاية كل فترة","الكفاية الإدارية / حوكمة"],
+["تحسين مهارات تقويم الأداء الذاتي لدى معلمي المادة خلال العام الدراسي من خلال تنفيذ جلستي تأمل فردي لكل معلم، بهدف تعزيز الوعي بالممارسات التدريسية وتطويرها، مع توثيق مخرجات التأمل في نماذج مخصصة للمتابعة.","تنفيذ ورقة عمل حول «التقييم الذاتي للمعلم وأهميته» مع عرض نماذج.|تصميم أداة تأمل مناسبة للمادة، وتحديد جدول زمني للجلسات.|تنفيذ جلسة التأمل الأولى لكل معلم (الفصل الأول) مع تحديد نقاط التحسين.|متابعة تدوين المعلمين لملاحظاتهم حول الدروس اليومية (Teacher's comments in the Lesson Plan) مرة شهريًا.|تنفيذ جلسة التأمل الثانية (الفصل الثاني) للمقارنة وقياس التقدم.","2026/10/5","2027/5/15","قيادة التغيير"],
+["تحقيق التكامل الفعّال بين معلمي المادة وبقية المواد والهيئة الإدارية خلال العام الدراسي من خلال عقد اجتماعات تنسيقية والمشاركة في أعمال اللجان المختلفة، مع توثيق كافة الأعمال في سجلات المادة والمدرسة.","عقد اجتماع تربوي مع المواد الأخرى للتنسيق في مواعيد الاختبارات القصيرة والواجبات.|التعاون مع الهيئة الإدارية في أعمال لجنة التحصيل الدراسي ولجنة الأنشطة.|تشجيع معلمي المادة على الإشراف على بعض الأنشطة المدرسية (الإذاعة، الأنشطة الطلابية).","2026/8/25","2027/6/30","قيادة التغيير (العمل المشترك)"],
+["إعداد تقرير تحليلي لمناهج سلسلة Team Together Oman للصفوف 5-8 بنهاية كل فصل دراسي، بنسبة مشاركة لا تقل عن 90% من معلمي المادة.","رصد الملاحظات الواردة من معلمي المادة حول المناهج بشكل دوري في استمارة خاصة (الاستمارة الوزارية).|عقد لقاء تربوي مع المعلمين لمناقشة الملاحظات ووضع المقترحات والتوصيات.|إعداد تقرير ختامي ورفعه للمشرف التربوي ووحدة اللغة الإنجليزية.","2026/10/15","2027/6/30","قيادة التغيير"],
+["تعزيز دور أولياء أمور الطلبة في دعم تعلم أبنائهم خلال العام الدراسي من خلال تنفيذ ما لا يقل عن 3 برامج تواصلية، وقياس أثرها عبر استبانات رضا، مع تحقيق نسبة مشاركة لا تقل عن 60% من أولياء الأمور المستهدفين.","تنفيذ لقاء توعوي في بداية العام حول «مستجدات المنهج وأدوات التقويم» (حضوري/عن بعد).|تنفيذ محاضرة بعنوان «كيف أساعد ابني في تعلم اللغة الإنجليزية في البيت».|تنفيذ لقاءات فصلية مع أولياء أمور الطلبة دون المستوى لمناقشة مستويات أبنائهم والخطط العلاجية.|تصميم بطاقات ملاحظات حول أداء الطلبة لأولياء الأمور، وإرسال التقارير الوصفية كل فصل.|إشراك أولياء الأمور في اليوم المفتوح للغة الإنجليزية ومعرض أعمال الطلبة.","2026/9/20","2027/5/15","الشراكة مع أولياء الأمور والمجتمع"]
+];
+const TEACHERS=[
+ ["عيسى الجهضمي","معلم أول",["5/1","5/2"],"الإشراف العام على المادة"],
+ ["علي الشبيبي","معلم مادة",["5/3","5/4","5/5","5/6"],"منسق الصف الخامس"],
+ ["القيصر الغافري","معلم مادة",["6/3","6/4","6/5","6/6"],"منسق الصف السادس"],
+ ["سعيد الشبيبي","معلم مادة",["6/1","6/2","8/5"],"منسق الأنشطة والمسابقات"],
+ ["عمر البوسعيدي","معلم مادة",["7/1","7/2","7/3"],"منسق الصف السابع"],
+ ["أحمد الجندي","معلم مادة",["7/4","7/5","7/6"],"منسق التقنيات والمنصات الرقمية"],
+ ["هشام الحبسي","معلم مادة",["8/1","8/2","8/3","8/4"],"منسق الصف الثامن"]
+];
+const VISITS=[["علي الشبيبي","القيصر الغافري","القراءة الموجهة والمفردات"],["عمر البوسعيدي","أحمد الجندي","التقويم التكويني والتطبيقات التفاعلية"],["سعيد الشبيبي","هشام الحبسي","الكتابة والتعلم التعاوني"],["عيسى الجهضمي (حصص نموذجية)","جميع معلمي المادة","نمذجة استراتيجيات الورش التدريبية"]];
+const RESULTS=[["الخامس",203,76,37.4,42.4,"السادس"],["السادس",199,63,31.7,36.7,"السابع"],["السابع",161,61,37.9,42.9,"الثامن"],["الثامن",137,58,42.3,47.3,"التاسع (انتقلوا)"]];
+const COMPARE=[["الخامس",[37.4,70.0,50.7,43.8,43.8,67.0],0],["السادس",[31.7,65.3,36.2,43.2,45.7,54.8],0],["السابع",[37.9,52.8,37.3,33.5,29.2,52.2],4],["الثامن",[42.3,73.0,59.1,33.6,41.6,70.1],3]];
+const PD=[["مستجدات المناهج والنشرات التوجيهية (Team Together Oman 5-8)","جميع معلمي المادة","المعلم الأول","سبتمبر 2026"],["إعداد الاختبارات القصيرة وفق وثيقة تقويم تعلم الطلبة وتحليلها","جميع معلمي المادة","المعلم الأول","أكتوبر 2026"],["أدوات التقويم التكويني داخل الحصة (Formative Assessment Toolkit)","جميع معلمي المادة","المعلم الأول + معلم متميز","نوفمبر 2026"],["استراتيجيات تنمية القراءة (Phonics & Guided Reading)","معلمو الصفين 5 و6","المعلم الأول","ديسمبر 2026"],["التعليم المتمايز وإعداد الخطط العلاجية الفردية (IPP)","جميع معلمي المادة","المعلم الأول","فبراير 2027"],["توظيف الذكاء الاصطناعي والتطبيقات التفاعلية في تدريس الإنجليزية","جميع معلمي المادة","المعلم الأول","فبراير 2027"],["تنمية مهارة الكتابة بأسلوب الكتابة المرحلية (Process Writing)","معلمو الصفين 7 و8","المعلم الأول","مارس 2027"],["تحليل نتائج الاختبارات باستخدام Excel وتمثيلها بيانيًا","جميع معلمي المادة","المعلم الأول","أبريل 2027"]];
+const GRADES=[["g5","الخامس"],["g6","السادس"],["g7","السابع"],["g8","الثامن"]];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const en=s=>esc(s).replace(/(?<![&#\w])([A-Za-z][A-Za-z0-9&'’\-\/ .,()+:]*[A-Za-z0-9)])/g,'<span class="en">$1</span>');
+const domainOf=n=>DOMAINS.find(d=>n>=d.from&&n<=d.to);
+const opts=(list,sel)=>list.map(([v,l])=>`<option value="${esc(v)}"${v===sel?" selected":""}>${esc(l)}</option>`).join("");
+
+// ---- state + storage ----
+const state={goals:{},pd:{},diag:{},ini:[],meet:[]};
+let assets=null;
+let db=null, canWrite=true, local=false;
+const LS="eisa-platform-v1";
+function lsLoad(){try{const v=JSON.parse(localStorage.getItem(LS)||"null");if(v){Object.assign(state,v)}}catch(e){}}
+function lsSave(){try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}}
+function note(msg){const n=$("#store-note");n.textContent=msg;n.hidden=!msg}
+async function write(path,data){
+  if(local){lsSave();return true}
+  if(!db||!canWrite)return false;
+  try{await db.doc(path).set(data);return true}
+  catch(e){
+    if(e&&e.code==="invalid_argument"){canWrite=false;note("يمكنك عرض المنصة فقط. التعديل متاح لمالك المنصة ومن يملك صلاحية التحرير.");renderAll()}
+    else if(e&&e.code==="quota_exceeded"){note("امتلأت مساحة الحفظ، احذف بعض المبادرات القديمة ثم حاول مرة أخرى.")}
+    else note("تعذر الحفظ الآن، أعد المحاولة بعد قليل.");
+    return false}
+}
+async function remove(path){
+  if(local){lsSave();return true}
+  if(!db||!canWrite)return false;
+  try{await db.doc(path).delete();return true}catch(e){note("تعذر الحذف الآن، أعد المحاولة بعد قليل.");return false}
+}
+
+// ---- dates ----
+const TODAY=new Date();
+function dates(s){return [...String(s).matchAll(/(\d{4})\/(\d{1,2})\/(\d{1,2})/g)].map(m=>new Date(+m[1],+m[2]-1,+m[3]))}
+function activeNow(f,t){const a=dates(f),b=dates(t);if(!a.length||!b.length)return null;
+  for(let i=0;i<Math.min(a.length,b.length);i++){if(TODAY>=a[i]&&TODAY<=new Date(b[i].getTime()+864e5))return true}return false}
+function overdue(t){const b=dates(t);return b.length?TODAY>new Date(b[b.length-1].getTime()+864e5):false}
+
+// ---- HOME ----
+function renderHome(){
+  const counts={idle:0,prog:0,done:0,late:0};
+  G.forEach((_,i)=>counts[(state.goals["g"+(i+1)]||{}).status||"idle"]++);
+  $("#overall-line").innerHTML=`<b class="num">${counts.done}</b> منجز، <b class="num">${counts.prog}</b> قيد التنفيذ، <b class="num">${counts.late}</b> متأخر، <b class="num">${counts.idle}</b> لم يبدأ، من أصل 38 هدفًا (نسبة الإنجاز <b class="num">${Math.round(counts.done/38*100)}%</b>).`;
+  $("#dprog").innerHTML=DOMAINS.map(d=>{
+    const c={idle:0,prog:0,done:0,late:0};const n=d.to-d.from+1;
+    for(let k=d.from;k<=d.to;k++)c[(state.goals["g"+k]||{}).status||"idle"]++;
+    const seg=(v,col)=>v?`<i style="width:${v/n*100}%;background:${col}" title="${v}"></i>`:"";
+    return `<div class="drow"><span class="lbl"><i class="dot" style="background:${d.c}"></i>${esc(d.name.split(": ")[1])}</span><span class="num muted" style="font-size:13px">${c.done}/${n} منجز</span><div class="bar">${seg(c.done,"var(--ok)")}${seg(c.prog,"var(--warn)")}${seg(c.late,"var(--bad)")}</div></div>`}).join("");
+  const now=G.map((g,i)=>({g,n:i+1})).filter(x=>activeNow(x.g[2],x.g[3]));
+  $("#now-line").textContent=`حسب تاريخ اليوم ${TODAY.toLocaleDateString("ar-OM",{day:"numeric",month:"long",year:"numeric"})}: ${now.length} هدفًا ضمن فترة التنفيذ.`;
+  $("#now-body").innerHTML=now.map(({g,n})=>{const s=(state.goals["g"+n]||{}).status||"idle";
+    return `<tr><td class="n">${n}</td><td style="min-width:260px">${en(g[0].length>140?g[0].slice(0,138)+"…":g[0])}</td><td class="num" style="white-space:nowrap">${esc(g[2])}</td><td class="num" style="white-space:nowrap">${esc(g[3])}</td><td><span class="st" data-v="${s}" style="display:inline-block">${STATUS_L[s]}</span></td></tr>`}).join("")||`<tr><td colspan="5" class="empty-f">لا توجد أهداف ضمن فترة التنفيذ اليوم.</td></tr>`;
+}
+
+// ---- PLAN ----
+const open=new Set();
+function renderPlan(){
+  if(document.activeElement&&document.activeElement.matches("#plan-list textarea"))return;
+  const fd=$("#f-domain").value, fs=$("#f-status").value, q=$("#f-q").value.trim();
+  let html="";
+  DOMAINS.forEach(d=>{
+    if(fd&&fd!==d.id)return;
+    const items=[];
+    for(let n=d.from;n<=d.to;n++){
+      const g=G[n-1], st=state.goals["g"+n]||{}, s=st.status||"idle";
+      if(fs&&fs!==s)continue;
+      if(q&&!(g[0]+g[1]+g[4]).includes(q))continue;
+      const warn=s!=="done"&&overdue(g[3])?` <span class="chip" style="background:var(--bad-soft);color:var(--bad)">انتهت فترة التنفيذ</span>`:"";
+      items.push(`<details class="goal" style="--dc:${d.c}" data-n="${n}"${open.has(n)?" open":""}>
+        <summary><span class="gno">${n}</span><span class="gtxt">${en(g[0])}</span>
+          <select class="st" data-v="${s}" data-goal="${n}" aria-label="الموقف التنفيذي للهدف ${n}"${canWrite?"":" disabled"}>${opts(STATUS,s)}</select>
+          <span class="gmeta"><span class="chip">${esc(g[4])}</span><span class="num">من ${esc(g[2])}</span><span class="num">إلى ${esc(g[3])}</span>${st.note?'<span class="chip">ملاحظة</span>':""}${warn}</span>
+        </summary>
+        <div class="goal-body">
+          <div><b style="font-size:13px" class="muted">الأساليب والأنشطة</b><ul>${g[1].split("|").map(a=>`<li>${en(a)}</li>`).join("")}</ul></div>
+          <label>الملاحظات<textarea id="note-${n}" data-note="${n}" placeholder="اكتب ملاحظات التنفيذ والشواهد"${canWrite?"":" readonly"}>${esc(st.note||"")}</textarea></label>
+          <span class="saved" id="saved-${n}"></span>
+        </div></details>`);
+    }
+    if(items.length)html+=`<div class="domain-h" style="background:${d.c}">${esc(d.name)}</div>`+items.join("");
+  });
+  $("#plan-list").innerHTML=html||`<div class="panel empty-f">لا توجد أهداف تطابق التصفية.</div>`;
+}
+$("#plan-list").addEventListener("toggle",e=>{const d=e.target.closest(".goal");if(!d)return;const n=+d.dataset.n;d.open?open.add(n):open.delete(n)},true);
+$("#plan-list").addEventListener("click",e=>{if(e.target.matches("select.st"))e.preventDefault()});
+$("#plan-list").addEventListener("change",async e=>{
+  const t=e.target;
+  if(t.dataset.goal){const n=t.dataset.goal;t.dataset.v=t.value;
+    const cur=state.goals["g"+n]||{};state.goals["g"+n]={...cur,status:t.value,updatedAt:new Date().toISOString()};
+    await write("goals/g"+n,state.goals["g"+n]);renderHome();renderPlan()}
+  if(t.dataset.note){const n=t.dataset.note;const cur=state.goals["g"+n]||{};
+    if((cur.note||"")===t.value)return;
+    state.goals["g"+n]={status:"idle",...cur,note:t.value,updatedAt:new Date().toISOString()};
+    if(await write("goals/g"+n,state.goals["g"+n])){const s=$("#saved-"+n);if(s)s.textContent="حُفظت الملاحظة"}}
+});
+$("#f-domain").innerHTML+=DOMAINS.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join("");
+$("#f-status").innerHTML+=opts(STATUS,"");
+["#f-domain","#f-status"].forEach(s=>$(s).addEventListener("change",renderPlan));
+$("#f-q").addEventListener("input",renderPlan);
+
+// ---- PHOTOS ----
+const LOCALURL={};
+const blob=id=>LOCALURL[id]||"";
+let IDBH=null;
+function idb(){return new Promise((ok,bad)=>{if(IDBH)return ok(IDBH);const r=indexedDB.open("eisa-platform-photos",1);r.onupgradeneeded=()=>r.result.createObjectStore("p");r.onsuccess=()=>{IDBH=r.result;ok(IDBH)};r.onerror=()=>bad(r.error)})}
+async function idbTx(mode,fn){const d=await idb();return new Promise((ok,bad)=>{const t=d.transaction("p",mode);const res=fn(t.objectStore("p"));t.oncomplete=()=>ok(res&&res.result);t.onerror=()=>bad(t.error)})}
+async function idbAll(){const d=await idb();return new Promise((ok,bad)=>{const out={};const c=d.transaction("p").objectStore("p").openCursor();c.onsuccess=()=>{const cur=c.result;if(cur){out[cur.key]=cur.value;cur.continue()}else ok(out)};c.onerror=()=>bad(c.error)})}
+async function idbLoadAll(){try{const all=await idbAll();for(const k in all)LOCALURL[k]=URL.createObjectURL(all[k])}catch(e){}}
+const LOCAL_ASSETS={
+  async upload(b){const id="p"+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+    try{await idbTx("readwrite",st=>st.put(b,id))}catch(e){throw {code:"quota_or_state"}}
+    LOCALURL[id]=URL.createObjectURL(b);return {id,url:LOCALURL[id]}},
+  async delete(id){try{await idbTx("readwrite",st=>st.delete(id))}catch(e){}
+    if(LOCALURL[id])URL.revokeObjectURL(LOCALURL[id]);delete LOCALURL[id];return {deleted:true}}
+};
+const pick={ini:{keep:[],add:[]},meet:{keep:[],add:[]}};
+function renderPicker(kind){
+  const el=$("#pick-"+kind);if(!el)return;
+  const field=el.closest(".photo-field");
+  if(!assets){field.hidden=!local;el.innerHTML=local?``:"";return}
+  field.hidden=false;
+  const p=pick[kind];
+  el.innerHTML=p.keep.map((id,i)=>`<div class="thumb"><img src="${blob(id)}" alt="صورة مرفقة"><button type="button" data-rmkeep="${i}" aria-label="إزالة الصورة">×</button></div>`).join("")
+    +p.add.map((f,i)=>`<div class="thumb"><img src="${f.url}" alt="صورة جديدة"><button type="button" data-rmadd="${i}" aria-label="إزالة الصورة">×</button></div>`).join("")
+    +(canWrite?`<label class="addph"><b>+</b>إضافة صور<input type="file" accept="image/*" multiple data-kind="${kind}" aria-label="إضافة صور"></label>`:"");
+}
+document.querySelectorAll(".photo-field").forEach(f=>{
+  const kind=f.dataset.kind;
+  f.addEventListener("change",e=>{const inp=e.target;if(inp.type!=="file")return;
+    [...inp.files].filter(x=>x.type.startsWith("image/")||!x.type).forEach(x=>pick[kind].add.push({file:x,url:URL.createObjectURL(x)}));
+    renderPicker(kind)});
+  f.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+    if(b.dataset.rmkeep!=null)pick[kind].keep.splice(+b.dataset.rmkeep,1);
+    if(b.dataset.rmadd!=null){const [x]=pick[kind].add.splice(+b.dataset.rmadd,1);URL.revokeObjectURL(x.url)}
+    renderPicker(kind)});
+});
+async function shrink(file){
+  if(file.type==="image/gif"||file.type==="image/svg+xml")return file;
+  try{
+    const url=URL.createObjectURL(file);
+    const img=await new Promise((ok,bad)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=bad;i.src=url});
+    URL.revokeObjectURL(url);
+    const max=1800,k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
+    const c=document.createElement("canvas");c.width=Math.round(img.naturalWidth*k);c.height=Math.round(img.naturalHeight*k);
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    const out=await new Promise(r=>c.toBlob(r,"image/jpeg",.85));
+    return out&&(out.size<file.size||!/^image\/(png|jpeg|webp)$/.test(file.type))?out:file;
+  }catch(e){return file}
+}
+// uploads new photos; returns final id list or null on failure
+async function commitPhotos(kind,prevIds,msgEl){
+  const p=pick[kind], ids=[...p.keep];
+  for(let i=0;i<p.add.length;i++){
+    msgEl.className="upl";msgEl.textContent=`جارٍ رفع الصور ${i+1} من ${p.add.length}…`;
+    try{const b=await shrink(p.add[i].file);const r=await assets.upload(b,b.type?undefined:{type:"image/jpeg"});ids.push(r.id)}
+    catch(e){msgEl.className="saved";msgEl.style.color="var(--bad)";
+      msgEl.textContent=e&&e.code==="too_large"?"إحدى الصور كبيرة جدًا، اختر صورة أصغر.":e&&e.code==="unsupported_type"?"نوع إحدى الصور غير مدعوم، استخدم JPG أو PNG.":e&&e.code==="quota_or_state"?"امتلأت مساحة الصور، احذف صورًا قديمة ثم حاول.":"تعذر رفع إحدى الصور، أعد المحاولة.";
+      return null}
+  }
+  (prevIds||[]).filter(id=>!ids.includes(id)).forEach(id=>assets.delete(id).catch(()=>{}));
+  msgEl.style.color="";msgEl.className="saved";msgEl.textContent="";
+  return ids;
+}
+function clearPick(kind){pick[kind].add.forEach(x=>URL.revokeObjectURL(x.url));pick[kind]={keep:[],add:[]};renderPicker(kind)}
+function gal(ids,cap,cls){return ids&&ids.length?`<div class="gal ${cls||""}">${ids.map((id,i)=>`<button type="button" data-lb="${esc(ids.join(","))}" data-i="${i}" data-cap="${esc(cap)}"><img src="${blob(id)}" alt="${esc(cap)}" loading="lazy"></button>`).join("")}</div>`:""}
+
+// lightbox
+let lb={ids:[],i:0,cap:""};
+function lbShow(){const L=$("#lb");$("#lb-img").src=blob(lb.ids[lb.i]);$("#lb-img").alt=lb.cap;$("#lb-cap").textContent=lb.cap;$("#lb-n").textContent=`${lb.i+1} / ${lb.ids.length}`;L.hidden=false;$("#lb-close").focus()}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-lb]");if(!b)return;lb={ids:b.dataset.lb.split(","),i:+b.dataset.i,cap:b.dataset.cap};lbShow()});
+$("#lb-close").addEventListener("click",()=>$("#lb").hidden=true);
+$("#lb-prev").addEventListener("click",()=>{lb.i=(lb.i-1+lb.ids.length)%lb.ids.length;lbShow()});
+$("#lb-next").addEventListener("click",()=>{lb.i=(lb.i+1)%lb.ids.length;lbShow()});
+document.addEventListener("keydown",e=>{if($("#lb").hidden)return;if(e.key==="Escape")$("#lb").hidden=true;if(e.key==="ArrowLeft")$("#lb-next").click();if(e.key==="ArrowRight")$("#lb-prev").click()});
+
+// ---- INITIATIVES ----
+let editing=null, confirmDel=null, busy=false;
+$("#i-domain").innerHTML=DOMAINS.map(d=>`<option value="${d.id}">${esc(d.name.split(": ")[1])}</option>`).join("");
+$("#i-owner").innerHTML=`<option value="">جميع معلمي المادة</option>`+TEACHERS.map(t=>`<option>${esc(t[0])}</option>`).join("");
+$("#i-status").innerHTML=opts(STATUS,"idle");
+const F=["title","domain","owner","target","status","from","to","desc","kpi"];
+function resetForm(){$("#ini-form").reset();$("#i-status").value="idle";editing=null;$("#i-save").textContent="إضافة المبادرة";$("#i-cancel").hidden=true;clearPick("ini")}
+$("#i-cancel").addEventListener("click",resetForm);
+$("#ini-form").addEventListener("submit",async e=>{
+  e.preventDefault();if(!canWrite||busy)return;
+  const v={};F.forEach(k=>v[k]=$("#i-"+k).value.trim());if(!v.title)return;
+  const id=editing||("i"+Date.now().toString(36)+Math.random().toString(36).slice(2,6));
+  const prev=state.ini.find(x=>x.id===id);
+  busy=true;$("#i-save").disabled=true;
+  let photos=prev&&prev.photos||[];
+  if(assets){const r=await commitPhotos("ini",prev&&prev.photos,$("#i-msg"));if(!r){busy=false;$("#i-save").disabled=false;return}photos=r}
+  const rec={...v,photos,createdAt:prev?prev.createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+  if(prev)Object.assign(prev,rec);else state.ini.push({id,...rec});
+  const ok=await write("initiatives/"+id,rec);
+  busy=false;$("#i-save").disabled=false;
+  $("#i-msg").textContent=ok?(prev?"حُدّثت المبادرة":"أُضيفت المبادرة"):"";
+  setTimeout(()=>$("#i-msg").textContent="",2500);
+  resetForm();renderIni();renderGallery();
+});
+function renderIni(){
+  $("#ini-form").querySelectorAll("input,select,textarea,button").forEach(el=>el.disabled=!canWrite);
+  if(!editing&&!pick.ini.add.length)renderPicker("ini");
+  const list=[...state.ini].sort((a,b)=>(a.createdAt||"").localeCompare(b.createdAt||""));
+  if(!list.length){$("#ini-list").innerHTML=`<div class="ini-empty" style="grid-column:1/-1"><b>لا توجد مبادرات بعد</b><span>اكتب عنوان المبادرة واختر مجالها، وأرفق صورها إن وجدت، ثم اضغط «إضافة المبادرة».</span></div>`;return}
+  $("#ini-list").innerHTML=list.map(x=>{const d=DOMAINS.find(d=>d.id===x.domain)||DOMAINS[0];const s=x.status||"idle";
+    return `<article class="ini" style="--dc:${d.c}">
+      <div class="meta"><span class="st" data-v="${s}">${STATUS_L[s]}</span><span class="chip">${esc(d.name.split(": ")[1])}</span></div>
+      <h3>${en(x.title)}</h3>
+      ${x.desc?`<p>${en(x.desc).replace(/\n/g,"<br>")}</p>`:""}
+      <div class="meta muted">${x.owner?`<span>المسؤول: ${esc(x.owner)}</span>`:"<span>المسؤول: جميع معلمي المادة</span>"}${x.target?`<span>· المستهدفون: ${esc(x.target)}</span>`:""}</div>
+      ${x.from||x.to?`<div class="meta muted num"><span>من ${esc(x.from||"—")} إلى ${esc(x.to||"—")}</span></div>`:""}
+      ${x.kpi?`<div class="meta"><span class="chip">مؤشر النجاح: ${esc(x.kpi)}</span></div>`:""}
+      ${gal(x.photos,x.title)}
+      ${canWrite?`<div class="actions">${confirmDel===x.id
+        ?`<span style="font-size:13px">حذف هذه المبادرة وصورها نهائيًا؟</span><button class="btn danger" data-del="${x.id}">حذف</button><button class="btn ghost" data-nodel>تراجع</button>`
+        :`<button class="btn ghost" data-edit="${x.id}">تعديل</button><button class="btn ghost" data-askdel="${x.id}">حذف</button>`}</div>`:""}
+    </article>`}).join("");
+}
+$("#ini-list").addEventListener("click",async e=>{
+  const b=e.target.closest("button");if(!b||b.dataset.lb)return;
+  if(b.dataset.edit){const x=state.ini.find(i=>i.id===b.dataset.edit);F.forEach(k=>$("#i-"+k).value=x[k]||"");editing=x.id;clearPick("ini");pick.ini.keep=[...(x.photos||[])];renderPicker("ini");$("#i-save").textContent="حفظ التعديل";$("#i-cancel").hidden=false;$("#i-title").focus();$("#ini-form").scrollIntoView({behavior:"smooth",block:"start"})}
+  if(b.dataset.askdel){confirmDel=b.dataset.askdel;renderIni()}
+  if(b.hasAttribute("data-nodel")){confirmDel=null;renderIni()}
+  if(b.dataset.del){const id=b.dataset.del;const x=state.ini.find(i=>i.id===id);state.ini=state.ini.filter(i=>i.id!==id);confirmDel=null;renderIni();renderGallery();
+    if(await remove("initiatives/"+id)&&assets)(x&&x.photos||[]).forEach(p=>assets.delete(p).catch(()=>{}))}
+});
+
+// ---- MEETINGS ----
+let mEditing=null, mConfirm=null, mBusy=false;
+const MF=["title","date","time","place","type","goals","outcomes"];
+$("#m-att").innerHTML=TEACHERS.map((t,i)=>`<label><input type="checkbox" id="m-att-${i}" value="${esc(t[0])}" checked>${esc(t[0])}</label>`).join("");
+function mReset(){$("#m-form").reset();mEditing=null;$("#m-save").textContent="حفظ الاجتماع";$("#m-cancel").hidden=true;clearPick("meet")}
+$("#m-cancel").addEventListener("click",mReset);
+$("#m-form").addEventListener("submit",async e=>{
+  e.preventDefault();if(!canWrite||mBusy)return;
+  const v={};MF.forEach(k=>v[k]=$("#m-"+k).value.trim());if(!v.title||!v.date)return;
+  v.attendees=[...$("#m-att").querySelectorAll("input:checked")].map(x=>x.value);
+  const id=mEditing||("m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6));
+  const prev=state.meet.find(x=>x.id===id);
+  mBusy=true;$("#m-save").disabled=true;
+  let photos=prev&&prev.photos||[];
+  if(assets){const r=await commitPhotos("meet",prev&&prev.photos,$("#m-msg"));if(!r){mBusy=false;$("#m-save").disabled=false;return}photos=r}
+  const rec={...v,photos,createdAt:prev?prev.createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+  if(prev)Object.assign(prev,rec);else state.meet.push({id,...rec});
+  const ok=await write("meetings/"+id,rec);
+  mBusy=false;$("#m-save").disabled=false;
+  $("#m-msg").textContent=ok?(prev?"حُدّث الاجتماع":"حُفظ الاجتماع"):"";
+  setTimeout(()=>$("#m-msg").textContent="",2500);
+  mReset();renderMeet();renderGallery();
+});
+const lines=s=>String(s||"").split(/\n+/).map(x=>x.replace(/^[\s•\-–*\d.)]+/,"").trim()).filter(Boolean);
+const fmtDate=(d,o)=>{try{const [y,m,dd]=d.split("-").map(Number);return new Date(y,m-1,dd).toLocaleDateString("ar-OM",o)}catch(e){return d}};
+function renderMeet(){
+  $("#m-form").querySelectorAll("input,select,textarea,button").forEach(el=>el.disabled=!canWrite);
+  if(!mEditing&&!pick.meet.add.length)renderPicker("meet");
+  const list=[...state.meet].sort((a,b)=>(b.date||"").localeCompare(a.date||"")||(b.time||"").localeCompare(a.time||""));
+  if(!list.length){$("#m-list").innerHTML=`<div class="ini-empty"><b>لا توجد اجتماعات مسجلة بعد</b><span>اكتب عنوان الاجتماع وتاريخه وأهدافه، وأرفق صوره، ثم اضغط «حفظ الاجتماع».</span></div>`;return}
+  $("#m-list").innerHTML=list.map(x=>{const g=lines(x.goals),o=lines(x.outcomes);
+    return `<article class="meet">
+      <div class="mdate"><b>${fmtDate(x.date,{day:"numeric"})}</b><span>${fmtDate(x.date,{month:"long"})}</span><span>${fmtDate(x.date,{year:"numeric"})}</span></div>
+      <div class="mbody">
+        <div class="meta" style="display:flex;flex-wrap:wrap;gap:6px"><span class="chip">${esc(x.type||"اجتماع")}</span>${x.photos&&x.photos.length?`<span class="chip">${x.photos.length} صور</span>`:""}</div>
+        <h3>${en(x.title)}</h3>
+        <div class="muted" style="font-size:13px">${fmtDate(x.date,{weekday:"long",day:"numeric",month:"long",year:"numeric"})}${x.time?` · الساعة <span class="num">${esc(x.time)}</span>`:""}${x.place?` · ${esc(x.place)}`:""}</div>
+        ${g.length?`<div><h4>أهداف الاجتماع</h4><ul>${g.map(t=>`<li>${en(t)}</li>`).join("")}</ul></div>`:""}
+        ${o.length?`<div><h4>القرارات والتوصيات</h4><ul>${o.map(t=>`<li>${en(t)}</li>`).join("")}</ul></div>`:""}
+        ${x.attendees&&x.attendees.length?`<div><h4>الحضور (${x.attendees.length})</h4><div class="chips">${x.attendees.map(a=>`<span class="chip">${esc(a)}</span>`).join("")}</div></div>`:""}
+        ${gal(x.photos,x.title)}
+        ${canWrite?`<div class="actions">${mConfirm===x.id
+          ?`<span style="font-size:13px">حذف هذا الاجتماع وصوره نهائيًا؟</span><button class="btn danger" data-mdel="${x.id}">حذف</button><button class="btn ghost" data-mnodel>تراجع</button>`
+          :`<button class="btn ghost" data-medit="${x.id}">تعديل</button><button class="btn ghost" data-maskdel="${x.id}">حذف</button>`}</div>`:""}
+      </div></article>`}).join("");
+}
+$("#m-list").addEventListener("click",async e=>{
+  const b=e.target.closest("button");if(!b||b.dataset.lb)return;
+  if(b.dataset.medit){const x=state.meet.find(i=>i.id===b.dataset.medit);MF.forEach(k=>$("#m-"+k).value=x[k]||"");
+    $("#m-att").querySelectorAll("input").forEach(c=>c.checked=(x.attendees||[]).includes(c.value));
+    mEditing=x.id;clearPick("meet");pick.meet.keep=[...(x.photos||[])];renderPicker("meet");$("#m-save").textContent="حفظ التعديل";$("#m-cancel").hidden=false;$("#m-title").focus();$("#m-form").scrollIntoView({behavior:"smooth",block:"start"})}
+  if(b.dataset.maskdel){mConfirm=b.dataset.maskdel;renderMeet()}
+  if(b.hasAttribute("data-mnodel")){mConfirm=null;renderMeet()}
+  if(b.dataset.mdel){const id=b.dataset.mdel;const x=state.meet.find(i=>i.id===id);state.meet=state.meet.filter(i=>i.id!==id);mConfirm=null;renderMeet();renderGallery();
+    if(await remove("meetings/"+id)&&assets)(x&&x.photos||[]).forEach(p=>assets.delete(p).catch(()=>{}))}
+});
+
+// ---- GALLERY ----
+function renderGallery(){
+  const groups=[
+    ...state.meet.filter(x=>x.photos&&x.photos.length).map(x=>({key:x.date||"",title:x.title,sub:"اجتماع · "+fmtDate(x.date,{day:"numeric",month:"long",year:"numeric"}),photos:x.photos})),
+    ...state.ini.filter(x=>x.photos&&x.photos.length).map(x=>({key:x.from||(x.createdAt||"").slice(0,10),title:x.title,sub:"مبادرة"+(x.from?" · "+fmtDate(x.from,{day:"numeric",month:"long",year:"numeric"}):""),photos:x.photos}))
+  ].sort((a,b)=>b.key.localeCompare(a.key));
+  $("#gal-list").innerHTML=groups.length?groups.map(g=>`<div class="panel gal-group"><h3>${en(g.title)}<small>${esc(g.sub)} · ${g.photos.length} صور</small></h3>${gal(g.photos,g.title,"gal-big")}</div>`).join("")
+    :`<div class="ini-empty"><b>لا توجد صور بعد</b><span>الصور التي ترفقها في الاجتماعات والمبادرات تظهر هنا تلقائيًا.</span></div>`;
+}
+
+// ---- INSTALL ----
+function toggleInstall(v){$("#install").hidden=!v;$("#inst-btn").setAttribute("aria-expanded",v);if(v)$("#install").scrollIntoView({behavior:"smooth",block:"start"})}
+$("#inst-btn").addEventListener("click",()=>toggleInstall($("#install").hidden));
+$("#inst-close").addEventListener("click",()=>toggleInstall(false));
+if($("#inst-copy"))$("#inst-copy").addEventListener("click",()=>{const t=$("#inst-url").textContent;
+  const done=()=>{$("#inst-msg").textContent="نُسخ الرابط"};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents($("#inst-url"));const s=getSelection();s.removeAllRanges();s.addRange(r);$("#inst-msg").textContent="الرابط محدد، انسخه يدويًا"};
+  try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}});
+
+// ---- TEACHERS ----
+$("#t-body").innerHTML=TEACHERS.map(t=>`<tr><td><b>${esc(t[0])}</b></td><td>${esc(t[1])}</td><td><div class="chips">${t[2].map(c=>`<span class="chip">${c}</span>`).join("")}</div></td><td class="n">${t[2].length}</td><td>${esc(t[3])}</td></tr>`).join("");
+function renderVisits(){
+  $("#v-body").innerHTML=VISITS.map((v,i)=>{const r=state.pd["v"+(i+1)]||{};
+    const sel=k=>`<select class="st" data-v="${r[k]||"idle"}" data-visit="${i+1}" data-k="${k}" aria-label="موقف الزيارة"${canWrite?"":" disabled"}>${opts(STATUS,r[k]||"idle")}</select>`;
+    return `<tr><td class="n">${i+1}</td><td>${esc(v[0])}</td><td>${esc(v[1])}</td><td>${esc(v[2])}</td><td>${sel("s1")}</td><td>${sel("s2")}</td></tr>`}).join("");
+}
+$("#v-body").addEventListener("change",async e=>{const t=e.target;if(!t.dataset.visit)return;t.dataset.v=t.value;
+  const key="v"+t.dataset.visit;state.pd[key]={...(state.pd[key]||{}),[t.dataset.k]:t.value};await write("pd/"+key,state.pd[key])});
+
+// ---- RESULTS ----
+$("#r-body").innerHTML=RESULTS.map(r=>`<tr><td><b>${r[0]}</b></td><td class="n">${r[1]}</td><td class="n">${r[2]}</td><td class="n"><b>${r[3]}%</b></td><td><div class="mini" title="الواقع ${r[3]}% والمستهدف ${r[4]}%"><i style="width:${r[3]*2}%"></i><u style="inset-inline-start:${r[4]*2}%"></u></div></td><td class="n" style="color:var(--ok);font-weight:700">${r[4]}%</td><td>${r[5]}</td></tr>`).join("");
+$("#c-body").innerHTML=COMPARE.map(r=>`<tr><td><b>${r[0]}</b></td>${r[1].map((v,i)=>`<td class="n${i===r[2]?" low":""}"${i===0?' style="background:var(--saffron-soft);font-weight:700"':""}>${v.toFixed(1)}%</td>`).join("")}</tr>`).join("");
+function renderDiag(){
+  if(document.activeElement&&document.activeElement.matches("#d-body input"))return;
+  $("#d-body").innerHTML=GRADES.map(([k,l])=>{const r=state.diag[k]||{};
+    const inp=(f,ph)=>`<input id="dg-${k}-${f}" data-dg="${k}" data-f="${f}" value="${esc(r[f]||"")}" placeholder="${ph}"${canWrite?"":" readonly"}>`;
+    return `<tr><td><b>${l}</b></td><td>${inp("avg","—")}</td><td>${inp("below","—")}</td><td>${inp("weak","مثال: Writing")}</td><td>${inp("strong","مثال: Listening")}</td></tr>`}).join("");
+}
+$("#d-body").addEventListener("change",async e=>{const t=e.target;if(!t.dataset.dg)return;const k=t.dataset.dg;
+  state.diag[k]={...(state.diag[k]||{}),[t.dataset.f]:t.value.trim()};await write("diagnostic/"+k,state.diag[k])});
+
+// ---- PD ----
+function renderPD(){
+  $("#pd-body").innerHTML=PD.map((p,i)=>{const s=(state.pd["t"+(i+1)]||{}).status||"idle";
+    return `<tr><td class="n">${i+1}</td><td style="min-width:240px">${en(p[0])}</td><td>${esc(p[1])}</td><td>${esc(p[2])}</td><td style="white-space:nowrap">${esc(p[3])}</td><td><select class="st" data-v="${s}" data-pd="${i+1}" aria-label="موقف البرنامج"${canWrite?"":" disabled"}>${opts(STATUS,s)}</select></td></tr>`}).join("");
+}
+$("#pd-body").addEventListener("change",async e=>{const t=e.target;if(!t.dataset.pd)return;t.dataset.v=t.value;
+  const key="t"+t.dataset.pd;state.pd[key]={status:t.value};await write("pd/"+key,state.pd[key])});
+
+// ---- tabs ----
+const TABS=["home","plan","initiatives","meetings","gallery","teachers","results","pd"];
+function show(tab){if(!TABS.includes(tab))tab="home";
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===tab));
+  TABS.forEach(t=>$("#tab-"+t).hidden=t!==tab);
+  try{localStorage.setItem(LS+"-tab",tab)}catch(e){}}
+document.querySelectorAll(".tabs button").forEach(b=>b.addEventListener("click",()=>{show(b.dataset.tab);window.scrollTo({top:0})}));
+let start="home";try{start=localStorage.getItem(LS+"-tab")||"home"}catch(e){}
+if(location.hash.length>1)start=location.hash.slice(1);
+show(start);
+
+// ---- BACKUP (standalone) ----
+let pendingImport=null;
+const bkMsg=(t,bad)=>{const m=$("#bk-msg");m.textContent=t;m.style.color=bad?"var(--bad)":""};
+const toDataURL=b=>new Promise((ok,bad)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=bad;r.readAsDataURL(b)});
+$("#bk-exp").addEventListener("click",async()=>{
+  try{bkMsg("جارٍ تجهيز النسخة…");const all=await idbAll();const photos={};for(const k in all)photos[k]=await toDataURL(all[k]);
+    const data=JSON.stringify({app:"eisa-english-platform",version:1,exportedAt:new Date().toISOString(),state,photos});
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"application/json"}));
+    a.download="english-platform-backup-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);bkMsg("صُدّرت النسخة الاحتياطية")}
+  catch(e){bkMsg("تعذر تصدير النسخة، أعد المحاولة.",true)}});
+$("#bk-imp").addEventListener("change",async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
+  try{const v=JSON.parse(await f.text());if(!v||v.app!=="eisa-english-platform"||!v.state)throw 0;pendingImport=v;$("#bk-confirm").hidden=false;bkMsg("")}
+  catch(err){bkMsg("هذا الملف ليس نسخة احتياطية من المنصة.",true)}});
+$("#bk-no").addEventListener("click",()=>{pendingImport=null;$("#bk-confirm").hidden=true});
+$("#bk-yes").addEventListener("click",async()=>{const v=pendingImport;if(!v)return;$("#bk-confirm").hidden=true;bkMsg("جارٍ الاستيراد…");
+  try{await idbTx("readwrite",st=>st.clear());for(const k in LOCALURL){URL.revokeObjectURL(LOCALURL[k]);delete LOCALURL[k]}
+    for(const k in (v.photos||{})){const b=await (await fetch(v.photos[k])).blob();await idbTx("readwrite",st=>st.put(b,k));LOCALURL[k]=URL.createObjectURL(b)}
+    const s={goals:{},pd:{},diag:{},ini:[],meet:[],...v.state};Object.keys(state).forEach(k=>delete state[k]);Object.assign(state,s);lsSave();
+    pendingImport=null;renderAll();bkMsg("اكتمل الاستيراد")}
+  catch(err){bkMsg("تعذر الاستيراد، قد تكون مساحة المتصفح ممتلئة.",true)}});
+
+function renderAll(){renderHome();renderPlan();renderIni();renderMeet();renderGallery();renderVisits();renderDiag();renderPD()}
+renderAll();
+
+// ---- connect store ----
+function sub(coll,apply){db.collection(coll).onSnapshot(snap=>{apply(snap.docs);renderAll()},()=>{})}
+(async()=>{
+  let d=null;
+  try{d=window.claude&&window.claude.use?await window.claude.use("db"):null}catch(e){d=null}
+  if(!d){local=true;lsLoad();await idbLoadAll();assets=LOCAL_ASSETS;renderAll();$("#backup").hidden=false;return}
+  db=d;
+  try{const u=await window.claude.use("user");if(u&&u.can){const w=await u.can("data.write");if(w===false){canWrite=false;note("يمكنك عرض المنصة فقط. التعديل متاح لمالك المنصة ومن يملك صلاحية التحرير.")}}}catch(e){}
+  sub("goals",docs=>{state.goals={};docs.forEach(x=>state.goals[x.id]=x.data())});
+  sub("pd",docs=>{state.pd={};docs.forEach(x=>state.pd[x.id]=x.data())});
+  sub("diagnostic",docs=>{state.diag={};docs.forEach(x=>state.diag[x.id]=x.data())});
+  sub("initiatives",docs=>{state.ini=docs.map(x=>({id:x.id,...x.data()}))});
+  sub("meetings",docs=>{state.meet=docs.map(x=>({id:x.id,...x.data()}))});
+  try{assets=await window.claude.use("assets")}catch(e){assets=null}
+  renderPicker("ini");renderPicker("meet");
+})();
+})();
+</script>
+
+<script>
+(function(){
+  var deferred=null, btn=document.getElementById("pwa-install"), msg=document.getElementById("pwa-msg");
+  var standalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+  if("serviceWorker" in navigator&&location.protocol!=="file:"){
+    window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
+  }
+  if(standalone){var ib=document.getElementById("inst-btn");if(ib)ib.hidden=true}
+  if(location.protocol==="file:"&&msg)msg.textContent="التثبيت يعمل بعد رفع المجلد إلى موقع، كما في ملف «طريقة التثبيت».";
+  window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;if(btn)btn.hidden=false});
+  if(btn)btn.addEventListener("click",function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(r){
+    if(r.outcome==="accepted"){btn.hidden=true;msg.textContent="جارٍ التثبيت"}deferred=null})});
+  window.addEventListener("appinstalled",function(){if(msg)msg.textContent="ثُبّتت المنصة على جهازك"});
+})();
+</script>
+</body>
+</html>
