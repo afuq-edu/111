@@ -1,0 +1,1666 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3D7D72">
+<meta name="description" content="منصة رياضيات تفاعلية هادئة لطلبة صعوبات التعلم - الصفوف الثاني والثالث والرابع">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="واحة الأرقام">
+<title>واحة الأرقام</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&family=Baloo+Bhaijaan+2:wght@500;600;700&display=swap">
+<style>
+/* Layout: one calm column, soft sage ground, large touch targets; a quiet top bar and big rounded "doors" for each section */
+:root{
+  --bg:#F1F5F1; --bg-2:#E6EEE8; --surface:#FBFCFA; --ink:#25322E; --ink-2:#5A6B65; --line:#D3DED6;
+  --accent:#3D7D72; --accent-2:#2F6359; --accent-soft:#D5E8E2; --sand:#F3E8D4; --sun:#DDA050; --sun-soft:#F7E6C8;
+  --rose:#C9796F; --rose-soft:#F5DEDA; --ok:#4E9363; --ok-soft:#DAEEDF; --sky:#7EA6C8; --sky-soft:#DCE8F2;
+  --b-th:#9C88C2; --b-h:#7EA6C8; --b-t:#DDA050; --b-o:#86BC95;
+  --shadow:0 1px 2px rgba(37,50,46,.06),0 6px 20px rgba(37,50,46,.06);
+  --f-display:"Baloo Bhaijaan 2","Almarai","Segoe UI",Tahoma,sans-serif;
+  --f-body:"Almarai","Segoe UI",Tahoma,"Noto Sans Arabic",sans-serif;
+  --r:18px; --r-sm:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141B19; --bg-2:#1B2421; --surface:#1F2926; --ink:#E4EDE9; --ink-2:#9AAEA7; --line:#33433E;
+  --accent:#7CC1B3; --accent-2:#9AD3C7; --accent-soft:#22403A; --sand:#3A3324; --sun:#E7B66C; --sun-soft:#3E3320;
+  --rose:#E29A90; --rose-soft:#43292A; --ok:#86C597; --ok-soft:#203A28; --sky:#93B8D6; --sky-soft:#1F3140;
+  --b-th:#B3A3D6; --b-h:#8DB3D3; --b-t:#E7B66C; --b-o:#93C9A2;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141B19; --bg-2:#1B2421; --surface:#1F2926; --ink:#E4EDE9; --ink-2:#9AAEA7; --line:#33433E;
+  --accent:#7CC1B3; --accent-2:#9AD3C7; --accent-soft:#22403A; --sand:#3A3324; --sun:#E7B66C; --sun-soft:#3E3320;
+  --rose:#E29A90; --rose-soft:#43292A; --ok:#86C597; --ok-soft:#203A28; --sky:#93B8D6; --sky-soft:#1F3140;
+  --b-th:#B3A3D6; --b-h:#8DB3D3; --b-t:#E7B66C; --b-o:#93C9A2;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.7;margin:0;-webkit-tap-highlight-color:transparent}
+body.big{font-size:20px}
+#app{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.3;margin:0;text-wrap:balance;font-weight:700}
+h1{font-size:2rem} h2{font-size:1.5rem} h3{font-size:1.2rem} h4{font-size:1.05rem}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.muted{color:var(--ink-2)}
+.small{font-size:.85em}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.col{display:flex;flex-direction:column;gap:12px}
+.spacer{flex:1}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.g4{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+.stack{display:flex;flex-direction:column;gap:18px}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;gap:10px;padding-block:12px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:1.25rem;font-weight:700;background:none;border:0;padding:0}
+.brand svg{width:34px;height:34px}
+.iconbtn{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.iconbtn svg{width:20px;height:20px}
+
+/* install banner */
+.install{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:var(--r);padding:14px 16px;margin-block:10px 4px}
+.install .txt{flex:1;min-width:200px}
+.install b{font-family:var(--f-display);font-size:1.1rem}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 20px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-weight:700;transition:transform .15s ease,background .2s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn.primary:hover{background:var(--accent-2)}
+.btn.soft{background:var(--accent-soft);border-color:transparent;color:var(--ink)}
+.btn.warm{background:var(--sun-soft);border-color:transparent}
+.btn.danger{color:var(--rose);border-color:color-mix(in srgb,var(--rose) 40%,transparent)}
+.btn.sm{min-height:38px;padding:6px 14px;font-size:.9em;border-radius:11px}
+.btn.lg{min-height:60px;font-size:1.15em;padding:14px 28px;border-radius:18px}
+.btn svg{width:20px;height:20px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:999px;background:var(--bg-2);font-size:.85em;font-weight:700;white-space:nowrap}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.sun{background:var(--sun-soft);color:color-mix(in srgb,var(--sun) 70%,var(--ink))}
+.chip.sky{background:var(--sky-soft)}
+.chip.rose{background:var(--rose-soft);color:var(--rose)}
+.chip.acc{background:var(--accent-soft);color:var(--accent-2)}
+
+/* cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);min-width:0}
+.card.flat{box-shadow:none}
+.card h3{margin-bottom:6px}
+.section-title{display:flex;align-items:center;gap:10px;margin-block:22px 12px}
+.section-title h2{font-size:1.35rem}
+.empty{border:2px dashed var(--line);border-radius:var(--r);padding:28px;text-align:center;color:var(--ink-2)}
+
+/* home doors */
+.hero{padding-block:26px 10px;display:grid;gap:8px}
+.hero h1{font-size:clamp(1.9rem,5vw,2.8rem)}
+.doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:18px}
+.door{position:relative;overflow:hidden;text-align:start;display:flex;flex-direction:column;gap:10px;padding:26px;border-radius:26px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);min-height:220px;transition:transform .2s ease}
+.door:hover{transform:translateY(-2px)}
+.door .ill{width:84px;height:84px}
+.door h2{font-size:1.7rem}
+.door.stu{background:linear-gradient(160deg,var(--accent-soft),var(--surface) 70%)}
+.door.tea{background:linear-gradient(160deg,var(--sun-soft),var(--surface) 70%)}
+.door .lock{position:absolute;top:18px;left:18px}
+.quote{margin-top:22px;padding:16px 18px;border-radius:var(--r);background:var(--bg-2);display:flex;gap:12px;align-items:center}
+
+/* grade + name pickers */
+.pick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:22px 12px;border-radius:22px;border:2px solid var(--line);background:var(--surface);font-family:var(--f-display);font-size:1.3rem;font-weight:700;min-height:120px;transition:border-color .2s,transform .15s}
+.pick:hover{border-color:var(--accent)}
+.pick .num{font-size:2.6rem;line-height:1;color:var(--accent)}
+.avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-size:1.5rem;font-weight:700;color:var(--ink)}
+
+/* student home */
+.welcome{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:20px;border-radius:24px;background:linear-gradient(150deg,var(--accent-soft),var(--surface));border:1px solid var(--line)}
+@media (max-width:600px){.welcome{grid-template-columns:1fr}}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;padding:10px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line);min-width:96px}
+.stat b{font-family:var(--f-display);font-size:1.5rem;line-height:1.2}
+.task{display:flex;gap:14px;align-items:center;padding:16px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);text-align:start;width:100%}
+.task .ic{flex:none;width:56px;height:56px;border-radius:16px;display:grid;place-items:center}
+.task .ic svg{width:30px;height:30px}
+.task .body{flex:1;min-width:0}
+.task.done{opacity:.75}
+.task.locked{opacity:.55;cursor:default}
+.ic.lesson{background:var(--sky-soft)} .ic.activity{background:var(--accent-soft)} .ic.game{background:var(--sun-soft)} .ic.homework{background:var(--rose-soft)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:6px;background:var(--bg-2);border-radius:16px;margin-block:12px}
+.tab{border:0;background:transparent;padding:8px 16px;border-radius:12px;font-weight:700;color:var(--ink-2);min-height:42px}
+.tab.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+
+/* teacher shell */
+.tshell{display:grid;grid-template-columns:230px 1fr;gap:20px;align-items:start}
+.tnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 80px);display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line)}
+.tnav button{display:flex;align-items:center;gap:10px;border:0;background:none;padding:10px 12px;border-radius:12px;text-align:start;font-weight:700;color:var(--ink-2)}
+.tnav button svg{width:20px;height:20px;flex:none}
+.tnav button.on{background:var(--accent-soft);color:var(--ink)}
+.tmain{min-width:0}
+@media (max-width:820px){.tshell{grid-template-columns:1fr}.tnav{position:static;flex-direction:row;overflow-x:auto;padding:6px}.tnav button{white-space:nowrap}}
+
+/* forms */
+label.f{display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:.92em;min-width:0}
+input[type=text],input[type=number],input[type=date],input[type=password],select,textarea{width:100%;min-height:46px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-weight:400}
+textarea{min-height:90px;resize:vertical;line-height:1.7}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.formrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:end}
+
+/* tables */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.95em}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:start;white-space:nowrap}
+th{background:var(--bg-2);font-weight:700;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td input[type=number]{width:76px;min-height:38px;text-align:center}
+
+/* pin pad */
+.pinwrap{max-width:360px;margin:30px auto;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center}
+.pindots{display:flex;gap:14px;justify-content:center;direction:ltr}
+.pindots span{width:18px;height:18px;border-radius:50%;border:2px solid var(--accent)}
+.pindots span.on{background:var(--accent)}
+.pinpad{display:grid;grid-template-columns:repeat(3,76px);gap:12px;direction:ltr}
+.pinpad button{height:68px;border-radius:20px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-display);font-size:1.6rem;font-weight:700}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* player */
+.player{max-width:820px;margin:0 auto}
+.pbar{display:flex;align-items:center;gap:10px;margin-block:10px 16px}
+.progress{flex:1;height:12px;border-radius:999px;background:var(--bg-2);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .5s ease}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:clamp(18px,4vw,34px);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:20px;align-items:center;text-align:center}
+.qtext{font-family:var(--f-display);font-size:clamp(1.3rem,3.6vw,1.8rem);font-weight:600}
+.qmath{font-family:var(--f-display);font-size:clamp(2rem,7vw,3.2rem);font-weight:700;direction:ltr;letter-spacing:.04em}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;width:100%;max-width:620px}
+.opt{min-height:84px;border-radius:20px;border:2px solid var(--line);background:var(--bg);font-family:var(--f-display);font-size:clamp(1.4rem,4vw,1.9rem);font-weight:700;transition:border-color .2s,background .2s,transform .15s;display:grid;place-items:center;padding:8px}
+.opt:hover{border-color:var(--accent)}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--rose-soft);border-color:var(--rose);animation:shake .4s}
+.feedback{min-height:34px;font-family:var(--f-display);font-size:1.25rem;font-weight:700}
+.feedback.ok{color:var(--ok)} .feedback.no{color:var(--rose)}
+.hintbox{background:var(--sun-soft);border-radius:14px;padding:10px 16px;max-width:560px}
+.explain-text{font-size:clamp(1.1rem,3vw,1.35rem);max-width:60ch;line-height:1.9}
+.dots{display:flex;gap:8px;justify-content:center}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--accent)}
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle}
+.frac span:first-child{border-bottom:3px solid currentColor;padding:0 6px}
+
+/* visuals */
+.vis{display:flex;justify-content:center;align-items:flex-end;flex-wrap:wrap;gap:18px;direction:ltr;max-width:100%}
+.vis svg{max-width:100%;height:auto}
+.blocks{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;justify-content:center;direction:ltr}
+.bgrp{display:flex;gap:4px;align-items:flex-end;flex-wrap:wrap;max-width:280px;justify-content:center}
+.b-th{width:60px;height:60px;border-radius:6px;background:var(--b-th);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--b-th) 60%,#000 0%);position:relative;background-image:linear-gradient(45deg,transparent 46%,rgba(255,255,255,.4) 47%,rgba(255,255,255,.4) 53%,transparent 54%)}
+.b-h{width:50px;height:50px;border-radius:4px;background-color:var(--b-h);background-image:linear-gradient(rgba(255,255,255,.45) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.45) 1px,transparent 1px);background-size:5px 5px}
+.b-t{width:8px;height:50px;border-radius:3px;background-color:var(--b-t);background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px);background-size:8px 5px}
+.b-o{width:9px;height:9px;border-radius:2px;background:var(--b-o)}
+.blabel{font-family:var(--f-display);font-weight:700;font-size:.95rem;text-align:center;margin-top:4px;color:var(--ink-2)}
+.pv{display:flex;direction:ltr;gap:6px;justify-content:center}
+.pv div{display:flex;flex-direction:column;align-items:center;min-width:64px;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.pv div span{padding:4px 8px;font-size:.85rem;font-weight:700;width:100%;text-align:center}
+.pv div b{font-family:var(--f-display);font-size:2rem;padding:4px 10px}
+.pv .th span{background:var(--b-th);color:#fff}.pv .h span{background:var(--b-h);color:#fff}.pv .t span{background:var(--b-t);color:#fff}.pv .o span{background:var(--b-o);color:#fff}
+.pv .hl{outline:3px solid var(--accent)}
+.svgtext{fill:var(--ink);font-family:var(--f-display);font-weight:700}
+.svgmuted{fill:var(--ink-2)}
+.st-line{stroke:var(--ink-2)}
+.st-acc{stroke:var(--accent)}
+.fill-acc{fill:var(--accent)} .fill-soft{fill:var(--accent-soft)} .fill-sun{fill:var(--sun)} .fill-sky{fill:var(--sky)} .fill-ok{fill:var(--b-o)} .fill-surface{fill:var(--surface)} .fill-bg2{fill:var(--bg-2)} .fill-rose{fill:var(--rose)}
+
+/* games */
+.balloons{position:relative;width:100%;min-height:300px;display:flex;justify-content:space-around;align-items:center;gap:8px;flex-wrap:wrap}
+.balloon{position:relative;width:110px;height:136px;border:0;background:none;padding:0;animation:float 5s ease-in-out infinite}
+.balloon:nth-child(2){animation-delay:-1.6s}.balloon:nth-child(3){animation-delay:-3.1s}.balloon:nth-child(4){animation-delay:-.8s}
+.balloon svg{width:100%;height:100%}
+.balloon span{position:absolute;top:30px;left:0;right:0;text-align:center;font-family:var(--f-display);font-size:1.7rem;font-weight:700;color:var(--ink)}
+.balloon.pop{animation:pop .45s forwards}
+.balloon.nope{animation:shake .4s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes pop{to{transform:scale(1.4);opacity:0}}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:560px}
+@media (max-width:480px){.mem{grid-template-columns:repeat(3,1fr)}}
+.mcard{aspect-ratio:1/1;max-width:100%;border-radius:18px;border:2px solid var(--line);background:var(--accent-soft);font-family:var(--f-display);font-weight:700;font-size:clamp(.95rem,3vw,1.3rem);display:grid;place-items:center;padding:6px;transition:background .25s,transform .25s;line-height:1.3}
+.mcard.open{background:var(--surface);border-color:var(--accent)}
+.mcard.matched{background:var(--ok-soft);border-color:var(--ok);opacity:.85}
+.mcard .back{width:40%;opacity:.5}
+.path{display:flex;gap:6px;align-items:center;justify-content:center;width:100%;direction:rtl;flex-wrap:wrap}
+.stone{width:46px;height:46px;border-radius:50%;background:var(--bg-2);display:grid;place-items:center;border:2px solid var(--line);font-weight:700;transition:background .4s}
+.stone.past{background:var(--accent-soft);border-color:var(--accent)}
+.stone.here{background:var(--accent);border-color:var(--accent);color:var(--surface);transform:scale(1.15)}
+.stone.goal{width:58px;height:58px;background:var(--sun-soft);border-color:var(--sun)}
+
+/* certificate */
+.cert{position:relative;max-width:640px;margin:0 auto;padding:clamp(22px,5vw,40px);border-radius:28px;background:var(--surface);border:2px solid var(--sun);text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;box-shadow:var(--shadow);background-image:radial-gradient(circle at 10% 10%,var(--sun-soft),transparent 40%),radial-gradient(circle at 90% 90%,var(--accent-soft),transparent 40%)}
+.cert .seal{width:96px;height:96px}
+.cert h2{font-size:clamp(1.6rem,5vw,2.2rem)}
+.cert .name{font-family:var(--f-display);font-size:clamp(1.8rem,6vw,2.6rem);font-weight:700;color:var(--accent-2)}
+.stars{display:flex;gap:6px;justify-content:center}
+.stars svg{width:40px;height:40px}
+.mini-cert{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:var(--surface)}
+.mini-cert svg{width:44px;height:44px;flex:none}
+
+/* plant garden */
+.plant svg{width:120px;height:120px}
+
+/* chart */
+.chart svg{width:100%;height:auto;display:block}
+.bars{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:minmax(80px,140px) 1fr 54px;gap:10px;align-items:center}
+.barrow .track{height:14px;border-radius:999px;background:var(--bg-2);overflow:hidden}
+.barrow .track i{display:block;height:100%;background:var(--accent);border-radius:999px}
+
+/* breathing */
+.breath{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,var(--accent-soft),transparent 70%);display:grid;place-items:center;margin:20px auto}
+.breath i{width:90px;height:90px;border-radius:50%;background:var(--accent);opacity:.75;animation:breathe 8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(.7)}50%{transform:scale(1.6)}}
+
+/* mood */
+.moods{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.mood{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 12px;border-radius:18px;border:2px solid var(--line);background:var(--surface);font-weight:700;min-width:88px}
+.mood svg{width:46px;height:46px}
+.mood.on{border-color:var(--accent);background:var(--accent-soft)}
+
+/* wheel */
+.wheel{width:min(320px,80vw);aspect-ratio:1/1;max-width:100%;margin:0 auto;position:relative}
+.wheel svg{width:100%;height:100%;transition:transform 4s cubic-bezier(.17,.67,.2,1)}
+.wheel .ptr{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:24px solid var(--rose)}
+
+/* IEP form (prints on A4 landscape) */
+.iep{background:#fff;color:#111;border-radius:12px;padding:16px;font-size:13px;line-height:1.5;border:1px solid var(--line)}
+.iep h2{text-align:center;font-size:20px;margin-bottom:10px;color:#7a1c1c}
+.iep table{border:1.5px solid #222;font-size:12.5px}
+.iep th,.iep td{border:1px solid #444;white-space:normal;vertical-align:top;padding:6px 8px;color:#111;background:#fff}
+.iep th{background:#f4edcf;text-align:center;position:static}
+.iep .ck{display:block;white-space:nowrap}
+.iep [contenteditable]{outline:none;min-height:1.4em;border-radius:4px}
+.iep [contenteditable]:focus{background:#fffbe6}
+.iep .chkline{display:flex;gap:4px;align-items:center;white-space:nowrap}
+.iep input[type=checkbox]{width:14px;height:14px;accent-color:#3D7D72}
+.iep .sig{display:flex;justify-content:space-between;gap:12px;margin-top:14px;font-weight:700;flex-wrap:wrap}
+
+/* toast + modal */
+#toast{opacity:0;visibility:hidden;position:fixed;bottom:max(20px,env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(140%);background:var(--ink);color:var(--bg);padding:12px 22px;border-radius:14px;font-weight:700;z-index:100;transition:transform .35s ease;max-width:calc(100% - 32px);text-align:center}
+#toast.on{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+.modal-bg{position:fixed;inset:0;background:rgba(20,27,25,.45);z-index:90;display:grid;place-items:center;padding:16px}
+.modal{background:var(--surface);border-radius:24px;padding:22px;max-width:520px;width:100%;max-height:85vh;overflow:auto;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+
+.notice{padding:12px 16px;border-radius:14px;background:var(--sky-soft);font-size:.92em}
+.kbd{font-family:var(--f-display);font-weight:700;background:var(--bg-2);padding:0 8px;border-radius:6px}
+.fade-in{animation:fadein .35s ease}
+@keyframes fadein{from{opacity:.0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+@media print{
+  body{background:#fff}
+  .bar,.tnav,.noprint,.install,#toast{display:none!important}
+  .tshell{display:block}
+  #app{max-width:none;padding:0}
+  .iep{border:0;padding:0}
+  @page{size:A4 landscape;margin:10mm}
+}
+@media (max-width:680px){#trackgrid{grid-template-columns:1fr!important}}
+
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<div id="app"></div><div id="toast" role="status"></div>
+<script>
+/* ===== محتوى المنصة: الدروس والقوائم =====
+   المحتوى الحالي مبدئي حتى وصول الكتب؛ كل درس عنصر في مصفوفة LESSONS ويمكن تعديله أو إضافة غيره بالشكل نفسه. */
+
+const SCHOOL = {
+  school:'مدرسة الرجاء للتعليم الأساسي', gov:'جنوب الباطنة', year:'2027/2026', term:'الأول',
+  teacher:'ثريه سالم علي الخاطري', principal:'بدرية العدوي', supervisor:'فتحية الشكيلي', subject:'رياضيات'
+};
+
+// قوائم نموذج الخطة التعليمية الفردية (كما في النموذج المرسل)
+const STRATEGIES = ['استراتيجية حل المشكلات','العصف الذهني','طرح الأسئلة','أسلوب القصة','الحوار والمناقشة','التمثيل','التعلم بالأقران','التعلم المحوسب','الحواس المتعددة','الإملاء','التعلم الذاتي','القراءة الجهرية','الربط الحسي','التعلم التعاوني','إنشاء قصة تفاعلية','الاستقصاء','الرمل'];
+const ASPECTS = ['الانتباه والتركيز','الإدراك البصري','الإدراك السمعي','التمييز البصري','التمييز السمعي','الذاكرة البصرية','الذاكرة السمعية','الذاكرة الحسية','الإغلاق','التآزر الحركي','التسلسل','تحليل المهام'];
+const MATERIALS = ['الحاسوب','السبورة التفاعلية','البرنامج التفاعلي','ألعاب ذهنية','ألعاب حركية','برامج محوسبة','عرض بطاقات','كتاب الطالب/النشاط','كتيب أنشطة','كراسة التأهيل','الكراسة النمائية','بطاقات ممغنطة','مجسمات أرقام','مجسمات حروف','عملات نقدية','مكعبات','حجر نرد','ألوان'];
+const EVALS = ['حوار ومناقشة','نشاط صفي','اختبار قصير','الملاحظة','سؤال قصير','نشاط أدائي','نشاط تقييمي'];
+const MONTHS = ['أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر','يناير'];
+
+const GAMES = {
+  balloons:{name:'بالونات الأرقام', desc:'نلمس البالون الذي يحمل الإجابة الصحيحة'},
+  memory:{name:'بطاقات الذاكرة', desc:'نقلب البطاقات ونطابق كل سؤال مع إجابته'},
+  treasure:{name:'طريق الكنز', desc:'كل إجابة صحيحة تقرّبنا خطوة من الكنز'}
+};
+
+// لكل صف كتابان للرياضيات في الفصل الأول
+const BOOKS = {1:'الكتاب الأول', 2:'الكتاب الثاني'};
+
+const LESSONS = [
+/* ---------- الصف الثاني ---------- */
+{ id:'g2-1', book:1, grade:2, unit:'الوحدة الأولى: الأعداد', title:'الأعداد حتى 100', week:1, gen:'read100',
+  goal:'أن يقرأ الطالب الأعداد حتى 100 ويكتبها ويمثلها بالقطع.',
+  sub:['أن يعدّ الطالب العشرات حتى 100','أن يمثّل الطالب عدداً من رقمين بقطع العشرات والآحاد','أن يقرأ الطالب العدد الممثّل بالقطع'],
+  vocab:['عشرة','آحاد','عدد','يمثّل'],
+  explain:[
+    {t:'هذا مكعّب صغير. نسمّيه «واحد». نعدّ المكعبات واحداً واحداً.', v:{k:'blocks',n:7}},
+    {t:'عندما نجمع عشرة مكعبات معاً تصبح عموداً واحداً. هذا العمود اسمه «عشرة».', v:{k:'blocks',n:10}},
+    {t:'نعدّ العشرات أولاً: عشرة، عشرون، ثلاثون. ثم نعدّ الآحاد: واحد، اثنان، ثلاثة، أربعة. العدد هو 34', v:{k:'blocks',n:34}},
+    {t:'جرّب أن تبني العدد 26 بالقطع: عشرتان و6 آحاد.', v:{k:'builder',target:26,max:2}}
+  ],
+  strat:[2,8,12,6], asp:[0,1,3,10], mat:[2,15,12,6],
+  acts:'تهيئة: عدّ أصابع اليدين وربطها بالعشرة.\nعرض محسوس: تجميع 10 مكعبات في عمود (عشرة).\nشبه محسوس: رسم العشرات والآحاد على السبورة.\nمجرد: قراءة العدد وكتابته.\nتطبيق تفاعلي على المنصة ثم لعبة البالونات.',
+  evalq:['كم عشرة في العدد 45؟','اكتب العدد الممثّل بـ 3 عشرات و5 آحاد.','مثّل العدد 62 بالقطع.']},
+{ id:'g2-2', book:1, grade:2, unit:'الوحدة الأولى: الأعداد', title:'القيمة المنزلية: عشرات وآحاد', week:2, gen:'pv2',
+  goal:'أن يحدّد الطالب قيمة الرقم حسب منزلته في عدد من رقمين.',
+  sub:['أن يميّز الطالب منزلة الآحاد ومنزلة العشرات','أن يحدّد الطالب قيمة الرقم في منزلة العشرات','أن يحلّل الطالب العدد إلى عشرات وآحاد'],
+  vocab:['منزلة','قيمة','عشرات','آحاد'],
+  explain:[
+    {t:'لكل رقم بيت نسمّيه «منزلة». في العدد 47 الرقم 7 يسكن في بيت الآحاد.', v:{k:'pv',n:47,hl:'o'}},
+    {t:'الرقم 4 يسكن في بيت العشرات، لذلك قيمته 4 عشرات أي 40', v:{k:'pv',n:47,hl:'t'}},
+    {t:'إذن 47 = 40 + 7. نرى ذلك بالقطع أيضاً.', v:{k:'blocks',n:47}},
+    {t:'ابنِ العدد 53 بالقطع.', v:{k:'builder',target:53,max:2}}
+  ],
+  strat:[2,8,6,4], asp:[0,3,5,11], mat:[11,15,6,2],
+  acts:'تهيئة: لعبة «بيت الرقم» بجدول منازل ملوّن على الأرض.\nعرض: وضع بطاقة الرقم في المنزلة الصحيحة.\nتحليل الأعداد إلى عشرات وآحاد بالمكعبات.\nنشاط تفاعلي ثم لعبة الذاكرة.',
+  evalq:['ما قيمة الرقم 6 في العدد 68؟','حلّل العدد 35 إلى عشرات وآحاد.','في أي منزلة يقع الرقم 2 في العدد 29؟']},
+{ id:'g2-3', book:1, grade:2, unit:'الوحدة الأولى: الأعداد', title:'مقارنة الأعداد وترتيبها', week:3, gen:'cmp100',
+  goal:'أن يقارن الطالب بين عددين حتى 100 مستخدماً الرموز < > =',
+  sub:['أن يقارن الطالب العشرات أولاً ثم الآحاد','أن يستخدم الطالب الرموز < > = استخداماً صحيحاً','أن يرتّب الطالب ثلاثة أعداد تصاعدياً'],
+  vocab:['أكبر من','أصغر من','يساوي','ترتيب'],
+  explain:[
+    {t:'نقارن 42 و 35. نبدأ بالعشرات: 4 عشرات أكثر من 3 عشرات.', v:{k:'compare',a:42,b:35}},
+    {t:'إذن 42 أكبر من 35، ونكتب: 42 > 35. فم التمساح المفتوح يأكل العدد الأكبر.', v:{k:'math',m:'42 > 35'}},
+    {t:'إذا تساوت العشرات نقارن الآحاد: 27 و 24، الآحاد 7 أكبر من 4، إذن 27 > 24', v:{k:'compare',a:27,b:24}},
+    {t:'عندما يتساوى العددان نستخدم الرمز = مثل 50 = 50', v:{k:'math',m:'50 = 50'}}
+  ],
+  strat:[3,2,5,8], asp:[3,1,0,10], mat:[6,15,4,2],
+  acts:'تهيئة: قصة التمساح الجائع الذي يحب العدد الأكبر.\nتمثيل العددين بالمكعبات ومقارنة الأطوال.\nاستخدام بطاقات الرموز الممغنطة.\nنشاط تفاعلي ثم لعبة طريق الكنز.',
+  evalq:['ضع الرمز المناسب: 56 ○ 65','أيهما أكبر: 39 أم 93؟','رتّب تصاعدياً: 48، 12، 30']},
+{ id:'g2-4', book:2, grade:2, unit:'الوحدة الثانية: الجمع والطرح', title:'الجمع ضمن 100', week:4, gen:'add100',
+  goal:'أن يجمع الطالب عددين ناتجهما لا يتجاوز 100',
+  sub:['أن يجمع الطالب الآحاد مع الآحاد','أن يجمع الطالب العشرات مع العشرات','أن يحلّ الطالب مسألة جمع بسيطة'],
+  vocab:['جمع','ناتج','زائد','المجموع'],
+  explain:[
+    {t:'نريد أن نجمع 23 + 14. نضع القطع معاً.', v:{k:'addblocks',a:23,b:14,op:'+'}},
+    {t:'نجمع الآحاد أولاً: 3 + 4 = 7', v:{k:'column',a:23,b:14,op:'+',step:1}},
+    {t:'ثم نجمع العشرات: 2 + 1 = 3 عشرات. الناتج 37', v:{k:'column',a:23,b:14,op:'+',step:2}},
+    {t:'تذكّر دائماً: نبدأ من بيت الآحاد.', v:{k:'math',m:'23 + 14 = 37'}}
+  ],
+  strat:[0,8,12,6], asp:[0,10,11,1], mat:[15,6,16,2],
+  acts:'تهيئة: لعبة النرد وجمع العددين الظاهرين.\nعرض بالمكعبات: دمج المجموعتين.\nالجمع العمودي خطوة بخطوة مع تلوين المنازل.\nمسائل حياتية قصيرة مقروءة جهرياً.',
+  evalq:['اجمع: 32 + 25','اجمع: 40 + 18','مع سارة 21 قلماً واشترت 13. كم قلماً معها الآن؟']},
+{ id:'g2-5', book:2, grade:2, unit:'الوحدة الثانية: الجمع والطرح', title:'الطرح ضمن 100', week:5, gen:'sub100',
+  goal:'أن يطرح الطالب عدداً من عدد آخر ضمن 100',
+  sub:['أن يطرح الطالب الآحاد من الآحاد','أن يطرح الطالب العشرات من العشرات','أن يتحقق الطالب من الطرح بالجمع'],
+  vocab:['طرح','باقي','ناقص','الفرق'],
+  explain:[
+    {t:'معنا 48 ونريد أن نأخذ منها 25. الطرح يعني أن نأخذ ونرى كم بقي.', v:{k:'blocks',n:48}},
+    {t:'نطرح الآحاد أولاً: 8 − 5 = 3', v:{k:'column',a:48,b:25,op:'-',step:1}},
+    {t:'ثم نطرح العشرات: 4 − 2 = 2. بقي 23', v:{k:'column',a:48,b:25,op:'-',step:2}},
+    {t:'نتحقق: 23 + 25 = 48. صحيح!', v:{k:'math',m:'48 − 25 = 23'}}
+  ],
+  strat:[0,8,3,2], asp:[0,10,11,6], mat:[15,6,14,2],
+  acts:'تهيئة: قصة العصافير التي طارت من الشجرة.\nإزالة المكعبات فعلياً لتمثيل الطرح.\nالطرح العمودي مع تلوين المنزلة.\nنشاط تفاعلي ثم لعبة البالونات.',
+  evalq:['اطرح: 67 − 34','اطرح: 90 − 40','مع أحمد 45 ريالاً صرف منها 12. كم بقي معه؟']},
+{ id:'g2-6', book:2, grade:2, unit:'الوحدة الثالثة: الهندسة', title:'الأشكال الهندسية المستوية', week:6, gen:'shapes',
+  goal:'أن يتعرّف الطالب الأشكال المستوية ويصفها بعدد أضلاعها.',
+  sub:['أن يسمّي الطالب الأشكال: مثلث، مربع، مستطيل، دائرة','أن يعدّ الطالب أضلاع الشكل ورؤوسه','أن يميّز الطالب الشكل من بين أشكال أخرى'],
+  vocab:['ضلع','رأس','مثلث','مربع','مستطيل','دائرة'],
+  explain:[
+    {t:'هذا مثلث. له 3 أضلاع و3 رؤوس.', v:{k:'shape',name:'مثلث'}},
+    {t:'هذا مربع. له 4 أضلاع متساوية.', v:{k:'shape',name:'مربع'}},
+    {t:'هذا مستطيل. له 4 أضلاع: ضلعان طويلان وضلعان قصيران.', v:{k:'shape',name:'مستطيل'}},
+    {t:'هذه دائرة. ليس لها أضلاع ولا رؤوس، وهي مستديرة.', v:{k:'shape',name:'دائرة'}}
+  ],
+  strat:[8,12,5,6], asp:[1,3,9,8], mat:[6,4,17,1],
+  acts:'تهيئة: البحث عن الأشكال في غرفة الصف.\nتحسّس مجسمات الأشكال بالأصابع وعدّ الأضلاع.\nرسم الأشكال في صينية الرمل.\nنشاط تفاعلي ثم لعبة الذاكرة.',
+  evalq:['كم ضلعاً للمثلث؟','ارسم مستطيلاً.','ما الشكل الذي ليس له أضلاع؟']},
+
+/* ---------- الصف الثالث ---------- */
+{ id:'g3-1', book:1, grade:3, unit:'الوحدة الأولى: الأعداد حتى 1000', title:'الأعداد حتى 1000', week:1, gen:'read1000',
+  goal:'أن يقرأ الطالب الأعداد حتى 1000 ويمثّلها بالقطع.',
+  sub:['أن يتعرّف الطالب المئة كعشر عشرات','أن يمثّل الطالب عدداً من ثلاثة أرقام بالقطع','أن يقرأ الطالب العدد الممثّل بالقطع'],
+  vocab:['مئة','عشرات','آحاد','مئات'],
+  explain:[
+    {t:'نعرف أن العمود عشرة. عندما نجمع 10 أعمدة نحصل على لوح كبير اسمه «مئة».', v:{k:'blocks',n:100}},
+    {t:'هذا العدد فيه مئتان و3 عشرات و5 آحاد. نقرؤه: مئتان وخمسة وثلاثون، 235', v:{k:'blocks',n:235}},
+    {t:'نعدّ دائماً من الأكبر: المئات ثم العشرات ثم الآحاد.', v:{k:'pv',n:235}},
+    {t:'ابنِ العدد 142 بالقطع.', v:{k:'builder',target:142,max:3}}
+  ],
+  strat:[8,12,2,6], asp:[0,1,10,11], mat:[15,2,12,6],
+  acts:'تهيئة: عدّ العشرات حتى المئة بالأعواد المربوطة.\nبناء المئة من 10 عشرات بالمكعبات.\nتمثيل الأعداد على لوحة المنازل.\nنشاط تفاعلي ثم لعبة البالونات.',
+  evalq:['كم مئة في العدد 456؟','اكتب العدد: 3 مئات و2 عشرات و7 آحاد.','مثّل العدد 205 بالقطع.']},
+{ id:'g3-2', book:1, grade:3, unit:'الوحدة الأولى: الأعداد حتى 1000', title:'القيمة المنزلية: مئات وعشرات وآحاد', week:2, gen:'pv3',
+  goal:'أن يحدّد الطالب قيمة الرقم في عدد من ثلاثة أرقام.',
+  sub:['أن يحدّد الطالب منزلة كل رقم','أن يحدّد الطالب قيمة الرقم','أن يكتب الطالب العدد بالصيغة الممتدة'],
+  vocab:['منزلة المئات','قيمة','صيغة ممتدة'],
+  explain:[
+    {t:'في العدد 368 ثلاثة بيوت: المئات والعشرات والآحاد.', v:{k:'pv',n:368}},
+    {t:'الرقم 3 في بيت المئات، فقيمته 300', v:{k:'pv',n:368,hl:'h'}},
+    {t:'الرقم 6 في بيت العشرات، فقيمته 60. والرقم 8 قيمته 8', v:{k:'pv',n:368,hl:'t'}},
+    {t:'إذن 368 = 300 + 60 + 8. هذه هي الصيغة الممتدة.', v:{k:'math',m:'368 = 300 + 60 + 8'}}
+  ],
+  strat:[2,8,4,6], asp:[3,5,0,11], mat:[11,6,15,2],
+  acts:'تهيئة: أغنية المنازل.\nبطاقات الأرقام المنزلقة (بطاقات الأسهم) لبناء الصيغة الممتدة.\nتلوين كل منزلة بلون ثابت.\nنشاط تفاعلي ثم لعبة الذاكرة.',
+  evalq:['ما قيمة الرقم 7 في العدد 472؟','اكتب 519 بالصيغة الممتدة.','ما العدد: 600 + 40 + 2؟']},
+{ id:'g3-3', book:1, grade:3, unit:'الوحدة الثانية: الجمع والطرح', title:'الجمع ضمن 1000', week:3, gen:'add1000',
+  goal:'أن يجمع الطالب عددين من ثلاثة أرقام.',
+  sub:['أن يرتّب الطالب الأرقام عمودياً حسب المنازل','أن يجمع الطالب منزلة منزلة بدءاً بالآحاد','أن يتعامل الطالب مع إعادة التجميع'],
+  vocab:['جمع عمودي','إعادة تجميع','حمل'],
+  explain:[
+    {t:'نجمع 245 + 132. نكتب العددين فوق بعضهما، كل رقم تحت منزلته.', v:{k:'column',a:245,b:132,op:'+',step:0}},
+    {t:'الآحاد: 5 + 2 = 7', v:{k:'column',a:245,b:132,op:'+',step:1}},
+    {t:'العشرات: 4 + 3 = 7', v:{k:'column',a:245,b:132,op:'+',step:2}},
+    {t:'المئات: 2 + 1 = 3. الناتج 377', v:{k:'column',a:245,b:132,op:'+',step:3}}
+  ],
+  strat:[0,8,10,6], asp:[0,10,11,1], mat:[15,6,2,17],
+  acts:'تهيئة: جمع أعداد من رقمين ذهنياً.\nلوحة منازل ملوّنة ووضع القطع.\nالجمع العمودي مع إطار يغطّي المنازل الأخرى (تقليل المشتتات).\nنشاط تفاعلي ثم لعبة طريق الكنز.',
+  evalq:['اجمع: 314 + 252','اجمع: 128 + 46','في المكتبة 230 كتاباً وأضيف 145. كم أصبح العدد؟']},
+{ id:'g3-4', book:2, grade:3, unit:'الوحدة الثانية: الجمع والطرح', title:'الطرح ضمن 1000', week:4, gen:'sub1000',
+  goal:'أن يطرح الطالب أعداداً من ثلاثة أرقام.',
+  sub:['أن يكتب الطالب الطرح عمودياً','أن يطرح الطالب منزلة منزلة','أن يتحقق الطالب من الناتج'],
+  vocab:['طرح عمودي','فرق','استلاف'],
+  explain:[
+    {t:'نطرح 586 − 243. نكتب العدد الكبير في الأعلى.', v:{k:'column',a:586,b:243,op:'-',step:0}},
+    {t:'الآحاد: 6 − 3 = 3', v:{k:'column',a:586,b:243,op:'-',step:1}},
+    {t:'العشرات: 8 − 4 = 4', v:{k:'column',a:586,b:243,op:'-',step:2}},
+    {t:'المئات: 5 − 2 = 3. الفرق 343', v:{k:'column',a:586,b:243,op:'-',step:3}}
+  ],
+  strat:[0,8,2,6], asp:[0,10,11,6], mat:[15,6,2,14],
+  acts:'تهيئة: مراجعة الطرح من رقمين.\nإزالة القطع من لوحة المنازل.\nالطرح العمودي خطوة بخطوة مع بطاقة تذكير الخطوات.\nنشاط تفاعلي ثم لعبة البالونات.',
+  evalq:['اطرح: 768 − 325','اطرح: 450 − 120','كان في الخزان 900 لتر واستُهلك 300. كم بقي؟']},
+{ id:'g3-5', book:2, grade:3, unit:'الوحدة الثالثة: الضرب', title:'الضرب جمع متكرر', week:5, gen:'multrep',
+  goal:'أن يفهم الطالب الضرب على أنه جمع متكرر لمجموعات متساوية.',
+  sub:['أن يكوّن الطالب مجموعات متساوية','أن يكتب الطالب جملة جمع متكرر','أن يكتب الطالب جملة الضرب المناسبة'],
+  vocab:['مجموعات متساوية','ضرب','×','مصفوفة'],
+  explain:[
+    {t:'هنا 3 أطباق، في كل طبق 4 تفاحات. كلها متساوية.', v:{k:'groups',g:3,s:4}},
+    {t:'نجمع: 4 + 4 + 4 = 12', v:{k:'math',m:'4 + 4 + 4 = 12'}},
+    {t:'نكتبها ضرباً: 3 × 4 = 12. أي 3 مجموعات في كل منها 4', v:{k:'math',m:'3 × 4 = 12'}},
+    {t:'ويمكن ترتيبها صفوفاً: 3 صفوف في كل صف 4 نقاط. هذه مصفوفة.', v:{k:'array',r:3,c:4}}
+  ],
+  strat:[5,8,12,13], asp:[1,10,0,7], mat:[15,4,6,2],
+  acts:'تهيئة: توزيع حبات التمر في أطباق متساوية.\nتمثيل المجموعات بالمكعبات ثم بالرسم.\nكتابة جملة الجمع ثم جملة الضرب.\nنشاط تفاعلي ثم لعبة الذاكرة.',
+  evalq:['اكتب جملة ضرب: 5 + 5 + 5','كم المجموع في 4 مجموعات في كل منها 2؟','ارسم مصفوفة 2 × 5']},
+{ id:'g3-6', book:2, grade:3, unit:'الوحدة الرابعة: القياس', title:'الوقت: قراءة الساعة', week:6, gen:'time',
+  goal:'أن يقرأ الطالب الوقت بالساعة والنصف والربع.',
+  sub:['أن يميّز الطالب عقرب الساعات من عقرب الدقائق','أن يقرأ الطالب الساعة تماماً والنصف','أن يقرأ الطالب الربع والإلا ربعاً'],
+  vocab:['عقرب الساعات','عقرب الدقائق','نصف','ربع'],
+  explain:[
+    {t:'للساعة عقربان: القصير للساعات، والطويل للدقائق.', v:{k:'clock',h:3,m:0}},
+    {t:'عندما يشير الطويل إلى 12 تكون الساعة تماماً. هذه الساعة الثالثة.', v:{k:'clock',h:3,m:0}},
+    {t:'عندما يشير الطويل إلى 6 تكون الساعة والنصف. هذه الثالثة والنصف.', v:{k:'clock',h:3,m:30}},
+    {t:'عندما يشير الطويل إلى 3 تكون الساعة والربع. هذه الرابعة والربع.', v:{k:'clock',h:4,m:15}}
+  ],
+  strat:[3,8,5,4], asp:[1,3,10,5], mat:[2,6,4,1],
+  acts:'تهيئة: الحديث عن روتين اليوم (الاستيقاظ، المدرسة).\nساعة كرتونية بعقارب متحركة لكل طالب.\nربط الوقت بأحداث يومية مصورة.\nنشاط تفاعلي ثم لعبة الذاكرة.',
+  evalq:['اقرأ الوقت: العقرب القصير على 5 والطويل على 12','ارسم عقارب الساعة السابعة والنصف.','متى تكون الساعة والربع؟']},
+
+/* ---------- الصف الرابع ---------- */
+{ id:'g4-1', book:1, grade:4, unit:'الوحدة الأولى: الأعداد', title:'الأعداد حتى 10000 والقيمة المنزلية', week:1, gen:'pv4',
+  goal:'أن يقرأ الطالب الأعداد حتى 10000 ويحدّد القيمة المنزلية لأرقامها.',
+  sub:['أن يتعرّف الطالب منزلة الآلاف','أن يحدّد الطالب قيمة الرقم في عدد من أربعة أرقام','أن يكتب الطالب العدد بالصيغة الممتدة'],
+  vocab:['آلاف','منزلة','صيغة ممتدة'],
+  explain:[
+    {t:'عندما نجمع 10 مئات نحصل على «ألف». هذا مكعب الألف.', v:{k:'blocks',n:1000}},
+    {t:'العدد 3452 له أربعة بيوت: الآلاف والمئات والعشرات والآحاد.', v:{k:'pv',n:3452}},
+    {t:'الرقم 3 في بيت الآلاف، فقيمته 3000', v:{k:'pv',n:3452,hl:'th'}},
+    {t:'3452 = 3000 + 400 + 50 + 2', v:{k:'math',m:'3000 + 400 + 50 + 2'}}
+  ],
+  strat:[2,8,4,7], asp:[3,5,0,11], mat:[11,2,6,0],
+  acts:'تهيئة: أعداد كبيرة من حياتنا (عدد طلاب المدرسة).\nلوحة المنازل الأربع مع بطاقات ملونة.\nتحليل الأعداد بالصيغة الممتدة.\nنشاط تفاعلي ثم لعبة الذاكرة.',
+  evalq:['ما قيمة الرقم 5 في العدد 5821؟','اكتب 4306 بالصيغة الممتدة.','اقرأ العدد 7090']},
+{ id:'g4-2', book:1, grade:4, unit:'الوحدة الأولى: الأعداد', title:'التقريب لأقرب عشرة ومئة', week:2, gen:'round',
+  goal:'أن يقرّب الطالب الأعداد لأقرب عشرة ولأقرب مئة.',
+  sub:['أن يحدّد الطالب العشرتين اللتين يقع بينهما العدد','أن يستخدم الطالب خط الأعداد للتقريب','أن يطبّق الطالب قاعدة الرقم 5'],
+  vocab:['تقريب','أقرب','خط الأعداد'],
+  explain:[
+    {t:'العدد 37 يقع بين 30 و 40 على خط الأعداد.', v:{k:'nl',from:30,to:40,mark:37}},
+    {t:'37 أقرب إلى 40 من 30. إذن نقرّبه إلى 40', v:{k:'nl',from:30,to:40,mark:37,show:40}},
+    {t:'قاعدة سهلة: إذا كان رقم الآحاد 5 أو أكثر نصعد للأعلى. وإذا كان أقل من 5 ننزل.', v:{k:'math',m:'34 → 30    35 → 40'}},
+    {t:'العدد 32 أقرب إلى 30', v:{k:'nl',from:30,to:40,mark:32,show:30}}
+  ],
+  strat:[0,2,12,3], asp:[1,0,10,11], mat:[2,6,4,1],
+  acts:'تهيئة: لعبة «التلّة» العدد يتدحرج للعشرة الأقرب.\nخط أعداد أرضي يمشي عليه الطالب.\nبطاقة قاعدة الرقم 5 مصورة.\nنشاط تفاعلي ثم لعبة طريق الكنز.',
+  evalq:['قرّب 64 لأقرب عشرة.','قرّب 285 لأقرب مئة.','ما العدد الذي يقرّب إلى 50: 44 أم 47؟']},
+{ id:'g4-3', book:1, grade:4, unit:'الوحدة الثانية: الضرب والقسمة', title:'حقائق الضرب', week:3, gen:'multfacts',
+  goal:'أن يتقن الطالب حقائق الضرب حتى 10 × 10',
+  sub:['أن يستخدم الطالب المصفوفة لإيجاد ناتج الضرب','أن يستخدم الطالب خاصية الإبدال','أن يستذكر الطالب حقائق الضرب بسرعة مناسبة'],
+  vocab:['حقائق الضرب','إبدال','ناتج'],
+  explain:[
+    {t:'المصفوفة 4 × 3: أربعة صفوف في كل صف 3 نقاط. المجموع 12', v:{k:'array',r:4,c:3}},
+    {t:'لو أدرنا المصفوفة تصبح 3 × 4 والناتج نفسه 12. هذه خاصية الإبدال.', v:{k:'array',r:3,c:4}},
+    {t:'حيلة جدول 5: الناتج ينتهي دائماً بـ 0 أو 5', v:{k:'math',m:'5, 10, 15, 20, 25'}},
+    {t:'حيلة جدول 10: نضع صفراً بجانب العدد. 7 × 10 = 70', v:{k:'math',m:'7 × 10 = 70'}}
+  ],
+  strat:[8,6,10,2], asp:[6,5,0,10], mat:[4,6,16,5],
+  acts:'تهيئة: العدّ القفزي بالتصفيق.\nبناء المصفوفات بالمكعبات.\nبطاقات حقائق الضرب بالألوان.\nنشاط تفاعلي ثم لعبة البالونات.',
+  evalq:['6 × 4 = ؟','إذا كان 7 × 3 = 21 فكم 3 × 7؟','ارسم مصفوفة تمثل 2 × 6']},
+{ id:'g4-4', book:2, grade:4, unit:'الوحدة الثانية: الضرب والقسمة', title:'القسمة توزيع بالتساوي', week:4, gen:'division',
+  goal:'أن يفهم الطالب القسمة توزيعاً بالتساوي ويربطها بالضرب.',
+  sub:['أن يوزّع الطالب أشياء على مجموعات متساوية','أن يكتب الطالب جملة القسمة','أن يربط الطالب القسمة بحقيقة الضرب'],
+  vocab:['قسمة','توزيع','بالتساوي','÷'],
+  explain:[
+    {t:'معنا 12 حبة تمر نريد توزيعها على 3 أطباق بالتساوي.', v:{k:'share',total:12,g:3}},
+    {t:'نضع حبة في كل طبق ونكرر حتى تنتهي. في كل طبق 4', v:{k:'groups',g:3,s:4}},
+    {t:'نكتب: 12 ÷ 3 = 4', v:{k:'math',m:'12 ÷ 3 = 4'}},
+    {t:'القسمة عكس الضرب: 3 × 4 = 12 إذن 12 ÷ 3 = 4', v:{k:'math',m:'3 × 4 = 12'}}
+  ],
+  strat:[5,8,0,13], asp:[0,10,11,9], mat:[15,4,6,2],
+  acts:'تهيئة: توزيع الأقلام على المجموعات.\nالتوزيع الفعلي بالمكعبات في أكواب.\nربط كل قسمة بحقيقة ضرب.\nنشاط تفاعلي ثم لعبة طريق الكنز.',
+  evalq:['15 ÷ 5 = ؟','وزّع 8 كرات على 2 من الأطفال بالتساوي.','اكتب حقيقة الضرب المرتبطة بـ 20 ÷ 4 = 5']},
+{ id:'g4-5', book:2, grade:4, unit:'الوحدة الثالثة: الكسور', title:'الكسور: جزء من كل', week:5, gen:'fractions',
+  goal:'أن يتعرّف الطالب الكسر جزءاً من كل ويقرؤه ويكتبه.',
+  sub:['أن يقسم الطالب الشكل إلى أجزاء متساوية','أن يحدّد الطالب البسط والمقام','أن يكتب الطالب الكسر الممثّل بالرسم'],
+  vocab:['كسر','بسط','مقام','أجزاء متساوية'],
+  explain:[
+    {t:'قسمنا الشريط إلى 4 أجزاء متساوية.', v:{k:'frac',n:0,d:4}},
+    {t:'لوّنّا جزءاً واحداً. نكتب الكسر: ربع 1/4', v:{k:'frac',n:1,d:4}},
+    {t:'العدد العلوي (البسط) هو الأجزاء الملوّنة. والعدد السفلي (المقام) هو كل الأجزاء.', v:{k:'frac',n:3,d:4}},
+    {t:'هذه الدائرة مقسومة إلى جزأين ملوّن منها جزء: نصف 1/2', v:{k:'frac',n:1,d:2,circle:true}}
+  ],
+  strat:[8,12,6,2], asp:[1,3,8,0], mat:[17,6,2,4],
+  acts:'تهيئة: تقسيم رغيف خبز أو ورقة إلى أجزاء متساوية.\nطيّ الورق وتلوين الأجزاء.\nبطاقات الكسور المصورة.\nنشاط تفاعلي ثم لعبة الذاكرة.',
+  evalq:['اكتب الكسر: جزآن ملوّنان من 5','ما المقام في الكسر 3/8؟','لوّن 1/3 من الشكل.']},
+{ id:'g4-6', book:2, grade:4, unit:'الوحدة الرابعة: القياس', title:'المحيط', week:6, gen:'perimeter',
+  goal:'أن يجد الطالب محيط المستطيل والمربع.',
+  sub:['أن يعرّف الطالب المحيط بأنه طول الحدود','أن يجمع الطالب أطوال الأضلاع','أن يحل الطالب مسألة حياتية على المحيط'],
+  vocab:['محيط','ضلع','طول','وحدة'],
+  explain:[
+    {t:'المحيط هو المسافة حول الشكل. تخيّل نملة تمشي على حافة المستطيل.', v:{k:'rect',w:5,h:3}},
+    {t:'نجمع كل الأضلاع: 5 + 3 + 5 + 3', v:{k:'rect',w:5,h:3,lab:true}},
+    {t:'المحيط = 16 وحدة.', v:{k:'math',m:'5 + 3 + 5 + 3 = 16'}},
+    {t:'المربع أضلاعه متساوية: 4 + 4 + 4 + 4 = 16', v:{k:'rect',w:4,h:4,lab:true}}
+  ],
+  strat:[5,0,8,15], asp:[1,9,10,0], mat:[6,2,17,15],
+  acts:'تهيئة: المشي حول طاولة الصف.\nقياس حدود الكتاب بالخيط.\nعدّ الوحدات حول شكل على ورق المربعات.\nنشاط تفاعلي ثم لعبة البالونات.',
+  evalq:['أوجد محيط مستطيل طوله 6 وعرضه 2','أوجد محيط مربع ضلعه 3','سياج حول حديقة مستطيلة 8 × 4. كم طوله؟']}
+];
+
+const TEACHER_GOALS = [
+  'إعداد بطاقات مفردات مصوّرة لكل وحدة',
+  'تواصل أسبوعي مع أولياء الأمور بملخص التقدم',
+  'تطبيق اختبار تشخيصي قصير في بداية كل وحدة',
+  'إعداد ركن محسوسات (مكعبات، خط أعداد أرضي، ساعة)',
+  'تحديث الخطة التعليمية الفردية لكل طالب كل أسبوعين',
+  'تبادل زيارة صفية مع معلمة الصف لتنسيق الأهداف',
+  'توثيق أفضل الأنشطة نجاحاً في ملف إنجاز',
+  'تخصيص 5 دقائق تهدئة وتنفس في بداية الحصة',
+  'تكريم طالب الأسبوع بشهادة أمام زملائه',
+  'حضور دورة أو ورشة في استراتيجيات صعوبات التعلم'
+];
+
+const BADGES = [
+  {id:'first', name:'البداية', desc:'أول شهادة', test:s=>s.certs>=1},
+  {id:'five', name:'مثابر', desc:'5 شهادات', test:s=>s.certs>=5},
+  {id:'ten', name:'نجم الصف', desc:'10 شهادات', test:s=>s.certs>=10},
+  {id:'p100', name:'مئة نقطة', desc:'جمع 100 نقطة', test:s=>s.points>=100},
+  {id:'p300', name:'بطل الأرقام', desc:'جمع 300 نقطة', test:s=>s.points>=300},
+  {id:'perfect', name:'ثلاث نجوم', desc:'نشاط بثلاث نجوم', test:s=>s.perfect>=1},
+  {id:'games', name:'محب الألعاب', desc:'3 ألعاب مكتملة', test:s=>s.games>=3}
+];
+
+const MOODS = [
+  {id:'happy', name:'سعيد', c:'var(--ok)'},
+  {id:'calm', name:'هادئ', c:'var(--sky)'},
+  {id:'tired', name:'متعب', c:'var(--sun)'},
+  {id:'sad', name:'حزين', c:'var(--b-th)'},
+  {id:'worried', name:'قلق', c:'var(--rose)'}
+];
+
+const PRAISE = ['رائع!','ممتاز!','إجابة صحيحة!','عمل جميل!','أنت مبدع!','بطل!'];
+const RETRY = ['لنحاول مرة أخرى بهدوء','قريب جداً، نحاول ثانية','لا بأس، نفكر معاً'];
+
+/* ===== أدوات عامة ===== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rnd = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; };
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-5);
+const ymd = (d=new Date()) => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const GRADE_NAME = {2:'الثاني',3:'الثالث',4:'الرابع'};
+const IN_FRAME = (()=>{ try{ return window.self !== window.top }catch(e){ return true } })();
+const LS = {
+  get(k,d){ try{ const v=localStorage.getItem(k); return v==null?d:JSON.parse(v) }catch(e){ return d } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)) }catch(e){} }
+};
+let PREFS = Object.assign({theme:'auto', big:false, sound:true}, LS.get('waha-prefs',{}));
+
+function digitsMode(){ return (Store.get('settings',{}).digits) || 'indic'; }
+function D(s){ s = String(s ?? ''); return digitsMode()==='indic' ? s.replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[d]) : s; }
+function T(s){ return esc(D(s)); }
+function fmtDate(s){ if(!s) return ''; const [y,m,d]=s.split('-'); return D(`${+d}/${+m}/${y}`); }
+function weekday(s){ if(!s) return ''; const [y,m,d]=s.split('-').map(Number); try{ return new Date(y,m-1,d).toLocaleDateString('ar-OM',{weekday:'long'}) }catch(e){ return '' } }
+function fmtTime(ts){ const d=new Date(ts); return D(String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')); }
+function fracHtml(s){ const [n,d]=s.split('/'); return `<span class="frac"><span>${T(n)}</span><span>${T(d)}</span></span>`; }
+function optHtml(o){ return /^\d+\/\d+$/.test(o) ? fracHtml(o) : `<span class="ltr">${T(o)}</span>`; }
+function hashHue(s){ let h=0; for(const c of String(s)) h=(h*31+c.charCodeAt(0))|0; return Math.abs(h); }
+const AV_BG = ['var(--accent-soft)','var(--sun-soft)','var(--sky-soft)','var(--rose-soft)','var(--ok-soft)'];
+function avatar(name, size=58){ return `<span class="avatar" style="width:${size}px;height:${size}px;font-size:${size/2.4}px;background:${AV_BG[hashHue(name)%AV_BG.length]}">${esc((name||'؟').trim().charAt(0))}</span>`; }
+
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),2600); }
+
+/* ===== الصوت والقراءة ===== */
+let AC=null;
+function chime(good=true){
+  if(!PREFS.sound) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    const notes = good ? [523.25,659.25,783.99] : [392,349.23];
+    notes.forEach((f,i)=>{ const o=AC.createOscillator(), g=AC.createGain(); o.type='sine'; o.frequency.value=f;
+      const t=AC.currentTime+i*0.12; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.12,t+0.03); g.gain.exponentialRampToValueAtTime(0.0001,t+0.5);
+      o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+0.55); });
+  }catch(e){}
+}
+function speak(text){
+  try{
+    const ss=window.speechSynthesis; if(!ss){ toast('القراءة الصوتية غير متاحة على هذا الجهاز'); return; }
+    ss.cancel();
+    const u=new SpeechSynthesisUtterance(String(text).replace(/[×]/g,' ضرب ').replace(/[÷]/g,' قسمة ').replace(/−/g,' ناقص ').replace(/\+/g,' زائد ').replace(/=/g,' يساوي ').replace(/\?|؟/g,' '));
+    u.lang='ar-SA'; u.rate=0.85;
+    const v=ss.getVoices().find(v=>/^ar/i.test(v.lang)); if(v) u.voice=v;
+    ss.speak(u);
+  }catch(e){}
+}
+
+/* ===== الأيقونات ===== */
+const I = (p,extra='') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${p}</svg>`;
+const ICON = {
+  back: I('<path d="M9 6l6 6-6 6"/>'),
+  home: I('<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z"/>'),
+  lesson: I('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/><path d="M9 8h6M9 11h4"/>'),
+  activity: I('<path d="M10 3h4v3a2 2 0 1 0 0 4v0h3v4h-3a2 2 0 1 0 0 4v3h-4v-3a2 2 0 1 0-4 0v3H3v-7h3a2 2 0 1 0 0-4H3V3h7z"/>'),
+  game: I('<rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="15.5" cy="11.5" r=".8" fill="currentColor"/><circle cx="18" cy="13.5" r=".8" fill="currentColor"/>'),
+  homework: I('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/>'),
+  star: I('<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>'),
+  lock: I('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
+  users: I('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/>'),
+  chart: I('<path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/>'),
+  check: I('<path d="M5 12.5l4.5 4.5L19 7"/>'),
+  calendar: I('<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/>'),
+  target: I('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>'),
+  file: I('<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>'),
+  gear: I('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'),
+  speaker: I('<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>'),
+  bulb: I('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'),
+  tool: I('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/>'),
+  leaf: I('<path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19l8-8"/>'),
+  download: I('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
+  upload: I('<path d="M12 20V9M7 14l5-5 5 5M5 4h14"/>'),
+  plus: I('<path d="M12 5v14M5 12h14"/>'),
+  trash: I('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'),
+  print: I('<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>'),
+  sun: I('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'),
+  moon: I('<path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/>'),
+  install: I('<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 7v7M9 11l3 3 3-3M10 18.5h4"/>'),
+  copy: I('<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>'),
+  heart: I('<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>'),
+  logout: I('<path d="M14 4h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-5M10 8l-4 4 4 4M6 12h10"/>')
+};
+const KIND = {
+  lesson:{name:'شرح الدرس', icon:'lesson'},
+  activity:{name:'نشاط تفاعلي', icon:'activity'},
+  game:{name:'لعبة', icon:'game'},
+  homework:{name:'واجب', icon:'homework'}
+};
+const LOGO = `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="14" class="fill-soft"/><path d="M24 38V22" stroke="var(--accent)" stroke-width="2.4" stroke-linecap="round"/><path d="M24 22c-2-6-8-8-13-6 4 1 7 3 9 7M24 22c2-6 8-8 13-6-4 1-7 3-9 7M24 22c-5-3-6-9-3-13 0 4 2 8 3 13M24 22c5-3 6-9 3-13 0 4-2 8-3 13" fill="var(--accent)" opacity=".85"/><ellipse cx="24" cy="39" rx="11" ry="2.6" fill="var(--sun)" opacity=".55"/></svg>`;
+function starSvg(on){ return `<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.3l-5.8 3.1 1.1-6.5L2.6 9.3l6.5-.9z" fill="${on?'var(--sun)':'var(--bg-2)'}" stroke="${on?'var(--sun)':'var(--line)'}" stroke-width="1.2" stroke-linejoin="round"/></svg>`; }
+function starsHtml(n){ return `<div class="stars">${[1,2,3].map(i=>starSvg(i<=n)).join('')}</div>`; }
+function moodFace(id,c){
+  const mouth = {happy:'M16 30q8 7 16 0', calm:'M17 30h14', tired:'M17 31q7-3 14 0', sad:'M16 32q8-7 16 0', worried:'M17 31q3.5-3 7 0t7 0'}[id];
+  const eyes = id==='tired' ? '<path d="M15 21h6M27 21h6" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/>' : '<circle cx="18" cy="21" r="2.4" fill="var(--ink)"/><circle cx="30" cy="21" r="2.4" fill="var(--ink)"/>';
+  return `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="${c}" opacity=".35"/><circle cx="24" cy="24" r="21" fill="none" stroke="${c}" stroke-width="2"/>${eyes}<path d="${mouth}" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+}
+
+/* ===== الرسوم التوضيحية ===== */
+function vBlocks(n){
+  const th=Math.floor(n/1000), h=Math.floor(n%1000/100), t=Math.floor(n%100/10), o=n%10;
+  const g=(cls,c,label)=> c ? `<div><div class="bgrp">${`<i class="${cls}"></i>`.repeat(c)}</div><div class="blabel">${T(c)} ${label}</div></div>` : '';
+  return `<div class="blocks">${g('b-th',th,'آلاف')}${g('b-h',h,'مئات')}${g('b-t',t,'عشرات')}${g('b-o',o,'آحاد')}${n===0?'<div class="blabel">لا شيء بعد</div>':''}</div>`;
+}
+function vPV(n,hl){
+  const s=String(n), places=[['th','الآلاف'],['h','المئات'],['t','العشرات'],['o','الآحاد']].slice(4-Math.max(2,s.length));
+  const digs=s.padStart(places.length,'0').split('');
+  return `<div class="pv">${places.map(([c,l],i)=>`<div class="${c} ${hl===c?'hl':''}"><span>${l}</span><b>${T(digs[i])}</b></div>`).join('')}</div>`;
+}
+function vNL(from,to,mark,show){
+  const W=560,H=120,pad=30,n=to-from,step=(W-2*pad)/n;
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}"><line x1="${pad-10}" y1="70" x2="${W-pad+10}" y2="70" class="st-line" stroke-width="2.5"/>`;
+  for(let i=0;i<=n;i++){ const x=pad+i*step, big=(from+i)%5===0;
+    s+=`<line x1="${x}" y1="${big?60:64}" x2="${x}" y2="${big?80:76}" class="st-line" stroke-width="2"/>`;
+    if(i===0||i===n||(from+i)%5===0) s+=`<text x="${x}" y="102" text-anchor="middle" class="svgtext" font-size="17">${D(from+i)}</text>`; }
+  if(mark!=null){ const x=pad+(mark-from)*step; s+=`<circle cx="${x}" cy="70" r="9" class="fill-sun"/><text x="${x}" y="42" text-anchor="middle" class="svgtext" font-size="20">${D(mark)}</text>`;
+    if(show!=null){ const x2=pad+(show-from)*step, mid=(x+x2)/2; s+=`<path d="M${x} 60 Q${mid} 10 ${x2} 60" fill="none" class="st-acc" stroke-width="3" stroke-dasharray="6 5"/><circle cx="${x2}" cy="70" r="10" class="fill-acc"/>`; } }
+  return s+'</svg>';
+}
+function plate(s,size=96){
+  const cols=Math.ceil(Math.sqrt(s)), rows=Math.ceil(s/cols), gap=size*0.6/Math.max(cols,rows);
+  let dots=''; for(let i=0;i<s;i++){ const r=Math.floor(i/cols), c=i%cols; const x=size/2+(c-(cols-1)/2)*gap, y=size/2+(r-(rows-1)/2)*gap; dots+=`<circle cx="${x}" cy="${y}" r="${Math.min(gap*0.36,9)}" class="fill-sun"/>`; }
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-3}" class="fill-soft" stroke="var(--accent)" stroke-width="2"/>${dots}</svg>`;
+}
+function vGroups(g,s){ return `<div class="vis">${Array.from({length:g},()=>plate(s)).join('')}</div>`; }
+function vArray(r,c){
+  const u=34, W=c*u+10, H=r*u+10; let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}">`;
+  for(let i=0;i<r;i++) for(let j=0;j<c;j++) s+=`<circle cx="${5+j*u+u/2}" cy="${5+i*u+u/2}" r="11" class="${i%2?'fill-sky':'fill-acc'}"/>`;
+  return s+'</svg>';
+}
+function vShare(total,g){
+  const u=26, W=Math.min(total,12)*u+10, rows=Math.ceil(total/12);
+  let s=`<svg viewBox="0 0 ${W} ${rows*u+10}" width="${W}">`; for(let i=0;i<total;i++) s+=`<circle cx="${5+(i%12)*u+u/2}" cy="${5+Math.floor(i/12)*u+u/2}" r="9" class="fill-sun"/>`; s+='</svg>';
+  return `<div class="col" style="align-items:center">${s}<div class="vis">${Array.from({length:g},()=>plate(0,80)).join('')}</div></div>`;
+}
+function vClock(h,m){
+  const C=100; let s=`<svg viewBox="0 0 200 200" width="220"><circle cx="100" cy="100" r="92" class="fill-surface" stroke="var(--accent)" stroke-width="5"/>`;
+  for(let i=1;i<=12;i++){ const a=i*Math.PI/6; s+=`<text x="${C+72*Math.sin(a)}" y="${C-72*Math.cos(a)+7}" text-anchor="middle" class="svgtext" font-size="19">${D(i)}</text>`; }
+  for(let i=0;i<60;i++){ if(i%5) { const a=i*Math.PI/30; s+=`<circle cx="${C+86*Math.sin(a)}" cy="${C-86*Math.cos(a)}" r="1.3" class="svgmuted"/>`; } }
+  const ha=((h%12)+m/60)*Math.PI/6, ma=m*Math.PI/30;
+  s+=`<line x1="100" y1="100" x2="${C+44*Math.sin(ha)}" y2="${C-44*Math.cos(ha)}" stroke="var(--ink)" stroke-width="7" stroke-linecap="round"/>`;
+  s+=`<line x1="100" y1="100" x2="${C+66*Math.sin(ma)}" y2="${C-66*Math.cos(ma)}" stroke="var(--rose)" stroke-width="4.5" stroke-linecap="round"/><circle cx="100" cy="100" r="6" class="fill-acc"/>`;
+  return s+'</svg>';
+}
+function vFrac(n,d,circle){
+  if(circle){ let s='<svg viewBox="0 0 160 160" width="170">'; for(let i=0;i<d;i++){ const a1=i/d*2*Math.PI-Math.PI/2, a2=(i+1)/d*2*Math.PI-Math.PI/2;
+    s+=`<path d="M80 80 L${80+70*Math.cos(a1)} ${80+70*Math.sin(a1)} A70 70 0 ${d<=2?0:0} 1 ${80+70*Math.cos(a2)} ${80+70*Math.sin(a2)} Z" class="${i<n?'fill-acc':'fill-bg2'}" stroke="var(--surface)" stroke-width="3"/>`; } return s+'</svg>'; }
+  const W=360, w=W/d; let s=`<svg viewBox="0 0 ${W+4} 74" width="${W+4}">`;
+  for(let i=0;i<d;i++) s+=`<rect x="${2+i*w}" y="2" width="${w}" height="70" rx="6" class="${i<n?'fill-acc':'fill-bg2'}" stroke="var(--surface)" stroke-width="3"/>`;
+  return s+'</svg>';
+}
+function vShape(name,size=170){
+  const st='class="fill-soft" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round"';
+  const poly=k=>{ let p=[]; for(let i=0;i<k;i++){ const a=i*2*Math.PI/k-Math.PI/2; p.push((80+66*Math.cos(a)).toFixed(1)+','+(84+66*Math.sin(a)).toFixed(1)); } return `<polygon points="${p.join(' ')}" ${st}/>`; };
+  const body = {'مثلث':poly(3),'مربع':`<rect x="22" y="22" width="116" height="116" rx="4" ${st}/>`,'مستطيل':`<rect x="8" y="42" width="144" height="80" rx="4" ${st}/>`,'دائرة':`<circle cx="80" cy="80" r="66" ${st}/>`,'خماسي':poly(5),'سداسي':poly(6)}[name]||'';
+  return `<svg viewBox="0 0 160 160" width="${size}">${body}</svg>`;
+}
+function vRect(w,h,lab){
+  const u=32, W=w*u, H=h*u, P=40; let s=`<svg viewBox="0 0 ${W+P*2} ${H+P*2}" width="${Math.min(W+P*2,420)}">`;
+  for(let i=0;i<=w;i++) s+=`<line x1="${P+i*u}" y1="${P}" x2="${P+i*u}" y2="${P+H}" class="st-line" stroke-opacity=".25"/>`;
+  for(let j=0;j<=h;j++) s+=`<line x1="${P}" y1="${P+j*u}" x2="${P+W}" y2="${P+j*u}" class="st-line" stroke-opacity=".25"/>`;
+  s+=`<rect x="${P}" y="${P}" width="${W}" height="${H}" fill="none" class="st-acc" stroke-width="4"/>`;
+  if(lab!==false){ s+=`<text x="${P+W/2}" y="${P-12}" text-anchor="middle" class="svgtext" font-size="20">${D(w)}</text><text x="${P+W/2}" y="${P+H+28}" text-anchor="middle" class="svgtext" font-size="20">${D(w)}</text><text x="${P-14}" y="${P+H/2+7}" text-anchor="middle" class="svgtext" font-size="20">${D(h)}</text><text x="${P+W+14}" y="${P+H/2+7}" text-anchor="middle" class="svgtext" font-size="20">${D(h)}</text>`; }
+  return s+'</svg>';
+}
+function vColumn(a,b,op,step){
+  const r = op==='+' ? a+b : a-b, L=Math.max(String(a).length,String(b).length,String(r).length);
+  const cell=(ch,i,cls='')=>`<span style="display:inline-grid;place-items:center;width:46px;height:52px;border-radius:10px;${i===step-1?'background:var(--sun-soft);':''}" class="${cls}">${T(ch)}</span>`;
+  const row=(n,show)=>{ const s=String(n).padStart(L,' ').split(''); return s.map((ch,k)=>{ const place=L-1-k; return cell(ch===' '?'':(show(place)?ch:''),place); }).join(''); };
+  const colorRow = n => row(n,()=>true);
+  return `<div style="direction:ltr;font-family:var(--f-display);font-size:2.2rem;font-weight:700;display:inline-flex;flex-direction:column;align-items:flex-end;gap:2px">
+    <div>${colorRow(a)}</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--accent)">${op==='-'?'−':'+'}</span>${colorRow(b)}</div>
+    <div style="height:4px;background:var(--ink);width:100%;border-radius:2px"></div>
+    <div style="color:var(--accent-2)">${row(r,place=>place<step)}</div></div>`;
+}
+function V(v){
+  if(!v) return '';
+  switch(v.k){
+    case 'blocks': return vBlocks(v.n);
+    case 'pv': return vPV(v.n,v.hl);
+    case 'nl': return `<div class="vis">${vNL(v.from,v.to,v.mark,v.show)}</div>`;
+    case 'groups': return vGroups(v.g,v.s);
+    case 'array': return `<div class="vis">${vArray(v.r,v.c)}</div>`;
+    case 'share': return vShare(v.total,v.g);
+    case 'clock': return `<div class="vis">${vClock(v.h,v.m)}</div>`;
+    case 'frac': return `<div class="vis">${vFrac(v.n,v.d,v.circle)}</div>`;
+    case 'shape': return `<div class="vis">${vShape(v.name)}</div>`;
+    case 'rect': return `<div class="vis">${vRect(v.w,v.h,v.lab)}</div>`;
+    case 'column': return vColumn(v.a,v.b,v.op,v.step??3);
+    case 'compare': return `<div class="vis" style="gap:30px"><div class="col" style="align-items:center">${vBlocks(v.a)}<b class="qmath" style="font-size:2rem">${T(v.a)}</b></div><div class="col" style="align-items:center">${vBlocks(v.b)}<b class="qmath" style="font-size:2rem">${T(v.b)}</b></div></div>`;
+    case 'addblocks': return `<div class="vis" style="align-items:center">${vBlocks(v.a)}<b class="qmath">${v.op==='-'?'−':'+'}</b>${vBlocks(v.b)}</div>`;
+    case 'math': return `<div class="qmath">${T(v.m)}</div>`;
+    default: return '';
+  }
+}
+
+/* ===== مولّدات الأسئلة ===== */
+function mkOpts(ans, cands, n=3){
+  const out=[String(ans)];
+  for(const c of shuffle(cands)){ if(out.length>=n) break; const s=String(c); if(!out.includes(s) && !(typeof c==='number' && (c<0||!isFinite(c)))) out.push(s); }
+  let k=1; while(out.length<n && k<50){ const c=Number(ans)+(k%2?k:-k); if(c>=0 && !out.includes(String(c))) out.push(String(c)); k++; }
+  return shuffle(out);
+}
+const revNum = n => Number(String(n).split('').reverse().join(''));
+const HOURS = ['الثانية عشرة','الواحدة','الثانية','الثالثة','الرابعة','الخامسة','السادسة','السابعة','الثامنة','التاسعة','العاشرة','الحادية عشرة','الثانية عشرة'];
+function timeWords(h,m){ if(m===0) return HOURS[h]+' تماماً'; if(m===30) return HOURS[h]+' والنصف'; if(m===15) return HOURS[h]+' والربع'; return HOURS[h%12+1]+' إلا ربعاً'; }
+const SHAPES = [{n:'مثلث',s:3},{n:'مربع',s:4},{n:'مستطيل',s:4},{n:'دائرة',s:0},{n:'خماسي',s:5},{n:'سداسي',s:6}];
+function readGen(min,max){ const n=rnd(min,max); const h=Math.floor(n/100),t=Math.floor(n%100/10),o=n%10;
+  return {text:'ما العدد الذي تمثّله القطع؟', v:{k:'blocks',n}, answer:String(n), options:mkOpts(n,[n+10,n-10,n+1,n-1,revNum(n),n+100,n-100].filter(x=>x>0)),
+    hint:max>100?'نعدّ المئات أولاً ثم العشرات ثم الآحاد':'نعدّ العشرات أولاً ثم الآحاد', memA:(h?`${D(h)} مئات و`:'')+`${D(t)} عشرات و${D(o)} آحاد`}; }
+function pvGen(len){
+  let n; do{ n=rnd(10**(len-1), 10**len-1) }while(new Set(String(n)).size<len);
+  const s=String(n), i=rnd(0,len-1), d=+s[i], place=len-1-i, val=d*10**place;
+  const names=['الآحاد','العشرات','المئات','الآلاف'], keys=['o','t','h','th'];
+  return {text:`ما قيمة الرقم ${D(d)} في العدد؟`, math:String(n), v:{k:'pv',n}, answer:String(val), options:mkOpts(val,[d,d*10,d*100,d*1000].filter(x=>x!==val)),
+    hint:`الرقم ${D(d)} في منزلة ${names[place]}`, memA:`قيمة ${D(d)} في ${D(n)}`}; }
+function cmpGen(max){
+  let a=rnd(10,max), b=Math.random()<.15?a:rnd(10,max); if(Math.random()<.4 && a!==b){ b=Math.floor(a/10)*10+rnd(0,9); }
+  const ans=a>b?'>':a<b?'<':'=';
+  return {text:'ما الرمز المناسب؟', math:`${a} ○ ${b}`, v:max<=100?{k:'compare',a,b}:null, answer:ans, options:['>','<','='],
+    hint:'نقارن المنزلة الكبرى أولاً', memA:`الأكبر: ${D(a)} أم ${D(a===b?b+1:b)}؟`, memB:String(Math.max(a,a===b?b+1:b))}; }
+function addGen(max, digits){
+  let a,b; if(digits===2){ a=rnd(10,79); b=rnd(10,99-a); } else { a=rnd(100,699); b=rnd(100,999-a); }
+  const r=a+b; return {text:'ما ناتج الجمع؟', math:`${a} + ${b} = ?`, v:digits===2?{k:'addblocks',a,b,op:'+'}:{k:'column',a,b,op:'+',step:0},
+    answer:String(r), options:mkOpts(r,[r+10,r-10,r+1,r-1,r+100,r-100]), hint:'نبدأ بجمع الآحاد ثم العشرات'+(digits===3?' ثم المئات':''), memA:`${D(a)} + ${D(b)}`}; }
+function subGen(digits){
+  let a,b; if(digits===2){ a=rnd(25,99); b=rnd(10,a-5); } else { a=rnd(300,999); b=rnd(100,a-50); }
+  const r=a-b; return {text:'ما ناتج الطرح؟', math:`${a} − ${b} = ?`, v:digits===2?{k:'blocks',n:a}:{k:'column',a,b,op:'-',step:0},
+    answer:String(r), options:mkOpts(r,[r+10,r-10,r+1,r-1,a+b]), hint:'نبدأ بطرح الآحاد ثم العشرات', memA:`${D(a)} − ${D(b)}`}; }
+const GEN = {
+  read100: ()=>readGen(11,99),
+  read1000: ()=>readGen(101,999),
+  pv2: ()=>pvGen(2), pv3: ()=>pvGen(3), pv4: ()=>pvGen(4),
+  cmp100: ()=>cmpGen(99),
+  add100: ()=>addGen(100,2), add1000: ()=>addGen(1000,3),
+  sub100: ()=>subGen(2), sub1000: ()=>subGen(3),
+  shapes: ()=>{ const sh=pick(SHAPES);
+    if(Math.random()<.6 || sh.s===0) return {text:'ما اسم هذا الشكل؟', v:{k:'shape',name:sh.n}, answer:sh.n, options:mkOpts(sh.n,SHAPES.map(x=>x.n).filter(x=>x!==sh.n)), hint:'نعدّ الأضلاع لنعرف الشكل', memA:vShape(sh.n,70), memB:sh.n, html:true};
+    return {text:'كم ضلعاً لهذا الشكل؟', v:{k:'shape',name:sh.n}, answer:String(sh.s), options:mkOpts(sh.s,[3,4,5,6].filter(x=>x!==sh.s)), hint:'نلمس كل ضلع ونعدّ', memA:vShape(sh.n,70), memB:sh.n, html:true}; },
+  multrep: ()=>{ const g=rnd(2,5), s=rnd(2,5), r=g*s;
+    if(Math.random()<.5) return {text:`${D(g)} مجموعات، في كل مجموعة ${D(s)}. كم المجموع؟`, math:`${g} × ${s} = ?`, v:{k:'groups',g,s}, answer:String(r), options:mkOpts(r,[r+s,r-s,g+s,r+1]), hint:'نعدّ قفزاً: '+D(Array.from({length:g},(_, i)=>s*(i+1)).join('، ')), memA:Array(g).fill(D(s)).join(' + '), memB:String(r)};
+    return {text:'كم نقطة في المصفوفة؟', math:`${g} × ${s} = ?`, v:{k:'array',r:g,c:s}, answer:String(r), options:mkOpts(r,[r+s,r-g,g+s]), hint:`${D(g)} صفوف في كل صف ${D(s)}`, memA:`${D(g)} × ${D(s)}`}; },
+  time: ()=>{ const h=rnd(1,12), m=pick([0,0,30,30,15,45]); const f=(h,m)=>`${h}:${String(m).padStart(2,'0')}`;
+    const ans=f(h,m); return {text:'كم الساعة؟', v:{k:'clock',h,m}, answer:ans, options:mkOpts(ans,[f(h%12+1,m),f(h,(m+30)%60),f(m/5||12,h*5%60)]), hint:'العقرب القصير يدل على الساعة، والطويل على الدقائق', memA:timeWords(h,m), memB:ans}; },
+  round: ()=>{ let n=rnd(11,99); if(n%10===0) n++; const lo=Math.floor(n/10)*10, ans=n%10>=5?lo+10:lo;
+    if(Math.random()<.35){ const N=rnd(110,980), L=Math.floor(N/100)*100, A=N%100>=50?L+100:L; return {text:`ما العدد ${D(N)} مقرّباً لأقرب مئة؟`, math:String(N), answer:String(A), options:mkOpts(A,[L===A?L+100:L,Math.round(N/10)*10]), hint:'ننظر إلى رقم العشرات: 5 أو أكثر نصعد', memA:`${D(N)} لأقرب مئة`}; }
+    return {text:`ما العدد ${D(n)} مقرّباً لأقرب عشرة؟`, math:String(n), v:{k:'nl',from:lo,to:lo+10,mark:n}, answer:String(ans), options:mkOpts(ans,[ans===lo?lo+10:lo,n]), hint:'ننظر إلى رقم الآحاد: 5 أو أكثر نصعد', memA:`${D(n)} لأقرب عشرة`}; },
+  multfacts: ()=>{ const a=rnd(2,10), b=rnd(2,10), r=a*b;
+    return {text:'ما ناتج الضرب؟', math:`${a} × ${b} = ?`, v:r<=30?{k:'array',r:a,c:b}:null, answer:String(r), options:mkOpts(r,[r+a,r-b,a+b,r+10]), hint:`نعدّ قفزاً بـ ${D(b)} عدد ${D(a)} مرات`, memA:`${D(a)} × ${D(b)}`}; },
+  division: ()=>{ const g=rnd(2,5), s=rnd(2,6), t=g*s;
+    return {text:`${D(t)} قطعة توزَّع بالتساوي على ${D(g)} أطباق. كم في كل طبق؟`, math:`${t} ÷ ${g} = ?`, v:{k:'share',total:t,g}, answer:String(s), options:mkOpts(s,[s+1,s-1,g,t-g]), hint:`نفكّر: ${D(g)} × ؟ = ${D(t)}`, memA:`${D(t)} ÷ ${D(g)}`}; },
+  fractions: ()=>{ const d=pick([2,3,4,5,6,8]), n=rnd(1,d-1), ans=`${n}/${d}`;
+    return {text:'ما الكسر الذي يمثّل الجزء الملوّن؟', v:{k:'frac',n,d,circle:Math.random()<.4}, answer:ans, options:mkOpts(ans,[`${d-n}/${d}`,`${n}/${d+1}`,`${d}/${n}`].filter(x=>x!==ans)), hint:'البسط: الأجزاء الملوّنة. المقام: كل الأجزاء', memA:vFrac(n,d).replace('width="364"','width="110"'), memB:ans, html:true}; },
+  perimeter: ()=>{ const w=rnd(2,8), h=rnd(2,6), r=2*(w+h);
+    return {text:'ما محيط هذا الشكل؟', v:{k:'rect',w,h,lab:true}, answer:String(r), options:mkOpts(r,[w*h,w+h,r+2]), hint:'نجمع الأضلاع الأربعة', memA:`محيط ${D(w)} × ${D(h)}`}; }
+};
+function genQs(lesson, n){
+  const out=[], seen=new Set(); let guard=0;
+  while(out.length<n && guard++<200){ const q=GEN[lesson.gen](); const key=(q.math||'')+q.text+q.answer+JSON.stringify(q.v||''); if(seen.has(key)) continue; seen.add(key); out.push(q); }
+  return out;
+}
+function genPairs(lesson, n){
+  const out=[], A=new Set(), B=new Set(); let guard=0;
+  while(out.length<n && guard++<400){ const q=GEN[lesson.gen](); const b=q.memB||q.answer; if(A.has(q.memA)||B.has(b)) continue; A.add(q.memA); B.add(b); out.push({a:q.memA, b, html:!!q.html}); }
+  return out;
+}
+
+/* ===== التخزين: سحابي داخل Claude، ومحلي على الجهاز عند فتح الملف مباشرة ===== */
+const Store = {
+  mode:'local', db:null, docs:{}, events:[], ready:false,
+  load(){ const d=LS.get('waha-data',null); if(d){ this.docs=d.docs||{}; this.events=d.events||[]; } },
+  save(){ if(this.mode==='local') LS.set('waha-data',{docs:this.docs,events:this.events}); },
+  async init(){
+    this.load();
+    window.addEventListener('storage', e=>{ if(e.key==='waha-data' && this.mode==='local'){ this.load(); onData(); } });
+    let db=null;
+    try{ if(window.claude && typeof window.claude.use==='function') db = await window.claude.use('db'); }catch(e){ db=null; }
+    if(!db){ this.ready=true; onData(); return; }
+    this.db=db; this.mode='cloud';
+    const err = e => { console.warn('db', e); if(e && e.code==='revoked'){ this.mode='local'; this.load(); onData(); } };
+    db.collection('app').onSnapshot(qs=>{ const docs={}; qs.docs.forEach(d=>{ docs[d.id]=d.data(); }); this.docs=docs; this.ready=true; onData(); }, err);
+    db.collection('events').orderBy('ts').limit(1000).onSnapshot(qs=>{ this.events=qs.docs.map(d=>Object.assign({id:d.id}, d.data())); onData(); }, err);
+  },
+  get(k,def){ const v=this.docs[k]; return v===undefined ? def : v; },
+  async set(k,val){
+    this.docs[k]=val; onData();
+    if(this.mode==='cloud'){ try{ await this.db.doc('app/'+k).set(JSON.parse(JSON.stringify(val))); }catch(e){ toast(e && e.code==='invalid_argument' ? 'هذا الحساب لا يملك صلاحية الحفظ في قسم المعلمة' : 'تعذّر الحفظ، نحاول لاحقاً'); } }
+    else this.save();
+  },
+  async remove(k){ delete this.docs[k]; onData(); if(this.mode==='cloud'){ try{ await this.db.doc('app/'+k).delete(); }catch(e){} } else this.save(); },
+  async addEvent(ev){
+    ev = Object.assign({ts:Date.now(), date:ymd()}, ev);
+    if(this.mode==='cloud'){ try{ await this.db.collection('events').add(ev); return; }catch(e){ toast('تعذّر حفظ النتيجة على هذا الحساب'); return; } }
+    ev.id=uid(); this.events.push(ev); this.save(); onData();
+  },
+  async delEvent(id){
+    if(this.mode==='cloud'){ try{ await this.db.doc('events/'+id).delete(); }catch(e){ toast('تعذّر الحذف'); } return; }
+    this.events=this.events.filter(e=>e.id!==id); this.save(); onData();
+  }
+};
+
+/* ===== الحالة العامة ===== */
+const S = { view:'home', grade:null, sid:null, ttab:'dash', tsel:null, tgrade:2, p:null, unlocked:false, sTab:'tasks', iep:null };
+try{ S.unlocked = sessionStorage.getItem('waha-t')==='1'; }catch(e){}
+const remembered = LS.get('waha-student', null);
+
+const students = () => (Store.get('students',{list:[]}).list || []);
+const studentById = id => students().find(s=>s.id===id);
+const lessonById = id => LESSONS.find(l=>l.id===id);
+const openedItems = () => (Store.get('opened',{items:[]}).items || []);
+function evFor(sid){ return Store.events.filter(e=>e.sid===sid); }
+function statsFor(sid){
+  const evs=evFor(sid), scored=evs.filter(e=>typeof e.score==='number');
+  return { points:evs.reduce((a,e)=>a+(+e.points||0),0), certs:evs.filter(e=>e.cert).length, perfect:evs.filter(e=>e.stars===3).length,
+    games:evs.filter(e=>e.kind==='game').length, avg: scored.length? Math.round(scored.reduce((a,e)=>a+e.score,0)/scored.length) : null, evs, scored };
+}
+function isDone(sid,itemId){ return Store.events.some(e=>e.sid===sid && e.itemId===itemId); }
+
+/* ===== الرسم ===== */
+let pendingRender=false;
+function onData(){
+  const ae=document.activeElement;
+  const typing = ae && (ae.matches('input,textarea,select,[contenteditable="true"]'));
+  if(S.view==='player' || typing){ pendingRender=true; return; }
+  render();
+}
+document.addEventListener('focusout', ()=>{ setTimeout(()=>{ if(pendingRender && S.view!=='player'){ const ae=document.activeElement; if(!(ae && ae.matches('input,textarea,select,[contenteditable="true"]'))){ pendingRender=false; render(); } } },50); });
+
+function applyPrefs(){
+  const r=document.documentElement;
+  if(PREFS.theme==='auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme',PREFS.theme);
+  document.body.classList.toggle('big', !!PREFS.big);
+}
+function render(){
+  pendingRender=false;
+  const app=$('#app'); const y=window.scrollY;
+  let html='';
+  switch(S.view){
+    case 'home': html=vHome(); break;
+    case 'grade': html=vGrade(); break;
+    case 'name': html=vName(); break;
+    case 'student': html=vStudent(); break;
+    case 'player': html=vPlayer(); break;
+    case 'tlogin': html=vLogin(); break;
+    case 'teacher': html=S.unlocked ? vTeacher() : vLogin(); break;
+  }
+  app.innerHTML = vBar() + html;
+  if(S._keepScroll) window.scrollTo(0,y); S._keepScroll=false;
+  afterRender();
+}
+function go(view, extra={}){ Object.assign(S,extra); S.view=view; if('speechSynthesis' in window) speechSynthesis.cancel(); render(); window.scrollTo(0,0); }
+function rerender(){ S._keepScroll=true; render(); }
+
+function vBar(){
+  const who = S.view==='student'||S.view==='player' ? (studentById(S.sid)?.name || '') : '';
+  return `<header class="bar noprint">
+    <button class="brand" data-a="home" aria-label="الصفحة الرئيسية">${LOGO}<span>واحة الأرقام</span></button>
+    <span class="spacer"></span>
+    ${who?`<span class="chip acc">${esc(who)}</span>`:''}
+    ${S.view==='teacher'&&S.unlocked?`<button class="iconbtn" data-a="tlock" title="خروج من قسم المعلمة" aria-label="خروج">${ICON.logout}</button>`:''}
+    ${!isStandalone()?`<button class="iconbtn" data-a="install" title="تثبيت المنصة" aria-label="تثبيت">${ICON.install}</button>`:''}
+    <button class="iconbtn" data-a="theme" title="الوضع الليلي" aria-label="تبديل الألوان">${document.documentElement.getAttribute('data-theme')==='dark'||(PREFS.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches)?ICON.sun:ICON.moon}</button>
+  </header>`;
+}
+
+/* ===== التثبيت ===== */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; if(S.view==='home') rerender(); });
+window.addEventListener('appinstalled', ()=>{ deferredPrompt=null; toast('تم تثبيت واحة الأرقام'); rerender(); });
+function isStandalone(){ try{ return matchMedia('(display-mode: standalone)').matches || navigator.standalone===true; }catch(e){ return false; } }
+async function doInstall(){
+  if(deferredPrompt){ deferredPrompt.prompt(); try{ const r=await deferredPrompt.userChoice; if(r.outcome==='accepted') toast('جارٍ التثبيت'); }catch(e){} deferredPrompt=null; return; }
+  const ua=navigator.userAgent, ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1), android=/Android/i.test(ua);
+  const file = location.protocol==='file:';
+  modal(`<h3>تثبيت واحة الأرقام على الجهاز</h3>
+    ${IN_FRAME?`<p class="notice">أنت تشاهد المنصة داخل صفحة معاينة. للتثبيت افتح ملف المنصة (index.html) من رابط الموقع الذي رُفع عليه.</p>`:''}
+    ${file?`<p class="notice">الملف مفتوح من الجهاز مباشرة، فيعمل كاملاً، لكن المتصفحات لا تسمح بالتثبيت إلا من رابط موقع. ارفعي مجلد المنصة على أي استضافة مجانية ثم افتحيه من الرابط.</p>`:''}
+    <div class="col">
+      <div class="card flat"><h4>آيباد أو آيفون (Safari)</h4><p>اضغطي زر المشاركة <span class="kbd">⬆</span> ثم «إضافة إلى الشاشة الرئيسية».</p></div>
+      <div class="card flat"><h4>أندرويد (Chrome)</h4><p>اضغطي القائمة <span class="kbd">⋮</span> ثم «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».</p></div>
+      <div class="card flat"><h4>الحاسوب (Chrome أو Edge)</h4><p>اضغطي أيقونة التثبيت في شريط العنوان أو من القائمة «تثبيت واحة الأرقام».</p></div>
+    </div>
+    <p class="muted small">${ios?'جهازك آيباد أو آيفون: استخدمي الطريقة الأولى.':android?'جهازك أندرويد: استخدمي الطريقة الثانية.':''}</p>
+    <button class="btn primary" data-a="closemodal">حسناً</button>`);
+}
+function modal(html){ closeModal(); const d=document.createElement('div'); d.className='modal-bg'; d.id='modal'; d.innerHTML=`<div class="modal fade-in" role="dialog">${html}</div>`; d.addEventListener('click',e=>{ if(e.target===d) closeModal(); }); document.body.appendChild(d); }
+function closeModal(){ const m=$('#modal'); if(m) m.remove(); }
+
+/* ===== الصفحة الرئيسية ===== */
+function vHome(){
+  const h=new Date().getHours();
+  const greet = h<12?'صباح الخير':'مساء الخير';
+  return `<div class="fade-in">
+  ${!isStandalone()?`<div class="install">
+    <div class="ill" style="width:46px;height:46px;color:var(--accent)">${ICON.install}</div>
+    <div class="txt"><b>ثبّتي واحة الأرقام على جهازك</b><p class="small muted">تفتح كتطبيق من الشاشة الرئيسية وتعمل بدون إنترنت.</p></div>
+    <button class="btn primary" data-a="install">${ICON.download} تثبيت المنصة</button></div>`:''}
+  <section class="hero">
+    <p class="muted">${greet}، أهلاً بكم في</p>
+    <h1>واحة الأرقام</h1>
+    <p class="muted" style="max-width:60ch">رياضيات الصفوف الثاني والثالث والرابع، الفصل الدراسي الأول. شروحات هادئة وأنشطة وألعاب صُمّمت لطلبة صعوبات التعلم.</p>
+  </section>
+  <div class="doors">
+    <button class="door stu" data-a="gostudent">
+      <svg class="ill" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="40" class="fill-surface"/><circle cx="42" cy="34" r="12" fill="var(--sun)"/><path d="M20 68a22 22 0 0 1 44 0" fill="var(--accent)"/><path d="M58 22l8-6 2 9" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>
+      <h2>قسم الطلبة</h2><p class="muted">اختر صفك واسمك وابدأ مهامك ودروسك وألعابك.</p>
+      <span class="btn primary" style="align-self:flex-start">ادخل الآن</span>
+    </button>
+    <button class="door tea" data-a="goteacher">
+      <span class="lock chip sun">${ICON.lock.replace('<svg','<svg width="16" height="16"')} برقم سري</span>
+      <svg class="ill" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="40" class="fill-surface"/><rect x="20" y="22" width="44" height="34" rx="5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"/><path d="M28 34h20M28 42h14" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><circle cx="58" cy="58" r="12" fill="var(--sun)"/><path d="M53 58l4 4 7-7" stroke="var(--surface)" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+      <h2>قسم المعلمة</h2><p class="muted">متابعة الطلبة والنقاط والتقويم المستمر وفتح الدروس والتحاضير.</p>
+      <span class="btn warm" style="align-self:flex-start">دخول المعلمة</span>
+    </button>
+  </div>
+  <div class="quote"><span style="width:34px;color:var(--accent)">${ICON.leaf}</span><p>«كل خطوة صغيرة تقرّبنا من هدفنا. نتعلم بهدوء، ونفرح بكل تقدّم.»</p></div>
+  <p class="muted small" style="margin-top:18px;text-align:center">${esc(SCHOOL.school)} · محافظة ${esc(SCHOOL.gov)} · المعلمة ${esc(SCHOOL.teacher)}</p>
+  </div>`;
+}
+
+/* ===== قسم الطلبة ===== */
+function vGrade(){
+  return `<div class="fade-in"><div class="section-title"><button class="iconbtn" data-a="home" aria-label="رجوع">${ICON.back}</button><h2>في أي صف أنت؟</h2></div>
+  <div class="grid g3">${[2,3,4].map(g=>`<button class="pick" data-a="pickgrade" data-g="${g}"><span class="num">${T(g)}</span>الصف ${GRADE_NAME[g]}<span class="small muted">${T(students().filter(s=>s.grade==g).length)} طالب</span></button>`).join('')}</div></div>`;
+}
+function vName(){
+  const list=students().filter(s=>s.grade==S.grade);
+  return `<div class="fade-in"><div class="section-title"><button class="iconbtn" data-a="gostudent" aria-label="رجوع">${ICON.back}</button><h2>اختر اسمك</h2><span class="chip">الصف ${GRADE_NAME[S.grade]}</span></div>
+  ${list.length? `<div class="grid g4">${list.map(s=>`<button class="pick" data-a="pickname" data-id="${s.id}">${avatar(s.name)}<span style="font-size:1.1rem">${esc(s.name)}</span></button>`).join('')}</div>`
+  : `<div class="empty"><p>لم تُضف المعلمة أسماء طلبة هذا الصف بعد.</p><p class="small">تضيف المعلمة الأسماء من قسم المعلمة ← الطلبة.</p></div>`}</div>`;
+}
+function plantSvg(points){
+  const stage = points>=300?4:points>=150?3:points>=80?2:points>=30?1:0;
+  let s='<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="108" rx="40" ry="7" fill="var(--sand)"/><path d="M40 92h40l-5 18H45z" fill="var(--sun)" opacity=".8"/>';
+  if(stage===0) s+='<ellipse cx="60" cy="90" rx="6" ry="4" fill="var(--accent)"/>';
+  if(stage>=1) s+=`<path d="M60 92V${stage>=3?40:stage===2?58:74}" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/><path d="M60 80c-8-2-14-8-14-14 8 0 14 6 14 14zM60 76c8-2 14-8 14-14-8 0-14 6-14 14z" fill="var(--b-o)"/>`;
+  if(stage>=2) s+='<path d="M60 64c-10-1-17-8-17-15 10 0 17 7 17 15zM60 62c10-1 17-8 17-15-10 0-17 7-17 15z" fill="var(--accent)"/>';
+  if(stage>=3) s+='<circle cx="60" cy="34" r="10" fill="var(--rose)" opacity=".85"/><circle cx="60" cy="34" r="4" fill="var(--sun)"/>';
+  if(stage>=4) s+='<circle cx="38" cy="50" r="5" fill="var(--sun)"/><circle cx="84" cy="48" r="5" fill="var(--sun)"/><circle cx="72" cy="24" r="4" fill="var(--rose)"/><circle cx="46" cy="26" r="4" fill="var(--rose)"/>';
+  const names=['بذرة','برعم','نبتة صغيرة','زهرة','شجرة مثمرة'], next=[30,80,150,300,null][stage];
+  return {svg:s+'</svg>', name:names[stage], next};
+}
+function itemsForGrade(g){ return openedItems().filter(i=>i.grade==g).sort((a,b)=>(b.date||'').localeCompare(a.date||'')); }
+function taskCard(it, sid){
+  const today=ymd(), locked=it.date>today, done=sid&&isDone(sid,it.id), k=KIND[it.type]||KIND.activity, L=lessonById(it.lessonId);
+  return `<button class="task ${done?'done':''} ${locked?'locked':''}" ${locked?'disabled':''} data-a="startitem" data-id="${it.id}">
+    <span class="ic ${it.type}">${ICON[k.icon]}</span>
+    <span class="body"><b>${T(it.title || (L?L.title:''))}</b><br><span class="small muted">${it.type==='game'?esc(GAMES[it.game]?.name||'لعبة'):k.name} · ${esc(weekday(it.date))} ${fmtDate(it.date)}</span>${it.note?`<br><span class="small">${esc(it.note)}</span>`:''}</span>
+    ${done?`<span class="chip ok">${ICON.check.replace('<svg','<svg width="16" height="16"')} أنجزت</span>`:locked?'<span class="chip">قريباً</span>':'<span class="chip acc">ابدأ</span>'}
+  </button>`;
+}
+function vStudent(){
+  const st=studentById(S.sid); if(!st) return vGrade();
+  const s=statsFor(st.id), pl=plantSvg(s.points), items=itemsForGrade(st.grade), today=ymd();
+  const avail=items.filter(i=>i.date<=today), todo=avail.filter(i=>!isDone(st.id,i.id)), up=items.filter(i=>i.date>today);
+  const moodToday = Store.events.find(e=>e.sid===st.id && e.kind==='mood' && e.date===today);
+  let body='';
+  if(S.sTab==='tasks'){
+    body = `${!moodToday?`<div class="card" style="text-align:center"><h3>كيف تشعر اليوم؟</h3><div class="moods" style="margin-top:10px">${MOODS.map(m=>`<button class="mood" data-a="mood" data-m="${m.id}">${moodFace(m.id,m.c)}${m.name}</button>`).join('')}</div></div>`:''}
+    <div class="section-title"><h2>مهامي</h2><span class="chip ${todo.length?'sun':'ok'}">${todo.length?T(todo.length)+' بانتظارك':'أنجزت كل المهام'}</span></div>
+    ${avail.length?`<div class="col">${[...todo,...avail.filter(i=>isDone(st.id,i.id))].map(i=>taskCard(i,st.id)).join('')}</div>`:`<div class="empty">لا توجد مهام مفتوحة الآن. ستظهر هنا عندما تفتحها المعلمة.</div>`}
+    ${up.length?`<div class="section-title"><h3>قريباً</h3></div><div class="col">${up.map(i=>taskCard(i,st.id)).join('')}</div>`:''}`;
+  } else if(S.sTab==='certs'){
+    const certs=s.evs.filter(e=>e.cert).slice().reverse();
+    body = certs.length?`<div class="grid g2" style="margin-top:12px">${certs.map(e=>`<button class="mini-cert" data-a="showcert" data-id="${e.id}" style="text-align:start">${sealSvg()}<span><b>${T(e.title)}</b><br><span class="small muted">${fmtDate(e.date)} · ${T(e.points)} نقطة</span></span><span class="spacer"></span>${starsHtml(e.stars||1).replace(/width:40px|class="stars"/g,'class="stars" style="transform:scale(.6)"')}</button>`).join('')}</div>`:`<div class="empty" style="margin-top:12px">ستظهر شهاداتك هنا بعد إكمال أول نشاط أو لعبة.</div>`;
+  } else if(S.sTab==='badges'){
+    body = `<div class="grid g3" style="margin-top:12px">${BADGES.map(b=>{ const on=b.test(s); return `<div class="card flat" style="text-align:center;${on?'':'opacity:.45'}"><div style="width:54px;margin:0 auto">${badgeSvg(on)}</div><h4>${b.name}</h4><p class="small muted">${b.desc}</p></div>`; }).join('')}</div>`;
+  } else if(S.sTab==='calm'){
+    body = `<div class="card" style="text-align:center;margin-top:12px"><h3>ركن الهدوء</h3><p class="muted">نتنفس مع الدائرة: شهيق عندما تكبر، وزفير عندما تصغر.</p><div class="breath"><i></i></div><p class="small muted">أربع مرات تكفي لنشعر بالراحة.</p></div>`;
+  }
+  return `<div class="fade-in stack">
+  <div class="welcome">
+    <div class="col" style="gap:8px"><p class="muted">أهلاً بك</p><h1>${esc(st.name)}</h1>
+      <div class="stats"><div class="stat"><span class="small muted">نقاطي</span><b class="tnum">${T(s.points)}</b></div><div class="stat"><span class="small muted">شهاداتي</span><b>${T(s.certs)}</b></div><div class="stat"><span class="small muted">نجوم كاملة</span><b>${T(s.perfect)}</b></div></div>
+    </div>
+    <div class="plant" style="text-align:center">${pl.svg}<div class="small"><b>${pl.name}</b>${pl.next?`<br><span class="muted">${T(pl.next-s.points)} نقطة لتكبر</span>`:''}</div></div>
+  </div>
+  <div class="tabs" role="tablist">${[['tasks','مهامي'],['certs','شهاداتي'],['badges','أوسمتي'],['calm','ركن الهدوء']].map(([k,l])=>`<button class="tab ${S.sTab===k?'on':''}" data-a="stab" data-t="${k}">${l}</button>`).join('')}
+    <span class="spacer"></span><button class="tab" data-a="switchstudent">تغيير الاسم</button></div>
+  ${body}</div>`;
+}
+function sealSvg(){ return `<svg class="seal" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="44" r="34" fill="var(--sun)"/><circle cx="48" cy="44" r="26" fill="none" stroke="var(--surface)" stroke-width="2.5" stroke-dasharray="4 4"/><path d="M34 74l-6 18 12-5 8 9 4-20M62 74l6 18-12-5-8 9" fill="var(--accent)"/><path d="M48 30l4.3 8.7 9.6 1.4-7 6.8 1.7 9.5L48 52l-8.6 4.4 1.7-9.5-7-6.8 9.6-1.4z" fill="var(--surface)"/></svg>`; }
+function badgeSvg(on){ return `<svg viewBox="0 0 54 54"><path d="M27 3l20 10v14c0 12-9 20-20 24C16 47 7 39 7 27V13z" fill="${on?'var(--accent-soft)':'var(--bg-2)'}" stroke="${on?'var(--accent)':'var(--line)'}" stroke-width="2.5"/><path d="M27 15l3.5 7 7.7 1.1-5.6 5.4 1.3 7.7L27 32.6l-6.9 3.6 1.3-7.7-5.6-5.4 7.7-1.1z" fill="${on?'var(--sun)':'var(--line)'}"/></svg>`; }
+
+/* ===== المشغّل: الشرح والأنشطة والألعاب والشهادات ===== */
+function startPlay({lessonId, type, game, itemId=null, preview=false}){
+  const L=lessonById(lessonId); if(!L){ toast('الدرس غير موجود'); return; }
+  const p={lesson:L, type, game, itemId, preview, i:0, first:[], wrong:{}, solved:false, hint:false, result:null, step:0, builder:{th:0,h:0,t:0,o:0}, mistakes:0};
+  if(type==='lesson'){ p.tryQ=genQs(L,1)[0]; }
+  else if(type==='game' && game==='memory'){ const pairs=genPairs(L,4); p.cards=shuffle(pairs.flatMap((pr,k)=>[{k,side:'a',c:pr.a,html:pr.html},{k,side:'b',c:pr.b,html:false}])); p.open=[]; p.matched=new Set(); }
+  else { p.qs=genQs(L, type==='homework'?8:6); }
+  S.p=p; go('player');
+}
+function backFromPlayer(){ const p=S.p; S.p=null; if(p && p.preview){ go('teacher'); } else go('student'); }
+
+function vPlayer(){
+  const p=S.p; if(!p) return vHome();
+  if(p.result) return vResult();
+  const L=p.lesson;
+  const head = (prog, label)=>`<div class="pbar noprint"><button class="iconbtn" data-a="quitplay" aria-label="خروج">${ICON.back}</button><div class="progress" aria-label="التقدم"><i style="width:${Math.round(prog*100)}%"></i></div><span class="chip">${label}</span></div>
+    <p class="muted small" style="text-align:center;margin-bottom:8px">${T(L.title)} · ${p.preview?'معاينة المعلمة':''}</p>`;
+  if(p.type==='lesson'){
+    const steps=L.explain, n=steps.length+1;
+    if(p.step<steps.length){
+      const st=steps[p.step];
+      return `<div class="player fade-in">${head((p.step+1)/n,'شرح')}
+      <div class="stage">
+        <div class="row" style="justify-content:center"><span class="chip sky">خطوة ${T(p.step+1)} من ${T(n)}</span><button class="btn sm soft" data-a="speak" data-t="${esc(st.t)}">${ICON.speaker} استماع</button></div>
+        <p class="explain-text">${T(st.t)}</p>
+        ${st.v.k==='builder'?vBuilder(st.v):V(st.v)}
+        <div class="row" style="justify-content:center">${p.step>0?`<button class="btn" data-a="estep" data-d="-1">السابق</button>`:''}<button class="btn primary lg" data-a="estep" data-d="1">التالي</button></div>
+      </div></div>`;
+    }
+    return `<div class="player fade-in">${head(1,'جرّب')}${vQuestion(p.tryQ, 'جرّب بنفسك')}</div>`;
+  }
+  if(p.type==='game' && p.game==='memory'){
+    const total=p.cards.length/2;
+    return `<div class="player fade-in">${head(p.matched.size/total,'بطاقات الذاكرة')}
+    <div class="stage"><p class="qtext">نقلب بطاقتين ونطابق السؤال مع إجابته</p>
+    <div class="mem">${p.cards.map((c,i)=>{ const open=p.open.includes(i)||p.matched.has(c.k);
+      return `<button class="mcard ${open?'open':''} ${p.matched.has(c.k)?'matched':''}" data-a="mflip" data-i="${i}" aria-label="بطاقة">${open?(c.html?c.c:(/^\d+\/\d+$/.test(c.c)?fracHtml(c.c):`<span>${T(c.c)}</span>`)):`<span class="back">${LOGO}</span>`}</button>`; }).join('')}</div>
+    <p class="muted small">محاولات غير متطابقة: ${T(p.mistakes)}</p></div></div>`;
+  }
+  const q=p.qs[p.i], label = p.type==='game' ? GAMES[p.game].name : (p.type==='homework'?'واجب':'نشاط');
+  if(p.type==='game' && p.game==='balloons') return `<div class="player fade-in">${head(p.i/p.qs.length,label)}${vBalloons(q)}</div>`;
+  if(p.type==='game' && p.game==='treasure') return `<div class="player fade-in">${head(p.i/p.qs.length,label)}${vTreasure()}${vQuestion(q)}</div>`;
+  return `<div class="player fade-in">${head(p.i/p.qs.length,label)}${vQuestion(q, `سؤال ${D(p.i+1)} من ${D(p.qs.length)}`)}</div>`;
+}
+function vQuestion(q, tag){
+  const p=S.p;
+  return `<div class="stage">
+    <div class="row" style="justify-content:center">${tag?`<span class="chip sky">${tag}</span>`:''}<button class="btn sm soft" data-a="speak" data-t="${esc(q.text+' '+(q.math||''))}">${ICON.speaker} استماع</button><button class="btn sm warm" data-a="hint">${ICON.bulb} تلميح</button></div>
+    <p class="qtext">${T(q.text)}</p>
+    ${V(q.v)}
+    ${q.math?`<div class="qmath">${T(q.math)}</div>`:''}
+    ${p.hint?`<div class="hintbox">${T(q.hint)}</div>`:''}
+    <div class="opts">${q.options.map((o,i)=>`<button class="opt ${p.solved&&o===q.answer?'right':''} ${p.wrong[o]?'wrong':''}" data-a="ans" data-o="${esc(o)}" ${p.solved||p.wrong[o]?'disabled':''}>${optHtml(o)}</button>`).join('')}</div>
+    <div class="feedback ${p.fb?.ok?'ok':'no'}" aria-live="polite">${p.fb?esc(p.fb.t):''}</div>
+  </div>`;
+}
+function vBalloons(q){
+  const p=S.p, cols=['var(--sky)','var(--sun)','var(--b-o)','var(--rose)'];
+  return `<div class="stage"><div class="row" style="justify-content:center"><button class="btn sm soft" data-a="speak" data-t="${esc(q.text+' '+(q.math||''))}">${ICON.speaker} استماع</button><button class="btn sm warm" data-a="hint">${ICON.bulb} تلميح</button></div>
+    <p class="qtext">${T(q.text)}</p>${V(q.v)}${q.math?`<div class="qmath">${T(q.math)}</div>`:''}
+    ${p.hint?`<div class="hintbox">${T(q.hint)}</div>`:''}
+    <div class="balloons">${q.options.map((o,i)=>`<button class="balloon ${p.solved&&o===q.answer?'pop':''} ${p.wrong[o]?'nope':''}" data-a="ans" data-o="${esc(o)}" ${p.solved?'disabled':''} aria-label="${esc(o)}">
+      <svg viewBox="0 0 110 136"><path d="M55 8c24 0 42 18 42 42 0 26-22 46-42 50-20-4-42-24-42-50C13 26 31 8 55 8z" fill="${cols[i%4]}" opacity="${p.wrong[o]?.35:.9}"/><path d="M50 100l5 7 5-7z" fill="${cols[i%4]}"/><path d="M55 107q-6 12 2 28" stroke="var(--ink-2)" fill="none" stroke-width="1.5"/><ellipse cx="40" cy="34" rx="7" ry="11" fill="#fff" opacity=".35"/></svg>
+      <span>${optHtml(o)}</span></button>`).join('')}</div>
+    <div class="feedback ${p.fb?.ok?'ok':'no'}" aria-live="polite">${p.fb?esc(p.fb.t):''}</div></div>`;
+}
+function vTreasure(){
+  const p=S.p, n=p.qs.length; let s='';
+  for(let i=0;i<n;i++) s+=`<span class="stone ${i<p.i?'past':''} ${i===p.i?'here':''}">${i===p.i?'<svg viewBox="0 0 24 24" width="24"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M5 21a7 7 0 0 1 14 0" fill="currentColor"/></svg>':T(i+1)}</span>`;
+  s+=`<span class="stone goal"><svg viewBox="0 0 32 32" width="34"><rect x="4" y="13" width="24" height="14" rx="3" fill="var(--sun)"/><path d="M4 16a12 8 0 0 1 24 0" fill="var(--accent)"/><rect x="14" y="16" width="4" height="6" rx="1" fill="var(--surface)"/></svg></span>`;
+  return `<div class="card flat" style="margin-bottom:14px"><div class="path">${s}</div></div>`;
+}
+function vBuilder(v){
+  const p=S.p, b=p.builder, places=v.max===3?[['h','مئة',100],['t','عشرة',10],['o','واحد',1]]:[['t','عشرة',10],['o','واحد',1]];
+  const n=b.h*100+b.t*10+b.o, ok=n===v.target;
+  return `<div class="col" style="align-items:center;width:100%">
+    <div class="card flat" style="width:100%;min-height:120px;display:grid;place-items:center">${vBlocks(n)}</div>
+    <div class="qmath">${T(n)}</div>
+    <div class="row" style="justify-content:center">${places.map(([k,l])=>`<button class="btn soft" data-a="bld" data-k="${k}" data-d="1">${ICON.plus} ${l}</button>`).join('')}<button class="btn sm" data-a="bld" data-k="reset">من جديد</button></div>
+    <div class="feedback ${ok?'ok':''}">${ok?'رائع! بنيت العدد '+T(v.target):`الهدف: ${T(v.target)}`}</div></div>`;
+}
+
+function answer(o){
+  const p=S.p; if(!p||p.solved) return;
+  const q = p.type==='lesson' ? p.tryQ : p.qs[p.i];
+  if(o===q.answer){
+    p.solved=true; if(p.type!=='lesson' && p.first[p.i]===undefined) p.first[p.i]=true;
+    p.fb={ok:true,t:pick(PRAISE)}; chime(true); render();
+    setTimeout(()=>{ if(S.p!==p) return; nextQ(); }, p.type==='game'&&p.game==='balloons'?900:1200);
+  } else {
+    p.wrong[o]=true; if(p.type!=='lesson') p.first[p.i]=false;
+    p.fb={ok:false,t:pick(RETRY)}; chime(false);
+    if(Object.keys(p.wrong).length>=1) p.hint=true;
+    render();
+  }
+}
+function nextQ(){
+  const p=S.p;
+  if(p.type==='lesson'){ finish(100); return; }
+  p.i++; p.solved=false; p.wrong={}; p.hint=false; p.fb=null;
+  if(p.i>=p.qs.length){ const right=p.first.filter(Boolean).length; finish(Math.round(right/p.qs.length*100)); return; }
+  render();
+}
+function flip(i){
+  const p=S.p; const c=p.cards[i]; if(p.matched.has(c.k)||p.open.includes(i)||p.open.length>=2) return;
+  p.open.push(i); render();
+  if(p.open.length===2){
+    const [a,b]=p.open.map(j=>p.cards[j]);
+    if(a.k===b.k && a.side!==b.side){ setTimeout(()=>{ p.matched.add(a.k); p.open=[]; chime(true); render(); if(p.matched.size===p.cards.length/2) setTimeout(()=>finish(Math.max(40,100-p.mistakes*10)),600); },500); }
+    else { p.mistakes++; setTimeout(()=>{ p.open=[]; render(); },1100); }
+  }
+}
+function finish(score){
+  const p=S.p, L=p.lesson, stars = score>=90?3:score>=60?2:1;
+  const st=studentById(S.sid);
+  const already = st && p.itemId && isDone(st.id,p.itemId);
+  let points = p.type==='lesson' ? 5 : p.type==='game' ? 10+stars*2 : 8+stars*2;
+  if(already) points = 2;
+  const cert = p.type!=='lesson';
+  const title = (p.type==='lesson'?'شرح: ':p.type==='game'?GAMES[p.game].name+': ':p.type==='homework'?'واجب: ':'نشاط: ')+L.title;
+  p.result={score,stars,points,cert,title,date:ymd()};
+  if(!p.preview && st){ Store.addEvent({sid:st.id, sname:st.name, grade:st.grade, kind:p.type, game:p.game||null, lessonId:L.id, itemId:p.itemId, title, score, stars, points, cert}); }
+  chime(true); render();
+}
+function vResult(){
+  const p=S.p, r=p.result, st=studentById(S.sid);
+  if(!r.cert) return `<div class="player fade-in"><div class="stage" style="margin-top:20px">${sealSvg()}<h2>أنهيت شرح الدرس!</h2><p class="explain-text">${T(p.lesson.title)}</p><span class="chip sun">+${T(r.points)} نقاط</span><button class="btn primary lg" data-a="donePlay">العودة</button></div></div>`;
+  return `<div class="player fade-in" style="margin-top:16px">${certHtml({name:st?st.name:'معاينة المعلمة', title:r.title, date:r.date, stars:r.stars, points:r.points, score:r.score})}
+    <div class="row noprint" style="justify-content:center;margin-top:16px"><button class="btn primary lg" data-a="donePlay">العودة لمهامي</button><button class="btn" data-a="replay">إعادة المحاولة</button></div></div>`;
+}
+function certHtml(c){
+  return `<div class="cert">${sealSvg()}<p class="muted">شهادة إنجاز</p><h2>أحسنت يا</h2><div class="name">${esc(c.name)}</div>
+    <p>أكملت بنجاح <b>${T(c.title)}</b></p>${starsHtml(c.stars)}
+    <div class="row" style="justify-content:center"><span class="chip sun">+${T(c.points)} نقطة</span><span class="chip acc">${T(c.score)}٪</span></div>
+    <p class="small muted">${esc(weekday(c.date))} ${fmtDate(c.date)} · المعلمة ${esc(SCHOOL.teacher)} · واحة الأرقام</p></div>`;
+}
+
+/* ===== قسم المعلمة ===== */
+function pinHash(p){ let h=5381; for(const c of 'waha:'+p) h=((h<<5)+h+c.charCodeAt(0))>>>0; return 'h'+h.toString(36); }
+function checkPin(p){ const cfg=Store.get('config',{}); return cfg.pinHash ? cfg.pinHash===pinHash(p) : p==='1234'; }
+S.pin='';
+function vLogin(){
+  const cfg=Store.get('config',{});
+  return `<div class="pinwrap fade-in"><div style="width:64px;color:var(--accent)">${ICON.lock}</div><h2>قسم المعلمة</h2><p class="muted">أدخلي الرقم السري</p>
+  <div class="pindots" id="pindots">${[0,1,2,3].map(i=>`<span class="${i<S.pin.length?'on':''}"></span>`).join('')}</div>
+  <div class="pinpad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-a="pin" data-n="${n}">${T(n)}</button>`).join('')}<button data-a="pin" data-n="del" aria-label="مسح">⌫</button><button data-a="pin" data-n="0">${T(0)}</button><button data-a="home" aria-label="رجوع">${ICON.back.replace('<svg','<svg width="22"')}</button></div>
+  ${!cfg.pinHash?`<p class="notice small">الرقم السري المبدئي ${T('1234')}. غيّريه بعد الدخول من الإعدادات.</p>`:''}</div>`;
+}
+function pinPress(n){
+  if(n==='del'){ S.pin=S.pin.slice(0,-1); render(); return; }
+  if(S.pin.length>=4) return; S.pin+=n; render();
+  if(S.pin.length===4){
+    if(checkPin(S.pin)){ S.unlocked=true; S.pin=''; try{ sessionStorage.setItem('waha-t','1'); }catch(e){} go('teacher',{ttab:'dash'}); }
+    else { setTimeout(()=>{ const d=$('#pindots'); if(d) d.classList.add('shake'); chime(false); setTimeout(()=>{ S.pin=''; render(); },450); },150); }
+  }
+}
+const TTABS = [['dash','الرئيسية','home'],['students','الطلبة','users'],['track','المتابعة والنقاط','chart'],['assess','التقويم المستمر','check'],['open','فتح الدروس والأنشطة','calendar'],['plan','خطة السير والإنجاز','leaf'],['goals','الأهداف المقترحة','target'],['preps','الدروس والتحاضير','file'],['tools','أدوات الصف','tool'],['settings','الإعدادات','gear']];
+function vTeacher(){
+  const map={dash:tDash,students:tStudents,track:tTrack,assess:tAssess,open:tOpen,plan:tPlan,goals:tGoals,preps:tPreps,tools:tTools,settings:tSettings};
+  return `<div class="tshell fade-in"><nav class="tnav noprint" aria-label="أقسام المعلمة">${TTABS.map(([k,l,ic])=>`<button class="${S.ttab===k?'on':''}" data-a="ttab" data-t="${k}">${ICON[ic]}${l}</button>`).join('')}</nav>
+  <main class="tmain">${(map[S.ttab]||tDash)()}</main></div>`;
+}
+function gradeChips(cur, action='tgrade'){ return `<div class="tabs" style="display:inline-flex">${[2,3,4].map(g=>`<button class="tab ${cur==g?'on':''}" data-a="${action}" data-g="${g}">الصف ${GRADE_NAME[g]}</button>`).join('')}</div>`; }
+function head(title, sub, right=''){ return `<div class="section-title" style="margin-top:6px"><div><h2>${title}</h2>${sub?`<p class="muted small">${sub}</p>`:''}</div><span class="spacer"></span>${right}</div>`; }
+
+/* الرئيسية */
+function tDash(){
+  const today=ymd(), evToday=Store.events.filter(e=>e.date===today && e.kind!=='mood'), all=students();
+  const ranked=all.map(s=>({s,p:statsFor(s.id).points})).sort((a,b)=>b.p-a.p).slice(0,5);
+  const recent=Store.events.filter(e=>e.kind!=='mood').slice(-8).reverse();
+  const moods=Store.events.filter(e=>e.kind==='mood'&&e.date===today);
+  const sug=suggestGoals()[0];
+  const h=new Date().getHours();
+  return `${head(`${h<12?'صباح الخير':'مساء الخير'} أ. ${esc(SCHOOL.teacher.split(' ')[0])}`, `${esc(weekday(today))} ${fmtDate(today)} · ${Store.mode==='cloud'?'البيانات متزامنة ومباشرة':'البيانات محفوظة على هذا الجهاز'}`)}
+  <div class="grid g4">
+    ${[2,3,4].map(g=>`<div class="card"><p class="small muted">الصف ${GRADE_NAME[g]}</p><b style="font-family:var(--f-display);font-size:1.8rem">${T(all.filter(s=>s.grade==g).length)}</b> <span class="muted small">طالب</span></div>`).join('')}
+    <div class="card"><p class="small muted">إنجازات اليوم</p><b style="font-family:var(--f-display);font-size:1.8rem">${T(evToday.length)}</b> <span class="muted small">· ${T(evToday.reduce((a,e)=>a+(+e.points||0),0))} نقطة</span></div>
+  </div>
+  ${!all.length?`<div class="notice" style="margin-top:14px">ابدئي بإضافة أسماء الطلبة من قسم «الطلبة»، ثم افتحي لهم أول درس من «فتح الدروس والأنشطة».</div>`:''}
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>آخر الإنجازات</h3>${recent.length?`<div class="col" style="gap:8px;margin-top:8px">${recent.map(e=>`<div class="row" style="gap:10px">${avatar(e.sname||'',36)}<div style="flex:1;min-width:0"><b>${esc(e.sname)}</b> <span class="small muted">${T(e.title||e.note||'')}</span></div>${e.stars?`<span class="chip sun">${T(e.stars)} ★</span>`:''}<span class="chip ${e.points<0?'rose':'ok'}">${e.points>0?'+':''}${T(e.points)}</span></div>`).join('')}</div>`:'<p class="muted">ستظهر هنا إنجازات الطلبة مباشرة.</p>'}</div>
+    <div class="card"><h3>لوحة الشرف</h3>${ranked.some(r=>r.p>0)?`<div class="col" style="gap:8px;margin-top:8px">${ranked.map((r,i)=>`<div class="row">${avatar(r.s.name,36)}<b style="flex:1">${esc(r.s.name)}</b><span class="chip">${'الصف '+GRADE_NAME[r.s.grade]}</span><span class="chip sun tnum">${T(r.p)}</span></div>`).join('')}</div>`:'<p class="muted">لم تُسجَّل نقاط بعد.</p>'}</div>
+    <div class="card"><h3>مشاعر الطلبة اليوم</h3>${moods.length?`<div class="row" style="margin-top:8px">${MOODS.map(m=>{ const c=moods.filter(x=>x.mood===m.id).length; return c?`<span class="chip" title="${esc(moods.filter(x=>x.mood===m.id).map(x=>x.sname).join('، '))}"><span style="width:22px;display:inline-block">${moodFace(m.id,m.c)}</span>${m.name} ${T(c)}</span>`:''; }).join('')}</div><p class="small muted" style="margin-top:8px">${esc(moods.filter(x=>['sad','worried','tired'].includes(x.mood)).map(x=>x.sname).join('، ')) || 'الجميع بخير'}${moods.some(x=>['sad','worried','tired'].includes(x.mood))?' يحتاجون كلمة طيبة اليوم.':''}</p>`:'<p class="muted">يختار الطلبة شعورهم عند الدخول.</p>'}</div>
+    <div class="card"><h3>مقترح اليوم</h3>${sug?`<p style="margin-block:8px">${T(sug.text)}</p><button class="btn sm soft" data-a="addgoal" data-text="${T(sug.text)}" data-who="${esc(sug.who)}">${ICON.plus} أضيفيه لأهدافي</button>`:'<p class="muted">لا مقترحات الآن.</p>'}</div>
+  </div>`;
+}
+
+/* الطلبة */
+function tStudents(){
+  const all=students();
+  return `${head('الطلبة','أضيفي أسماء الطلبة لكل صف. تظهر الأسماء مباشرة في قسم الطلبة.')}
+  <div class="card"><div class="formrow"><label class="f">اسم الطالب<input type="text" id="ns-name" placeholder="مثال: مريم سالم"></label>
+    <label class="f">الصف<select id="ns-grade">${[2,3,4].map(g=>`<option value="${g}" ${S.tgrade==g?'selected':''}>الصف ${GRADE_NAME[g]}</option>`).join('')}</select></label>
+    <button class="btn primary" data-a="addstudent">${ICON.plus} إضافة</button></div>
+    <details style="margin-top:12px"><summary class="muted">إضافة عدة أسماء دفعة واحدة</summary><div class="col" style="margin-top:8px"><textarea id="ns-bulk" placeholder="اكتبي كل اسم في سطر"></textarea><button class="btn soft" data-a="addbulk">إضافة الأسماء للصف المختار</button></div></details></div>
+  ${[2,3,4].map(g=>{ const list=all.filter(s=>s.grade==g); return `<div class="section-title"><h3>الصف ${GRADE_NAME[g]}</h3><span class="chip">${T(list.length)}</span></div>
+    ${list.length?`<div class="grid g3">${list.map(s=>`<div class="card flat row" style="gap:10px">${avatar(s.name,42)}<b style="flex:1;min-width:0">${esc(s.name)}</b><button class="iconbtn" data-a="renamestudent" data-id="${s.id}" aria-label="تعديل">${I('<path d="M4 20h4L19 9l-4-4L4 16z"/>')}</button><button class="iconbtn" data-a="delstudent" data-id="${s.id}" aria-label="حذف" style="color:var(--rose)">${ICON.trash}</button></div>`).join('')}</div>`:'<p class="muted small">لا يوجد طلبة بعد.</p>'}`; }).join('')}`;
+}
+
+/* المتابعة والنقاط */
+function scoreChart(evs){
+  const pts=evs.filter(e=>typeof e.score==='number').slice(-20); if(pts.length<2) return '<p class="muted small">يظهر منحنى التحسن بعد نشاطين على الأقل.</p>';
+  const W=600,H=200,P=34, x=i=>P+i*(W-2*P)/(pts.length-1), y=v=>H-P-(v/100)*(H-2*P);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="منحنى درجات الأنشطة">`;
+  [0,50,100].forEach(v=>{ s+=`<line x1="${P}" x2="${W-P}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P-8}" y="${y(v)+5}" text-anchor="end" class="svgmuted" font-size="12">${D(v)}</text>`; });
+  const d=pts.map((e,i)=>`${i?'L':'M'}${x(i).toFixed(1)} ${y(e.score).toFixed(1)}`).join(' ');
+  s+=`<path d="${d} L${x(pts.length-1)} ${y(0)} L${x(0)} ${y(0)}Z" fill="var(--accent)" opacity=".12"/><path d="${d}" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round"/>`;
+  pts.forEach((e,i)=>{ s+=`<circle cx="${x(i)}" cy="${y(e.score)}" r="${i===pts.length-1?6:3.5}" fill="var(--accent)"><title>${T(e.title)}: ${e.score}%</title></circle>`; });
+  const first=pts.slice(0,3).reduce((a,e)=>a+e.score,0)/Math.min(3,pts.length), last=pts.slice(-3).reduce((a,e)=>a+e.score,0)/Math.min(3,pts.length);
+  return s+`</svg><p class="small ${last>=first?'':'muted'}" style="margin-top:6px">${last>first+4?'تحسّن واضح في آخر الأنشطة':last<first-4?'تراجع بسيط في آخر الأنشطة؛ قد يحتاج مراجعة':'أداء ثابت'} (من ${T(Math.round(first))}٪ إلى ${T(Math.round(last))}٪)</p>`;
+}
+function lessonMastery(evs, grade){
+  const rows=LESSONS.filter(l=>l.grade==grade).map(l=>{ const sc=evs.filter(e=>e.lessonId===l.id && typeof e.score==='number' && e.kind!=='lesson'); return {l, avg: sc.length?Math.round(sc.reduce((a,e)=>a+e.score,0)/sc.length):null}; });
+  return `<div class="bars">${rows.map(r=>`<div class="barrow"><span class="small" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${T(r.l.title)}</span><span class="track"><i style="width:${r.avg??0}%;background:${r.avg==null?'transparent':r.avg>=80?'var(--ok)':r.avg>=60?'var(--sun)':'var(--rose)'}"></i></span><span class="small tnum">${r.avg==null?'—':T(r.avg)+'٪'}</span></div>`).join('')}</div>`;
+}
+function assessTotal(sid, grade){
+  const a=Store.get('assess',{items:[],scores:{}}), items=(a.items||[]).filter(i=>i.grade==grade), sc=(a.scores||{})[sid]||{};
+  return {got:items.reduce((s,i)=>s+(+sc[i.id]||0),0), max:items.reduce((s,i)=>s+(+i.max||0),0), items, sc};
+}
+function parentMsg(st){
+  const s=statsFor(st.id), at=assessTotal(st.id,st.grade);
+  return `ولي أمر الطالب ${st.name} المحترم،\nتحية طيبة، يسعدنا إطلاعكم على تقدّم ابنكم في مادة الرياضيات:\n• النقاط المكتسبة: ${s.points}\n• الشهادات: ${s.certs}\n${s.avg!=null?`• متوسط الأنشطة: ${s.avg}%\n`:''}${at.max?`• التقويم المستمر: ${at.got} من ${at.max}\n`:''}نشكر متابعتكم وتشجيعكم المستمر.\nمعلمة صعوبات التعلم: ${SCHOOL.teacher}`;
+}
+function tTrack(){
+  const list=students().filter(s=>s.grade==S.tgrade); const st=studentById(S.tsel);
+  let detail='<div class="empty">اختاري طالباً لعرض متابعته.</div>';
+  if(st){ const s=statsFor(st.id), at=assessTotal(st.id,st.grade), pl=plantSvg(s.points);
+    detail=`<div class="stack">
+    <div class="card row" style="gap:16px">${avatar(st.name,64)}<div style="flex:1;min-width:0"><h3>${esc(st.name)}</h3><p class="muted small">الصف ${GRADE_NAME[st.grade]} · ${pl.name}</p></div>
+      <div class="stats"><div class="stat"><span class="small muted">النقاط</span><b>${T(s.points)}</b></div><div class="stat"><span class="small muted">الشهادات</span><b>${T(s.certs)}</b></div><div class="stat"><span class="small muted">المتوسط</span><b>${s.avg==null?'—':T(s.avg)+'٪'}</b></div><div class="stat"><span class="small muted">التقويم</span><b>${at.max?T(at.got)+'/'+T(at.max):'—'}</b></div></div></div>
+    <div class="card"><h3>تسجيل نقاط</h3><div class="formrow" style="margin-top:8px"><label class="f">السبب<input type="text" id="mp-note" placeholder="مثال: مشاركة ممتازة"></label>
+      <div class="row">${[1,2,5,10].map(n=>`<button class="btn sm soft" data-a="mpts" data-n="${n}">+${T(n)}</button>`).join('')}<button class="btn sm danger" data-a="mpts" data-n="-1">−${T(1)}</button></div></div></div>
+    <div class="card chart"><h3>منحنى التحسن</h3>${scoreChart(s.evs)}</div>
+    <div class="card"><h3>إتقان الدروس</h3><div style="margin-top:8px">${lessonMastery(s.evs,st.grade)}</div></div>
+    <div class="card"><div class="row"><h3>رسالة لولي الأمر</h3><span class="spacer"></span><button class="btn sm soft" data-a="copyparent">${ICON.copy} نسخ الرسالة</button></div><pre id="parentmsg" style="white-space:pre-wrap;font-family:inherit;margin:8px 0 0;background:var(--bg);padding:12px;border-radius:12px">${esc(parentMsg(st))}</pre></div>
+    <div class="card"><h3>سجل الإنجازات</h3>${s.evs.length?`<div class="tablewrap" style="margin-top:8px"><table><thead><tr><th>التاريخ</th><th>العمل</th><th>الدرجة</th><th>النقاط</th><th></th></tr></thead><tbody>${s.evs.slice().reverse().map(e=>`<tr><td class="tnum">${fmtDate(e.date)}</td><td>${e.kind==='mood'?'الشعور: '+esc(MOODS.find(m=>m.id===e.mood)?.name||''):T(e.title||e.note||'')}</td><td>${typeof e.score==='number'?T(e.score)+'٪ '+'★'.repeat(e.stars||0):'—'}</td><td>${T(e.points||0)}</td><td><button class="iconbtn" data-a="delevent" data-id="${e.id}" aria-label="حذف السجل" style="width:34px;height:34px;color:var(--rose)">${ICON.trash}</button></td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">لا يوجد سجل بعد.</p>'}</div></div>`; }
+  return `${head('المتابعة والنقاط','نقاط الطلبة وشهاداتهم تصل هنا مباشرة بعد كل نشاط أو لعبة.', gradeChips(S.tgrade))}
+  <div class="grid" style="grid-template-columns:minmax(0,240px) minmax(0,1fr);align-items:start" id="trackgrid">
+    <div class="col" style="gap:8px">${list.length?list.map(s=>`<button class="task" style="padding:10px;${S.tsel===s.id?'border-color:var(--accent);background:var(--accent-soft)':''}" data-a="tsel" data-id="${s.id}">${avatar(s.name,38)}<span class="body"><b>${esc(s.name)}</b><br><span class="small muted">${T(statsFor(s.id).points)} نقطة</span></span></button>`).join(''):'<p class="muted small">لا يوجد طلبة في هذا الصف.</p>'}</div>
+    <div style="min-width:0">${detail}</div></div>`;
+}
+
+/* التقويم المستمر */
+function tAssess(){
+  const a=Store.get('assess',{items:[],scores:{}}), items=(a.items||[]).filter(i=>i.grade==S.tgrade), list=students().filter(s=>s.grade==S.tgrade);
+  return `${head('التقويم المستمر','أضيفي بنود التقويم ودرجاتها، ثم أدخلي درجة كل طالب.', gradeChips(S.tgrade))}
+  <div class="card"><div class="formrow"><label class="f">البند<input type="text" id="as-name" placeholder="مثال: اختبار قصير ١"></label><label class="f">الدرجة العظمى<input type="number" id="as-max" min="1" value="10"></label><button class="btn primary" data-a="additem">${ICON.plus} إضافة بند</button></div>
+  <div class="row" style="margin-top:10px;gap:6px"><span class="small muted">بنود مقترحة:</span>${['واجبات','مشاركة صفية','اختبار قصير','نشاط أدائي','ملف إنجاز','مشروع'].map(n=>`<button class="chip" data-a="quickitem" data-n="${n}" style="border:0;cursor:pointer">${n}</button>`).join('')}</div></div>
+  ${items.length&&list.length?`<div class="tablewrap" style="margin-top:14px"><table><thead><tr><th>الطالب</th>${items.map(i=>`<th>${esc(i.name)}<br><span class="small muted">من ${T(i.max)}</span> <button class="iconbtn" data-a="delitem" data-id="${i.id}" aria-label="حذف البند" style="width:28px;height:28px;color:var(--rose)">${ICON.trash}</button></th>`).join('')}<th>المجموع</th></tr></thead>
+    <tbody>${list.map(s=>{ const sc=(a.scores||{})[s.id]||{}, tot=items.reduce((t,i)=>t+(+sc[i.id]||0),0), max=items.reduce((t,i)=>t+(+i.max||0),0);
+      return `<tr><td><b>${esc(s.name)}</b></td>${items.map(i=>`<td><input type="number" min="0" max="${i.max}" step="0.5" id="sc-${s.id}-${i.id}" data-sc="${s.id}|${i.id}" value="${sc[i.id]??''}" aria-label="درجة ${esc(s.name)} في ${esc(i.name)}"></td>`).join('')}<td><b class="tnum">${T(tot)}</b> <span class="muted small">/ ${T(max)}</span></td></tr>`; }).join('')}</tbody></table></div>`
+  : `<div class="empty" style="margin-top:14px">${!list.length?'أضيفي طلبة هذا الصف أولاً.':'أضيفي أول بند للتقويم.'}</div>`}`;
+}
+
+/* فتح الدروس والأنشطة */
+S.of={grade:2, lessonId:'g2-1', type:'activity', game:'balloons', date:ymd(), note:''};
+function tOpen(){
+  const f=S.of, ls=LESSONS.filter(l=>l.grade==f.grade); if(!ls.find(l=>l.id===f.lessonId)) f.lessonId=ls[0].id;
+  const items=openedItems().slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  return `${head('فتح الدروس والأنشطة','ما تفتحينه يظهر فوراً في قسم الطلبة لهذا الصف في اليوم المحدد.')}
+  <div class="card"><div class="formrow">
+    <label class="f">الصف<select id="of-grade" data-of="grade">${[2,3,4].map(g=>`<option value="${g}" ${f.grade==g?'selected':''}>الصف ${GRADE_NAME[g]}</option>`).join('')}</select></label>
+    <label class="f">الدرس<select id="of-lesson" data-of="lessonId">${[1,2].map(b=>`<optgroup label="${BOOKS[b]}">${ls.filter(l=>l.book===b).map(l=>`<option value="${l.id}" ${f.lessonId===l.id?'selected':''}>${T(l.title)}</option>`).join('')}</optgroup>`).join('')}</select></label>
+    <label class="f">النوع<select id="of-type" data-of="type">${Object.entries(KIND).map(([k,v])=>`<option value="${k}" ${f.type===k?'selected':''}>${v.name}</option>`).join('')}</select></label>
+    ${f.type==='game'?`<label class="f">اللعبة<select id="of-game" data-of="game">${Object.entries(GAMES).map(([k,v])=>`<option value="${k}" ${f.game===k?'selected':''}>${v.name}</option>`).join('')}</select></label>`:''}
+    <label class="f">اليوم والتاريخ<input type="date" id="of-date" data-of="date" value="${f.date}"></label>
+    <label class="f">ملاحظة للطلبة (اختياري)<input type="text" id="of-note" data-of="note" value="${esc(f.note)}" placeholder="مثال: نحلّه بهدوء في البيت"></label>
+  </div><div class="row" style="margin-top:12px"><button class="btn primary" data-a="openitem">${ICON.check} افتحي للطلبة</button><button class="btn soft" data-a="openall">فتح الدرس كاملاً (شرح + نشاط + لعبة)</button><span class="small muted">${esc(weekday(f.date))} ${fmtDate(f.date)}</span></div></div>
+  <div class="section-title"><h3>المفتوح حالياً</h3><span class="chip">${T(items.length)}</span></div>
+  ${items.length?`<div class="tablewrap"><table><thead><tr><th>التاريخ</th><th>الصف</th><th>العنوان</th><th>النوع</th><th>أنجزه</th><th></th></tr></thead><tbody>${items.map(it=>{ const cls=students().filter(s=>s.grade==it.grade), done=cls.filter(s=>isDone(s.id,it.id)).length;
+    return `<tr><td class="tnum">${esc(weekday(it.date))} ${fmtDate(it.date)}</td><td>${GRADE_NAME[it.grade]}</td><td>${T(it.title)}</td><td>${it.type==='game'?esc(GAMES[it.game]?.name):KIND[it.type].name}</td><td><span class="chip ${done&&done===cls.length?'ok':''}">${T(done)} / ${T(cls.length)}</span></td><td><button class="btn sm danger" data-a="closeitem" data-id="${it.id}">إغلاق</button></td></tr>`; }).join('')}</tbody></table></div>`:'<div class="empty">لم يُفتح شيء بعد.</div>'}`;
+}
+function makeItem(type, game){
+  const f=S.of, L=lessonById(f.lessonId);
+  const pre = type==='lesson'?'شرح: ':type==='game'?GAMES[game].name+': ':type==='homework'?'واجب: ':'نشاط: ';
+  return {id:uid(), type, game:type==='game'?game:null, lessonId:L.id, grade:L.grade, date:f.date||ymd(), title:pre+L.title, note:f.note||''};
+}
+async function openItems(arr){ const o=Store.get('opened',{items:[]}); await Store.set('opened',{items:[...(o.items||[]), ...arr]}); toast('فُتح للطلبة'); }
+
+/* خطة السير والإنجاز */
+function tPlan(){
+  const plan=Store.get('plan',{}), ls=LESSONS.filter(l=>l.grade==S.tgrade), cls=students().filter(s=>s.grade==S.tgrade);
+  const done=ls.filter(l=>(plan[l.id]||{}).status==='done').length;
+  return `${head('خطة السير والإنجاز','وزّعي الدروس على الأسابيع وتابعي ما أُنجز وإتقان الطلبة.', gradeChips(S.tgrade))}
+  <div class="card"><div class="row"><b>إنجاز الخطة</b><span class="spacer"></span><span class="chip acc">${T(done)} من ${T(ls.length)} دروس</span></div><div class="progress" style="margin-top:10px"><i style="width:${ls.length?done/ls.length*100:0}%"></i></div></div>
+  ${[1,2].map(b=>`<div class="section-title"><h3>${BOOKS[b]}</h3></div><div class="tablewrap"><table><thead><tr><th>الدرس</th><th>الأسبوع</th><th>الحالة</th><th>أتقنه الطلبة</th></tr></thead><tbody>
+  ${ls.filter(l=>l.book===b).map(l=>{ const p=plan[l.id]||{}, wk=p.week??l.week, mast=cls.filter(s=>{ const sc=Store.events.filter(e=>e.sid===s.id&&e.lessonId===l.id&&typeof e.score==='number'&&e.kind!=='lesson'); return sc.length && Math.max(...sc.map(e=>e.score))>=80; }).length;
+    return `<tr><td><b>${T(l.title)}</b><br><span class="small muted">${esc(l.unit)}</span></td><td><input type="number" min="1" max="20" id="pw-${l.id}" data-pw="${l.id}" value="${wk}" style="width:70px;min-height:38px"></td>
+    <td><select data-ps="${l.id}" id="ps-${l.id}" style="min-height:38px">${[['todo','لم يبدأ'],['doing','جارٍ'],['done','تم']].map(([k,n])=>`<option value="${k}" ${(p.status||'todo')===k?'selected':''}>${n}</option>`).join('')}</select></td>
+    <td><span class="chip ${cls.length&&mast===cls.length?'ok':''}">${T(mast)} / ${T(cls.length)}</span></td></tr>`; }).join('')}</tbody></table></div>`).join('')}`;
+}
+
+/* الأهداف */
+function suggestGoals(){
+  const out=[], goals=(Store.get('goals',{items:[]}).items||[]).map(g=>g.text), week=Date.now()-7*864e5;
+  for(const s of students()){
+    const evs=evFor(s.id).filter(e=>typeof e.score==='number'&&e.kind!=='lesson');
+    const byL={}; evs.forEach(e=>{ (byL[e.lessonId]=byL[e.lessonId]||[]).push(e.score); });
+    for(const [lid,arr] of Object.entries(byL)){ const avg=arr.reduce((a,b)=>a+b,0)/arr.length, L=lessonById(lid); if(!L) continue;
+      if(avg<70) out.push({who:s.id, text:`أن يتقن ${s.name} درس «${L.title}» بنسبة ٨٠٪ (متوسطه الحالي ${Math.round(avg)}٪)`, pri:1});
+      else if(avg>=95 && arr.length>=2) out.push({who:s.id, text:`تقديم نشاط إثرائي لـ${s.name} في درس «${L.title}»`, pri:3}); }
+    const open=itemsForGrade(s.grade).filter(i=>i.date<=ymd()&&!isDone(s.id,i.id));
+    if(open.length>=2 && !evFor(s.id).some(e=>e.ts>week)) out.push({who:s.id, text:`تشجيع ${s.name} على إكمال ${open.length} مهام مفتوحة`, pri:2});
+  }
+  const plan=Store.get('plan',{});
+  LESSONS.filter(l=>(plan[l.id]||{}).status==='doing').forEach(l=>l.sub.slice(0,2).forEach(t=>out.push({who:'class'+l.grade, text:`${t.replace('أن ي','أن ي')} (الصف ${GRADE_NAME[l.grade]})`, pri:2})));
+  TEACHER_GOALS.forEach(t=>out.push({who:'teacher', text:t, pri:4}));
+  return out.filter(g=>!goals.includes(g.text)).sort((a,b)=>a.pri-b.pri);
+}
+function tGoals(){
+  const goals=Store.get('goals',{items:[]}).items||[], sug=suggestGoals();
+  const whoName = w => w==='teacher'?'للمعلمة':w&&w.startsWith('class')?'للصف':(studentById(w)?.name||'');
+  return `${head('الأهداف المقترحة','مقترحات مبنية على أداء الطلبة وخطة السير، وأهداف مهنية للمعلمة.')}
+  <div class="grid g2">
+  <div class="card"><h3>أهدافي</h3>
+    <div class="formrow" style="margin-top:8px"><label class="f">هدف جديد<input type="text" id="gl-text" placeholder="اكتبي هدفاً"></label><label class="f">الموعد<input type="date" id="gl-due"></label><button class="btn primary" data-a="addcustomgoal">${ICON.plus}</button></div>
+    ${goals.length?`<div class="col" style="gap:8px;margin-top:12px">${goals.map(g=>`<div class="row" style="gap:10px;align-items:flex-start"><input type="checkbox" id="gc-${g.id}" data-gdone="${g.id}" ${g.done?'checked':''} style="width:22px;height:22px;margin-top:4px;accent-color:var(--accent)"><label for="gc-${g.id}" style="flex:1;${g.done?'text-decoration:line-through;color:var(--ink-2)':''}">${T(g.text)}<br><span class="small muted">${esc(whoName(g.who))}${g.due?' · حتى '+fmtDate(g.due):''}</span></label><button class="iconbtn" data-a="delgoal" data-id="${g.id}" style="width:34px;height:34px;color:var(--rose)" aria-label="حذف">${ICON.trash}</button></div>`).join('')}</div>
+    <p class="small muted" style="margin-top:10px">تحقق ${T(goals.filter(g=>g.done).length)} من ${T(goals.length)}</p>`:'<p class="muted" style="margin-top:10px">أضيفي هدفاً أو اختاري من المقترحات.</p>'}</div>
+  <div class="card"><h3>مقترحات</h3><div class="col" style="gap:8px;margin-top:8px">${sug.slice(0,12).map(g=>`<div class="row" style="gap:10px"><span class="chip ${g.who==='teacher'?'sun':g.who.startsWith('class')?'sky':'acc'}">${esc(whoName(g.who))}</span><span style="flex:1;min-width:0">${T(g.text)}</span><button class="btn sm soft" data-a="addgoal" data-text="${T(g.text)}" data-who="${esc(g.who)}">${ICON.plus}</button></div>`).join('')}</div></div>
+  </div>`;
+}
+
+/* الدروس والتحاضير */
+function tPreps(){
+  if(S.iep) return tIEP();
+  const ls=LESSONS.filter(l=>l.grade==S.tgrade), plan=Store.get('plan',{});
+  return `${head('الدروس والتحاضير','لكل درس: تحضير على نموذج الخطة التعليمية الفردية، ومعاينة الشرح والنشاط والألعاب.', gradeChips(S.tgrade))}
+  <p class="notice small">المحتوى الحالي مبدئي، وسيُستبدل بدروس الكتابين عند وصولهما.</p>
+  ${[1,2].map(b=>`<div class="section-title"><h3>${BOOKS[b]}</h3></div><div class="grid g2">${ls.filter(l=>l.book===b).map(l=>`<div class="card col" style="gap:10px">
+    <div class="row"><span class="chip">${esc(l.unit)}</span><span class="spacer"></span>${(plan[l.id]||{}).status==='done'?'<span class="chip ok">تم</span>':''}</div>
+    <h3>${T(l.title)}</h3><p class="small muted">${T(l.goal)}</p>
+    <div class="row" style="gap:6px"><button class="btn sm primary" data-a="iep" data-l="${l.id}">${ICON.file} التحضير</button><button class="btn sm soft" data-a="preview" data-l="${l.id}" data-t="lesson">الشرح</button><button class="btn sm soft" data-a="preview" data-l="${l.id}" data-t="activity">النشاط</button>
+    ${Object.entries(GAMES).map(([k,g])=>`<button class="btn sm warm" data-a="preview" data-l="${l.id}" data-t="game" data-g="${k}">${g.name}</button>`).join('')}
+    <button class="btn sm" data-a="quickopen" data-l="${l.id}">فتح اليوم للطلبة</button></div></div>`).join('')}</div>`).join('')}`;
+}
+function iepKey(){ return 'iep_'+(S.iep.sid||'all')+'_'+S.iep.lessonId; }
+function tIEP(){
+  const L=lessonById(S.iep.lessonId), saved=Store.get(iepKey(),null)||{}, sid=S.iep.sid, st=studentById(sid);
+  const v=(k,def)=> saved[k]!==undefined ? saved[k] : def;
+  const today=new Date(), month=MONTHS[[7,8,9,10,11,0].indexOf(today.getMonth())] || '';
+  const ck=(list,key,defIdx)=>{ const sel=v(key,defIdx.map(i=>list[i])); return list.map((n,i)=>`<label class="chkline"><input type="checkbox" data-iepck="${key}" value="${esc(n)}" ${sel.includes(n)?'checked':''}> ${esc(n)}</label>`).join(''); };
+  const ed=(k,def,multi)=>`<div contenteditable="true" data-iep="${k}" style="${multi?'white-space:pre-wrap':''}">${esc(v(k,def))}</div>`;
+  const list=students().filter(s=>s.grade==L.grade);
+  return `<div class="noprint">${head('التحضير: '+T(L.title), 'نموذج الخطة التعليمية الفردية. كل الخانات قابلة للتعديل، ثم احفظي أو اطبعي.', `<button class="btn" data-a="iepback">${ICON.back} رجوع</button>`)}
+  <div class="card row" style="margin-bottom:14px"><label class="f" style="flex:1">الطالب<select id="iep-sid" data-a2="iepsid"><option value="">تحضير عام للمجموعة</option>${list.map(s=>`<option value="${s.id}" ${sid===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
+  <button class="btn primary" data-a="iepsave">${ICON.check} حفظ التحضير</button>${!IN_FRAME?`<button class="btn" data-a="print">${ICON.print} طباعة</button>`:''}${saved._ts?`<span class="small muted">آخر حفظ ${fmtDate(ymd(new Date(saved._ts)))}</span>`:''}</div></div>
+  <div class="iep" id="iepform"><h2>الخطة التعليمية الفردية</h2>
+  <table><tbody>
+   <tr><td>الفصل الدراسي: ${esc(SCHOOL.term)}</td><td>العام الدراسي: ${esc(SCHOOL.year)}</td><td colspan="2">الاسم: ${ed('name', st?st.name:'')}</td><td>المادة: ${esc(SCHOOL.subject)}</td><td>الصف: ${esc(GRADE_NAME[L.grade])}</td></tr>
+   <tr><td colspan="2">المدرسة: ${esc(SCHOOL.school)}</td><td colspan="2">المحافظة: ${esc(SCHOOL.gov)}</td><td colspan="2">رقم الهدف السنوي / طويل المدى: ${ed('goalno','')}</td></tr>
+   <tr><td colspan="6">الهدف التعليمي العام: ${ed('goal', L.goal)}</td></tr>
+   <tr><td>الشهر: ${ed('month', month)}</td><td>الأسبوع: ${ed('week', String((Store.get('plan',{})[L.id]||{}).week??L.week))}</td><td colspan="2">تاريخ البدء بالهدف: ${ed('start', fmtDate(ymd()))}</td><td colspan="2">تاريخ تحقيق الهدف: ${ed('end','')}</td></tr>
+  </tbody></table>
+  <table style="margin-top:6px"><thead><tr><th style="width:20%">الأهداف التعليمية الفرعية</th><th style="width:15%">الأساليب والاستراتيجيات المستخدمة</th><th>آلية التنفيذ / الأنشطة التعليمية</th><th style="width:14%">أهم الجوانب النمائية التي سيتم التركيز عليها</th><th style="width:16%">الوسائل التعليمية والمواد اللازمة والتقانة</th></tr></thead>
+  <tbody><tr><td>${ed('sub', L.sub.map((s,i)=>`${i+1}. ${s}`).join('\n'), true)}</td><td>${ck(STRATEGIES,'strat',L.strat)}</td><td>${ed('acts', L.acts+'\n\nالمفردات: '+L.vocab.join('، '), true)}</td><td>${ck(ASPECTS,'asp',L.asp)}</td><td>${ck(MATERIALS,'mat',L.mat)}</td></tr></tbody></table>
+  <table style="margin-top:6px"><thead><tr><th>أسئلة التقويم</th><th style="width:18%">معايير التقييم</th><th style="width:22%">النتيجة ومستوى التحسن</th><th style="width:24%">ملاحظات المعلم</th></tr></thead>
+  <tbody><tr><td>${ed('evalq', L.evalq.map((s,i)=>`${i+1}. ${s}`).join('\n'), true)}</td><td>${ck(EVALS,'eval',[1,3,5])}</td>
+   <td>${['حقق الهدف','لم يحقق'].map(n=>`<label class="chkline"><input type="radio" name="iep-res" data-iepr="res" value="${n}" ${v('res','')===n?'checked':''}> ${n}</label>`).join('')}<div style="margin-top:6px">بمستوى:</div>${['جيد','متوسط','ضعيف'].map(n=>`<label class="chkline"><input type="radio" name="iep-lvl" data-iepr="lvl" value="${n}" ${v('lvl','')===n?'checked':''}> ${n}</label>`).join('')}</td>
+   <td>${ed('notes', st?autoNote(st,L):'', true)}</td></tr></tbody></table>
+  <div class="sig"><span>معلم صعوبات التعلم: أ/ ${esc(SCHOOL.teacher.split(' ').slice(0,1).join(' '))} الخاطري</span><span>مشرف صعوبات التعلم: أ/ ${esc(SCHOOL.supervisor)}</span><span>مدير المدرسة: أ/ ${esc(SCHOOL.principal)}</span></div>
+  </div>`;
+}
+function autoNote(st,L){ const sc=Store.events.filter(e=>e.sid===st.id&&e.lessonId===L.id&&typeof e.score==='number'&&e.kind!=='lesson'); if(!sc.length) return ''; const best=Math.max(...sc.map(e=>e.score)); return `أنجز ${sc.length} من أنشطة الدرس على المنصة، أفضل نتيجة ${best}٪.`; }
+function collectIEP(){
+  const f=$('#iepform'); const out={_ts:Date.now()};
+  f.querySelectorAll('[data-iep]').forEach(el=>out[el.dataset.iep]=el.innerText.trim());
+  ['strat','asp','mat','eval'].forEach(k=>out[k]=[...f.querySelectorAll(`[data-iepck="${k}"]:checked`)].map(x=>x.value));
+  f.querySelectorAll('[data-iepr]:checked').forEach(el=>out[el.dataset.iepr]=el.value);
+  return out;
+}
+
+/* أدوات الصف */
+S.timer={left:0,total:0,run:false}; S.wheelRot=0; S.wheelPick=null; S.attDate=ymd();
+function tTools(){
+  const list=students().filter(s=>s.grade==S.tgrade), n=list.length||1, cols=['var(--accent-soft)','var(--sun-soft)','var(--sky-soft)','var(--rose-soft)','var(--ok-soft)'];
+  let wheel='<svg viewBox="0 0 200 200" id="wheelsvg" style="transform:rotate('+S.wheelRot+'deg)">';
+  if(list.length){ list.forEach((s,i)=>{ const a1=i/n*2*Math.PI-Math.PI/2, a2=(i+1)/n*2*Math.PI-Math.PI/2, am=(a1+a2)/2;
+    wheel+= n===1?`<circle cx="100" cy="100" r="96" fill="${cols[0]}"/>`:`<path d="M100 100L${100+96*Math.cos(a1)} ${100+96*Math.sin(a1)}A96 96 0 0 1 ${100+96*Math.cos(a2)} ${100+96*Math.sin(a2)}Z" fill="${cols[i%5]}" stroke="var(--surface)" stroke-width="2"/>`;
+    wheel+=`<text x="${100+60*Math.cos(am)}" y="${100+60*Math.sin(am)+4}" text-anchor="middle" class="svgtext" font-size="${n>10?8:11}" transform="rotate(${am*180/Math.PI} ${100+60*Math.cos(am)} ${100+60*Math.sin(am)})">${esc(s.name.split(' ')[0])}</text>`; }); }
+  else wheel+='<circle cx="100" cy="100" r="96" fill="var(--bg-2)"/>';
+  wheel+='<circle cx="100" cy="100" r="12" fill="var(--accent)"/></svg>';
+  const att=(Store.get('attendance',{})[S.attDate])||{};
+  const tm=S.timer, mm=Math.floor(tm.left/60), ss=tm.left%60, frac=tm.total?tm.left/tm.total:0;
+  return `${head('أدوات الصف','أدوات سريعة للحصة.', gradeChips(S.tgrade))}
+  <div class="grid g2">
+    <div class="card" style="text-align:center"><h3>عجلة الأسماء</h3><div class="wheel" style="margin-block:12px"><span class="ptr"></span>${wheel}</div><p class="feedback ok" id="wheelres">${S.wheelPick?esc(S.wheelPick):''}</p><button class="btn primary" data-a="spin" ${list.length?'':'disabled'}>أديري العجلة</button></div>
+    <div class="card" style="text-align:center"><h3>مؤقت هادئ</h3>
+      <svg viewBox="0 0 120 120" width="180" style="margin:10px auto;display:block"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--bg-2)" stroke-width="10"/><circle cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(2*Math.PI*52).toFixed(1)}" stroke-dashoffset="${((1-frac)*2*Math.PI*52).toFixed(1)}" transform="rotate(-90 60 60)" id="timerring"/><text x="60" y="68" text-anchor="middle" class="svgtext" font-size="24" id="timertxt">${D(mm+':'+String(ss).padStart(2,'0'))}</text></svg>
+      <div class="row" style="justify-content:center">${[1,3,5,10].map(m=>`<button class="btn sm soft" data-a="timer" data-m="${m}">${T(m)} د</button>`).join('')}<button class="btn sm" data-a="timer" data-m="0">إيقاف</button></div></div>
+    <div class="card"><div class="row"><h3>الحضور</h3><span class="spacer"></span><input type="date" id="att-date" value="${S.attDate}" style="width:auto"></div>
+      ${list.length?`<div class="col" style="gap:6px;margin-top:10px">${list.map(s=>`<div class="row">${avatar(s.name,34)}<b style="flex:1">${esc(s.name)}</b><button class="btn sm ${att[s.id]==='p'?'primary':''}" data-a="att" data-id="${s.id}" data-v="p">حاضر</button><button class="btn sm ${att[s.id]==='a'?'danger':''}" data-a="att" data-id="${s.id}" data-v="a" style="${att[s.id]==='a'?'background:var(--rose-soft)':''}">غائب</button></div>`).join('')}</div><p class="small muted" style="margin-top:8px">حاضر ${T(Object.entries(att).filter(([k,v])=>v==='p'&&list.some(s=>s.id===k)).length)} من ${T(list.length)}</p>`:'<p class="muted">أضيفي الطلبة أولاً.</p>'}</div>
+    <div class="card" style="text-align:center"><h3>تنفّس جماعي</h3><p class="muted small">دقيقة هدوء قبل بدء الدرس.</p><div class="breath"><i></i></div></div>
+  </div>`;
+}
+let timerInt=null;
+function startTimer(m){
+  clearInterval(timerInt); S.timer={left:m*60,total:m*60,run:m>0}; rerender(); if(!m) return;
+  timerInt=setInterval(()=>{ S.timer.left--; const t=$('#timertxt'), r=$('#timerring');
+    if(t){ t.textContent=D(Math.floor(S.timer.left/60)+':'+String(S.timer.left%60).padStart(2,'0')); r.setAttribute('stroke-dashoffset',((1-S.timer.left/S.timer.total)*2*Math.PI*52).toFixed(1)); }
+    if(S.timer.left<=0){ clearInterval(timerInt); S.timer.run=false; chime(true); setTimeout(()=>chime(true),700); toast('انتهى الوقت'); } },1000);
+}
+
+/* الإعدادات */
+function tSettings(){
+  const set=Store.get('settings',{});
+  return `${head('الإعدادات')}
+  <div class="grid g2">
+    <div class="card col"><h3>الرقم السري</h3><label class="f">الرقم الحالي<input type="password" inputmode="numeric" maxlength="4" id="pw-old"></label><label class="f">الرقم الجديد (٤ أرقام)<input type="password" inputmode="numeric" maxlength="4" id="pw-new"></label><button class="btn primary" data-a="changepin">حفظ الرقم الجديد</button></div>
+    <div class="card col"><h3>العرض</h3>
+      <label class="f">شكل الأرقام<select id="set-digits" data-set="digits"><option value="indic" ${digitsMode()==='indic'?'selected':''}>عربية ١٢٣</option><option value="western" ${digitsMode()==='western'?'selected':''}>123</option></select></label>
+      <label class="row"><input type="checkbox" id="pf-big" data-pref="big" ${PREFS.big?'checked':''} style="width:22px;height:22px;accent-color:var(--accent)"> خط كبير على هذا الجهاز</label>
+      <label class="row"><input type="checkbox" id="pf-sound" data-pref="sound" ${PREFS.sound?'checked':''} style="width:22px;height:22px;accent-color:var(--accent)"> أصوات التشجيع</label></div>
+    <div class="card col"><h3>النسخ الاحتياطي</h3><p class="small muted">${Store.mode==='cloud'?'البيانات محفوظة ومتزامنة تلقائياً بين الأجهزة التي تفتح المنصة من رابطها.':'البيانات محفوظة على هذا الجهاز. صدّري نسخة احتياطية بانتظام، ويمكن دمج نتائج أجهزة أخرى بالاستيراد.'}</p>
+      <div class="row"><button class="btn soft" data-a="export">${ICON.download} تصدير نسخة</button><label class="btn soft" style="cursor:pointer">${ICON.upload} استيراد ودمج<input type="file" accept=".json,application/json" id="importfile" hidden></label></div></div>
+    <div class="card col"><h3>حول المنصة</h3><p class="small">${esc(SCHOOL.school)} · ${esc(SCHOOL.gov)}<br>المعلمة: ${esc(SCHOOL.teacher)}<br>العام الدراسي ${T(SCHOOL.year)} · الفصل ${esc(SCHOOL.term)}</p>
+      <button class="btn danger" data-a="resetall">حذف كل البيانات</button></div>
+  </div>`;
+}
+function exportData(){
+  const data=JSON.stringify({app:'waha', v:1, at:Date.now(), docs:Store.docs, events:Store.events});
+  if(IN_FRAME){ modal(`<h3>نسخة احتياطية</h3><p class="small muted">انسخي النص واحفظيه في ملف.</p><textarea id="exptxt" style="min-height:200px;direction:ltr">${esc(data)}</textarea><button class="btn primary" data-a="copyexp">${ICON.copy} نسخ</button>`); return; }
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([data],{type:'application/json'})); a.download='waha-backup-'+ymd()+'.json'; document.body.appendChild(a); a.click(); a.remove(); toast('تم تصدير النسخة');
+}
+async function importData(file){
+  try{ const d=JSON.parse(await file.text()); if(d.app!=='waha') throw 0;
+    for(const [k,v] of Object.entries(d.docs||{})){ if(k==='students'){ const cur=students(), add=(v.list||[]).filter(s=>!cur.some(c=>c.id===s.id)); await Store.set('students',{list:[...cur,...add]}); } else if(!Store.get(k)) await Store.set(k,v); }
+    const ids=new Set(Store.events.map(e=>e.ts+'|'+e.sid)); let n=0;
+    for(const e of d.events||[]){ if(ids.has(e.ts+'|'+e.sid)) continue; const c=Object.assign({},e); delete c.id; await Store.addEvent(c); n++; }
+    toast(`تم الدمج: ${D(n)} سجل جديد`);
+  }catch(e){ toast('الملف غير صالح'); }
+}
+
+/* ===== الأحداث ===== */
+function confirmBox(text, yesLabel, fn){ S._confirm=fn; modal(`<h3>${text}</h3><div class="row"><button class="btn danger" data-a="confirmyes">${yesLabel}</button><button class="btn" data-a="closemodal">إلغاء</button></div>`); }
+async function setStudents(list){ await Store.set('students',{list}); }
+
+const ACTIONS = {
+  home(){ go('home'); },
+  gostudent(){ const r=LS.get('waha-student',null); if(r && studentById(r) && S.view==='home'){ go('student',{sid:r, sTab:'tasks'}); return; } go('grade'); },
+  goteacher(){ go(S.unlocked?'teacher':'tlogin'); },
+  pickgrade(el){ go('name',{grade:+el.dataset.g}); },
+  pickname(el){ LS.set('waha-student', el.dataset.id); go('student',{sid:el.dataset.id, sTab:'tasks'}); },
+  switchstudent(){ LS.set('waha-student', null); go('grade'); },
+  stab(el){ S.sTab=el.dataset.t; rerender(); },
+  async mood(el){ const st=studentById(S.sid); if(!st) return; await Store.addEvent({sid:st.id, sname:st.name, grade:st.grade, kind:'mood', mood:el.dataset.m, points:0}); toast('شكراً لمشاركتنا شعورك'); },
+  startitem(el){ const it=openedItems().find(i=>i.id===el.dataset.id); if(!it) return; startPlay({lessonId:it.lessonId, type:it.type, game:it.game, itemId:it.id}); },
+  showcert(el){ const e=Store.events.find(x=>x.id===el.dataset.id), st=studentById(S.sid); if(!e) return; modal(certHtml({name:st?.name||e.sname, title:e.title, date:e.date, stars:e.stars||1, points:e.points, score:e.score??100})+'<button class="btn primary" data-a="closemodal">إغلاق</button>'); },
+  install(){ doInstall(); },
+  theme(){ const dark = document.documentElement.getAttribute('data-theme')==='dark' || (PREFS.theme==='auto' && matchMedia('(prefers-color-scheme: dark)').matches); PREFS.theme = dark?'light':'dark'; LS.set('waha-prefs',PREFS); applyPrefs(); rerender(); },
+  closemodal(){ closeModal(); },
+  confirmyes(){ const f=S._confirm; S._confirm=null; closeModal(); if(f) f(); },
+  tlock(){ S.unlocked=false; try{ sessionStorage.removeItem('waha-t'); }catch(e){} go('home'); },
+  // المشغّل
+  quitplay(){ backFromPlayer(); },
+  estep(el){ const p=S.p; p.step=Math.max(0,p.step+ +el.dataset.d); p.builder={th:0,h:0,t:0,o:0}; render(); window.scrollTo(0,0); },
+  speak(el){ speak(el.dataset.t); },
+  hint(){ S.p.hint=true; render(); },
+  ans(el){ answer(el.dataset.o); },
+  mflip(el){ flip(+el.dataset.i); },
+  bld(el){ const b=S.p.builder; if(el.dataset.k==='reset'){ S.p.builder={th:0,h:0,t:0,o:0}; } else if(b[el.dataset.k]<9){ b[el.dataset.k]++; } render();
+    const st=S.p.lesson.explain[S.p.step]; if(st && st.v.k==='builder' && b.h*100+b.t*10+b.o===st.v.target) chime(true); },
+  donePlay(){ backFromPlayer(); },
+  replay(){ const p=S.p; startPlay({lessonId:p.lesson.id, type:p.type, game:p.game, itemId:p.itemId, preview:p.preview}); },
+  // المعلمة
+  pin(el){ pinPress(el.dataset.n); },
+  ttab(el){ S.ttab=el.dataset.t; S.iep=null; go('teacher'); },
+  tgrade(el){ S.tgrade=+el.dataset.g; S.tsel=null; rerender(); },
+  async addstudent(){ const n=$('#ns-name').value.trim(), g=+$('#ns-grade').value; if(!n){ toast('اكتبي اسم الطالب'); return; } S.tgrade=g; await setStudents([...students(),{id:uid(),name:n,grade:g}]); toast('أُضيف '+n); setTimeout(()=>{ const i=$('#ns-name'); if(i) i.focus(); },50); },
+  async addbulk(){ const g=+$('#ns-grade').value, names=$('#ns-bulk').value.split('\n').map(s=>s.trim()).filter(Boolean); if(!names.length) return; S.tgrade=g; await setStudents([...students(),...names.map(n=>({id:uid(),name:n,grade:g}))]); toast(`أُضيف ${D(names.length)} طالب`); },
+  renamestudent(el){ const s=studentById(el.dataset.id); modal(`<h3>تعديل بيانات الطالب</h3><label class="f">الاسم<input type="text" id="rn-name" value="${esc(s.name)}"></label><label class="f">الصف<select id="rn-grade">${[2,3,4].map(g=>`<option value="${g}" ${s.grade==g?'selected':''}>الصف ${GRADE_NAME[g]}</option>`).join('')}</select></label><button class="btn primary" data-a="dorename" data-id="${s.id}">حفظ</button>`); },
+  async dorename(el){ const n=$('#rn-name').value.trim(), g=+$('#rn-grade').value; if(!n) return; await setStudents(students().map(s=>s.id===el.dataset.id?{...s,name:n,grade:g}:s)); closeModal(); },
+  delstudent(el){ const s=studentById(el.dataset.id); confirmBox(`حذف ${esc(s.name)} من القائمة؟ تبقى سجلاته محفوظة.`, 'حذف', ()=>setStudents(students().filter(x=>x.id!==s.id))); },
+  tsel(el){ S.tsel=el.dataset.id; rerender(); },
+  async mpts(el){ const st=studentById(S.tsel), n=+el.dataset.n, note=($('#mp-note')?.value||'').trim()||(n>0?'نقاط من المعلمة':'خصم نقطة'); await Store.addEvent({sid:st.id,sname:st.name,grade:st.grade,kind:'manual',points:n,note,title:note}); toast(`${n>0?'+':''}${D(n)} لـ${st.name}`); },
+  async copyparent(){ const t=$('#parentmsg').innerText; try{ await navigator.clipboard.writeText(t); toast('نُسخت الرسالة'); }catch(e){ const r=document.createRange(); r.selectNodeContents($('#parentmsg')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast('حدّدنا النص، انسخيه يدوياً'); } },
+  delevent(el){ confirmBox('حذف هذا السجل؟','حذف',()=>Store.delEvent(el.dataset.id)); },
+  async additem(){ const n=$('#as-name').value.trim(), m=+$('#as-max').value||10; if(!n){ toast('اكتبي اسم البند'); return; } const a=Store.get('assess',{items:[],scores:{}}); await Store.set('assess',{items:[...(a.items||[]),{id:uid(),grade:S.tgrade,name:n,max:m}],scores:a.scores||{}}); },
+  quickitem(el){ $('#as-name').value=el.dataset.n; $('#as-name').focus(); },
+  delitem(el){ confirmBox('حذف هذا البند ودرجاته؟','حذف',()=>{ const a=Store.get('assess',{items:[],scores:{}}); Store.set('assess',{items:a.items.filter(i=>i.id!==el.dataset.id),scores:a.scores||{}}); }); },
+  openitem(){ openItems([makeItem(S.of.type,S.of.game)]); },
+  openall(){ openItems([makeItem('lesson'),makeItem('activity'),makeItem('game',S.of.game||'balloons')]); },
+  closeitem(el){ confirmBox('إغلاق هذا العنصر؟ يختفي من قسم الطلبة وتبقى نتائجهم.','إغلاق',()=>{ const o=Store.get('opened',{items:[]}); Store.set('opened',{items:o.items.filter(i=>i.id!==el.dataset.id)}); }); },
+  async addgoal(el){ const g=Store.get('goals',{items:[]}); await Store.set('goals',{items:[...(g.items||[]),{id:uid(),text:el.dataset.text,who:el.dataset.who,done:false,due:''}]}); toast('أُضيف للأهداف'); },
+  async addcustomgoal(){ const t=$('#gl-text').value.trim(); if(!t) return; const g=Store.get('goals',{items:[]}); await Store.set('goals',{items:[...(g.items||[]),{id:uid(),text:t,who:'teacher',done:false,due:$('#gl-due').value}]}); },
+  delgoal(el){ const g=Store.get('goals',{items:[]}); Store.set('goals',{items:g.items.filter(x=>x.id!==el.dataset.id)}); },
+  iep(el){ S.iep={lessonId:el.dataset.l, sid:''}; rerender(); window.scrollTo(0,0); },
+  iepback(){ S.iep=null; rerender(); },
+  async iepsave(){ await Store.set(iepKey(), collectIEP()); toast('حُفظ التحضير'); },
+  print(){ window.print(); },
+  preview(el){ startPlay({lessonId:el.dataset.l, type:el.dataset.t, game:el.dataset.g, preview:true}); },
+  quickopen(el){ S.of={...S.of, grade:lessonById(el.dataset.l).grade, lessonId:el.dataset.l, date:ymd()}; S.ttab='open'; go('teacher'); toast('اختاري النوع ثم «افتحي للطلبة»'); },
+  spin(){ const list=students().filter(s=>s.grade==S.tgrade); if(!list.length) return; const i=rnd(0,list.length-1), seg=360/list.length;
+    S.wheelRot = S.wheelRot - S.wheelRot%360 + 360*5 + (360 - (i+0.5)*seg); S.wheelPick=null; const w=$('#wheelsvg'); if(w) w.style.transform=`rotate(${S.wheelRot}deg)`; $('#wheelres').textContent='';
+    setTimeout(()=>{ S.wheelPick=list[i].name; const r=$('#wheelres'); if(r) r.textContent=list[i].name; chime(true); },4100); },
+  timer(el){ startTimer(+el.dataset.m); },
+  async att(el){ const a=Store.get('attendance',{}), day={...(a[S.attDate]||{})}; day[el.dataset.id]=el.dataset.v; await Store.set('attendance',{...a,[S.attDate]:day}); },
+  async changepin(){ const o=$('#pw-old').value, n=$('#pw-new').value; if(!checkPin(o)){ toast('الرقم الحالي غير صحيح'); return; } if(!/^\d{4}$/.test(n)){ toast('الرقم الجديد ٤ أرقام'); return; } await Store.set('config',{...Store.get('config',{}),pinHash:pinHash(n)}); toast('تم تغيير الرقم السري'); },
+  export(){ exportData(); },
+  async copyexp(){ try{ await navigator.clipboard.writeText($('#exptxt').value); toast('نُسخ'); }catch(e){ $('#exptxt').select(); } },
+  resetall(){ confirmBox('حذف كل الطلبة والنتائج والإعدادات نهائياً؟','حذف الكل', async ()=>{ for(const k of Object.keys(Store.docs)) await Store.remove(k); for(const e of [...Store.events]) await Store.delEvent(e.id); toast('حُذفت البيانات'); }); }
+};
+document.addEventListener('click', e=>{
+  const el=e.target.closest('[data-a]'); if(!el || el.disabled) return;
+  const f=ACTIONS[el.dataset.a]; if(f){ e.preventDefault(); f(el); }
+});
+document.addEventListener('change', async e=>{
+  const el=e.target;
+  if(el.dataset.sc){ const [sid,iid]=el.dataset.sc.split('|'), a=Store.get('assess',{items:[],scores:{}}), item=a.items.find(i=>i.id===iid);
+    let v=el.value===''?'':Math.max(0,Math.min(+item.max,+el.value)); const scores={...(a.scores||{})}; scores[sid]={...(scores[sid]||{}),[iid]:v}; if(v==='') delete scores[sid][iid];
+    await Store.set('assess',{items:a.items,scores}); return; }
+  if(el.dataset.of){ S.of[el.dataset.of] = el.dataset.of==='grade' ? +el.value : el.value; if(['grade','type'].includes(el.dataset.of)) rerender(); else if(el.dataset.of==='date') rerender(); return; }
+  if(el.dataset.pw){ const p=Store.get('plan',{}); await Store.set('plan',{...p,[el.dataset.pw]:{...(p[el.dataset.pw]||{}),week:+el.value}}); return; }
+  if(el.dataset.ps){ const p=Store.get('plan',{}); await Store.set('plan',{...p,[el.dataset.ps]:{...(p[el.dataset.ps]||{}),status:el.value,at:ymd()}}); return; }
+  if(el.dataset.gdone){ const g=Store.get('goals',{items:[]}); await Store.set('goals',{items:g.items.map(x=>x.id===el.dataset.gdone?{...x,done:el.checked}:x)}); return; }
+  if(el.id==='iep-sid'){ S.iep.sid=el.value; rerender(); return; }
+  if(el.id==='att-date'){ S.attDate=el.value||ymd(); rerender(); return; }
+  if(el.dataset.set){ await Store.set('settings',{...Store.get('settings',{}),[el.dataset.set]:el.value}); return; }
+  if(el.dataset.pref){ PREFS[el.dataset.pref]=el.checked; LS.set('waha-prefs',PREFS); applyPrefs(); return; }
+  if(el.id==='importfile' && el.files[0]){ importData(el.files[0]); }
+});
+document.addEventListener('keydown', e=>{
+  if(S.view==='tlogin' || (S.view==='teacher'&&!S.unlocked)){ if(/^\d$/.test(e.key)) pinPress(e.key); else if(e.key==='Backspace') pinPress('del'); }
+  if(e.key==='Enter' && e.target.id==='ns-name') ACTIONS.addstudent();
+  if(e.key==='Escape') closeModal();
+});
+function afterRender(){}
+
+/* ===== التثبيت كتطبيق (PWA) ===== */
+function iconPng(size){
+  return new Promise(res=>{ try{
+    const c=document.createElement('canvas'); c.width=c.height=size; const x=c.getContext('2d');
+    x.fillStyle='#D5E8E2'; x.beginPath(); x.roundRect ? x.roundRect(0,0,size,size,size*0.22) : x.rect(0,0,size,size); x.fill();
+    x.fillStyle='#3D7D72'; x.font=`700 ${size*0.42}px sans-serif`; x.textAlign='center'; x.textBaseline='middle'; x.fillText('١٢٣',size/2,size*0.56);
+    x.fillStyle='#DDA050'; x.beginPath(); x.arc(size*0.74,size*0.24,size*0.08,0,Math.PI*2); x.fill();
+    res(c.toDataURL('image/png')); }catch(e){ res(null); } });
+}
+async function setupPWA(){
+  if(IN_FRAME) return;
+  const add=(tag,attrs)=>{ const el=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); document.head.appendChild(el); return el; };
+  const icon=await iconPng(512);
+  if(icon){ add('link',{rel:'apple-touch-icon',href:icon}); add('link',{rel:'icon',href:icon}); }
+  if(!document.querySelector('link[rel="manifest"]')){
+    let hasFile=false;
+    if(/^https?:$/.test(location.protocol)){ try{ const r=await fetch('manifest.webmanifest',{method:'HEAD',cache:'no-store'}); hasFile=r.ok; }catch(e){} }
+    if(hasFile) add('link',{rel:'manifest',href:'manifest.webmanifest'});
+    else if(icon){ const base=location.href.split('#')[0]; const m={name:'واحة الأرقام',short_name:'واحة الأرقام',lang:'ar',dir:'rtl',start_url:base,scope:base.replace(/[^/]*$/,''),display:'standalone',background_color:'#F1F5F1',theme_color:'#3D7D72',icons:[{src:icon,sizes:'512x512',type:'image/png',purpose:'any'}]};
+      add('link',{rel:'manifest',href:URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}))}); }
+  }
+  if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+}
+
+/* ===== البداية ===== */
+document.documentElement.setAttribute('dir','rtl'); document.documentElement.setAttribute('lang','ar');
+applyPrefs();
+if(matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{ if(PREFS.theme==='auto') rerender(); });
+render();
+Store.init();
+setupPWA();
+
+</script>
+</body>
+</html>
