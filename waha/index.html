@@ -117,6 +117,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .pick{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:22px 12px;border-radius:22px;border:2px solid var(--line);background:var(--surface);font-family:var(--f-display);font-size:1.3rem;font-weight:700;min-height:120px;transition:border-color .2s,transform .15s}
 .pick:hover{border-color:var(--accent)}
 .pick .num{font-size:2.6rem;line-height:1;color:var(--accent)}
+.avpick{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.avpick button{width:44px;height:44px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-size:24px;cursor:pointer;line-height:1}
+.avpick button.on{border-color:var(--accent);background:var(--accent-soft)}
 .avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-size:1.5rem;font-weight:700;color:var(--ink)}
 
 /* student home */
@@ -281,6 +284,12 @@ td input[type=number]{width:76px;min-height:38px;text-align:center}
 .iep th{background:#f4edcf;text-align:center;position:static}
 .iep .ck{display:block;white-space:nowrap}
 .iep [contenteditable]{outline:none;min-height:1.4em;border-radius:4px}
+@media screen{.iep [contenteditable]{background:#fbf8ec;box-shadow:inset 0 0 0 1px #e6dcb4;padding:2px 4px;cursor:text}.iep [contenteditable]:hover{box-shadow:inset 0 0 0 1.5px #c9b56a}}
+.iep .iep-x{border:0;background:none;color:#b4473f;cursor:pointer;font-size:12px;padding:0 4px;opacity:.55;line-height:1}
+.iep .iep-x:hover,.iep .iep-x:focus{opacity:1}
+.iep .iep-add{display:flex;gap:4px;margin-top:6px}
+.iep .iep-add input{flex:1;min-width:0;font:inherit;font-size:12px;padding:3px 6px;border:1px dashed #b9a971;border-radius:6px;background:#fffdf5;color:#111}
+.iep .iep-add button{border:1px solid #3D7D72;background:#3D7D72;color:#fff;border-radius:6px;width:26px;cursor:pointer;font-weight:700}
 .iep [contenteditable]:focus{background:#fffbe6}
 .iep .chkline{display:flex;gap:4px;align-items:center;white-space:nowrap}
 .iep input[type=checkbox]{width:14px;height:14px;accent-color:#3D7D72}
@@ -640,7 +649,10 @@ function fracHtml(s){ const [n,d]=s.split('/'); return `<span class="frac"><span
 function optHtml(o){ return /^\d+\/\d+$/.test(o) ? fracHtml(o) : `<span class="ltr">${T(o)}</span>`; }
 function hashHue(s){ let h=0; for(const c of String(s)) h=(h*31+c.charCodeAt(0))|0; return Math.abs(h); }
 const AV_BG = ['var(--accent-soft)','var(--sun-soft)','var(--sky-soft)','var(--rose-soft)','var(--ok-soft)'];
-function avatar(name, size=58){ return `<span class="avatar" style="width:${size}px;height:${size}px;font-size:${size/2.4}px;background:${AV_BG[hashHue(name)%AV_BG.length]}">${esc((name||'؟').trim().charAt(0))}</span>`; }
+const AVS = ['🦁','🐯','🐼','🐨','🦊','🐰','🐻','🐸','🐵','🦉','🐢','🐬','🦄','🐝','🐞','🐧','🐳','🦋','🐱','🐶'];
+function freeAv(grade, taken=[]){ const used=new Set(students().filter(s=>s.grade==grade).map(s=>s.av||AVS[hashHue(s.name)%AVS.length]).concat(taken)); return AVS.find(a=>!used.has(a)) || AVS[Math.floor(Math.random()*AVS.length)]; }
+function avatar(x, size=58){ const st=x&&typeof x==='object'?x:null, name=st?st.name:(x||''), h=hashHue(name), em=(st&&st.av)||AVS[h%AVS.length];
+  return `<span class="avatar" role="img" aria-label="${esc(name)}" style="width:${size}px;height:${size}px;font-size:${Math.round(size/1.75)}px;line-height:1;background:${AV_BG[h%AV_BG.length]}">${em}</span>`; }
 
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove('on'),2600); }
 
@@ -1046,7 +1058,7 @@ function vGrade(){
 function vName(){
   const list=students().filter(s=>s.grade==S.grade);
   return `<div class="fade-in"><div class="section-title"><button class="iconbtn" data-a="gostudent" aria-label="رجوع">${ICON.back}</button><h2>اختر اسمك</h2><span class="chip">الصف ${GRADE_NAME[S.grade]}</span></div>
-  ${list.length? `<div class="grid g4">${list.map(s=>`<button class="pick" data-a="pickname" data-id="${s.id}">${avatar(s.name)}<span style="font-size:1.1rem">${esc(s.name)}</span></button>`).join('')}</div>`
+  ${list.length? `<div class="grid g4">${list.map(s=>`<button class="pick" data-a="pickname" data-id="${s.id}">${avatar(s)}<span style="font-size:1.1rem">${esc(s.name)}</span></button>`).join('')}</div>`
   : `<div class="empty"><p>لم تُضف المعلمة أسماء طلبة هذا الصف بعد.</p><p class="small">تضيف المعلمة الأسماء من قسم المعلمة ← الطلبة.</p></div>`}</div>`;
 }
 function plantSvg(points){
@@ -1282,8 +1294,8 @@ function tDash(){
   </div>
   ${!all.length?`<div class="notice" style="margin-top:14px">ابدئي بإضافة أسماء الطلبة من قسم «الطلبة»، ثم افتحي لهم أول درس من «فتح الدروس والأنشطة».</div>`:''}
   <div class="grid g2" style="margin-top:16px">
-    <div class="card"><h3>آخر الإنجازات</h3>${recent.length?`<div class="col" style="gap:8px;margin-top:8px">${recent.map(e=>`<div class="row" style="gap:10px">${avatar(e.sname||'',36)}<div style="flex:1;min-width:0"><b>${esc(e.sname)}</b> <span class="small muted">${T(e.title||e.note||'')}</span></div>${e.stars?`<span class="chip sun">${T(e.stars)} ★</span>`:''}<span class="chip ${e.points<0?'rose':'ok'}">${e.points>0?'+':''}${T(e.points)}</span></div>`).join('')}</div>`:'<p class="muted">ستظهر هنا إنجازات الطلبة مباشرة.</p>'}</div>
-    <div class="card"><h3>لوحة الشرف</h3>${ranked.some(r=>r.p>0)?`<div class="col" style="gap:8px;margin-top:8px">${ranked.map((r,i)=>`<div class="row">${avatar(r.s.name,36)}<b style="flex:1">${esc(r.s.name)}</b><span class="chip">${'الصف '+GRADE_NAME[r.s.grade]}</span><span class="chip sun tnum">${T(r.p)}</span></div>`).join('')}</div>`:'<p class="muted">لم تُسجَّل نقاط بعد.</p>'}</div>
+    <div class="card"><h3>آخر الإنجازات</h3>${recent.length?`<div class="col" style="gap:8px;margin-top:8px">${recent.map(e=>`<div class="row" style="gap:10px">${avatar(studentById(e.sid)||e.sname||'',36)}<div style="flex:1;min-width:0"><b>${esc(e.sname)}</b> <span class="small muted">${T(e.title||e.note||'')}</span></div>${e.stars?`<span class="chip sun">${T(e.stars)} ★</span>`:''}<span class="chip ${e.points<0?'rose':'ok'}">${e.points>0?'+':''}${T(e.points)}</span></div>`).join('')}</div>`:'<p class="muted">ستظهر هنا إنجازات الطلبة مباشرة.</p>'}</div>
+    <div class="card"><h3>لوحة الشرف</h3>${ranked.some(r=>r.p>0)?`<div class="col" style="gap:8px;margin-top:8px">${ranked.map((r,i)=>`<div class="row">${avatar(r.s,36)}<b style="flex:1">${esc(r.s.name)}</b><span class="chip">${'الصف '+GRADE_NAME[r.s.grade]}</span><span class="chip sun tnum">${T(r.p)}</span></div>`).join('')}</div>`:'<p class="muted">لم تُسجَّل نقاط بعد.</p>'}</div>
     <div class="card"><h3>مشاعر الطلبة اليوم</h3>${moods.length?`<div class="row" style="margin-top:8px">${MOODS.map(m=>{ const c=moods.filter(x=>x.mood===m.id).length; return c?`<span class="chip" title="${esc(moods.filter(x=>x.mood===m.id).map(x=>x.sname).join('، '))}"><span style="width:22px;display:inline-block">${moodFace(m.id,m.c)}</span>${m.name} ${T(c)}</span>`:''; }).join('')}</div><p class="small muted" style="margin-top:8px">${esc(moods.filter(x=>['sad','worried','tired'].includes(x.mood)).map(x=>x.sname).join('، ')) || 'الجميع بخير'}${moods.some(x=>['sad','worried','tired'].includes(x.mood))?' يحتاجون كلمة طيبة اليوم.':''}</p>`:'<p class="muted">يختار الطلبة شعورهم عند الدخول.</p>'}</div>
     <div class="card"><h3>مقترح اليوم</h3>${sug?`<p style="margin-block:8px">${T(sug.text)}</p><button class="btn sm soft" data-a="addgoal" data-text="${T(sug.text)}" data-who="${esc(sug.who)}">${ICON.plus} أضيفيه لأهدافي</button>`:'<p class="muted">لا مقترحات الآن.</p>'}</div>
   </div>`;
@@ -1298,7 +1310,7 @@ function tStudents(){
     <button class="btn primary" data-a="addstudent">${ICON.plus} إضافة</button></div>
     <details style="margin-top:12px"><summary class="muted">إضافة عدة أسماء دفعة واحدة</summary><div class="col" style="margin-top:8px"><textarea id="ns-bulk" placeholder="اكتبي كل اسم في سطر"></textarea><button class="btn soft" data-a="addbulk">إضافة الأسماء للصف المختار</button></div></details></div>
   ${[2,3,4].map(g=>{ const list=all.filter(s=>s.grade==g); return `<div class="section-title"><h3>الصف ${GRADE_NAME[g]}</h3><span class="chip">${T(list.length)}</span></div>
-    ${list.length?`<div class="grid g3">${list.map(s=>`<div class="card flat row" style="gap:10px">${avatar(s.name,42)}<b style="flex:1;min-width:0">${esc(s.name)}</b><button class="iconbtn" data-a="renamestudent" data-id="${s.id}" aria-label="تعديل">${I('<path d="M4 20h4L19 9l-4-4L4 16z"/>')}</button><button class="iconbtn" data-a="delstudent" data-id="${s.id}" aria-label="حذف" style="color:var(--rose)">${ICON.trash}</button></div>`).join('')}</div>`:'<p class="muted small">لا يوجد طلبة بعد.</p>'}`; }).join('')}`;
+    ${list.length?`<div class="grid g3">${list.map(s=>`<div class="card flat row" style="gap:10px">${avatar(s,42)}<b style="flex:1;min-width:0">${esc(s.name)}</b><button class="iconbtn" data-a="renamestudent" data-id="${s.id}" aria-label="تعديل">${I('<path d="M4 20h4L19 9l-4-4L4 16z"/>')}</button><button class="iconbtn" data-a="delstudent" data-id="${s.id}" aria-label="حذف" style="color:var(--rose)">${ICON.trash}</button></div>`).join('')}</div>`:'<p class="muted small">لا يوجد طلبة بعد.</p>'}`; }).join('')}`;
 }
 
 /* المتابعة والنقاط */
@@ -1330,7 +1342,7 @@ function tTrack(){
   let detail='<div class="empty">اختاري طالباً لعرض متابعته.</div>';
   if(st){ const s=statsFor(st.id), at=assessTotal(st.id,st.grade), pl=plantSvg(s.points);
     detail=`<div class="stack">
-    <div class="card row" style="gap:16px">${avatar(st.name,64)}<div style="flex:1;min-width:0"><h3>${esc(st.name)}</h3><p class="muted small">الصف ${GRADE_NAME[st.grade]} · ${pl.name}</p></div>
+    <div class="card row" style="gap:16px">${avatar(st,64)}<div style="flex:1;min-width:0"><h3>${esc(st.name)}</h3><p class="muted small">الصف ${GRADE_NAME[st.grade]} · ${pl.name}</p></div>
       <div class="stats"><div class="stat"><span class="small muted">النقاط</span><b>${T(s.points)}</b></div><div class="stat"><span class="small muted">الشهادات</span><b>${T(s.certs)}</b></div><div class="stat"><span class="small muted">المتوسط</span><b>${s.avg==null?'—':T(s.avg)+'٪'}</b></div><div class="stat"><span class="small muted">التقويم</span><b>${at.max?T(at.got)+'/'+T(at.max):'—'}</b></div></div></div>
     <div class="card"><h3>تسجيل نقاط</h3><div class="formrow" style="margin-top:8px"><label class="f">السبب<input type="text" id="mp-note" placeholder="مثال: مشاركة ممتازة"></label>
       <div class="row">${[1,2,5,10].map(n=>`<button class="btn sm soft" data-a="mpts" data-n="${n}">+${T(n)}</button>`).join('')}<button class="btn sm danger" data-a="mpts" data-n="-1">−${T(1)}</button></div></div></div>
@@ -1340,7 +1352,7 @@ function tTrack(){
     <div class="card"><h3>سجل الإنجازات</h3>${s.evs.length?`<div class="tablewrap" style="margin-top:8px"><table><thead><tr><th>التاريخ</th><th>العمل</th><th>الدرجة</th><th>النقاط</th><th></th></tr></thead><tbody>${s.evs.slice().reverse().map(e=>`<tr><td class="tnum">${fmtDate(e.date)}</td><td>${e.kind==='mood'?'الشعور: '+esc(MOODS.find(m=>m.id===e.mood)?.name||''):T(e.title||e.note||'')}</td><td>${typeof e.score==='number'?T(e.score)+'٪ '+'★'.repeat(e.stars||0):'—'}</td><td>${T(e.points||0)}</td><td><button class="iconbtn" data-a="delevent" data-id="${e.id}" aria-label="حذف السجل" style="width:34px;height:34px;color:var(--rose)">${ICON.trash}</button></td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">لا يوجد سجل بعد.</p>'}</div></div>`; }
   return `${head('المتابعة والنقاط','نقاط الطلبة وشهاداتهم تصل هنا مباشرة بعد كل نشاط أو لعبة.', gradeChips(S.tgrade))}
   <div class="grid" style="grid-template-columns:minmax(0,240px) minmax(0,1fr);align-items:start" id="trackgrid">
-    <div class="col" style="gap:8px">${list.length?list.map(s=>`<button class="task" style="padding:10px;${S.tsel===s.id?'border-color:var(--accent);background:var(--accent-soft)':''}" data-a="tsel" data-id="${s.id}">${avatar(s.name,38)}<span class="body"><b>${esc(s.name)}</b><br><span class="small muted">${T(statsFor(s.id).points)} نقطة</span></span></button>`).join(''):'<p class="muted small">لا يوجد طلبة في هذا الصف.</p>'}</div>
+    <div class="col" style="gap:8px">${list.length?list.map(s=>`<button class="task" style="padding:10px;${S.tsel===s.id?'border-color:var(--accent);background:var(--accent-soft)':''}" data-a="tsel" data-id="${s.id}">${avatar(s,38)}<span class="body"><b>${esc(s.name)}</b><br><span class="small muted">${T(statsFor(s.id).points)} نقطة</span></span></button>`).join(''):'<p class="muted small">لا يوجد طلبة في هذا الصف.</p>'}</div>
     <div style="min-width:0">${detail}</div></div>`;
 }
 
@@ -1442,12 +1454,15 @@ function tIEP(){
   const L=lessonById(S.iep.lessonId), saved=Store.get(iepKey(),null)||{}, sid=S.iep.sid, st=studentById(sid);
   const v=(k,def)=> saved[k]!==undefined ? saved[k] : def;
   const today=new Date(), month=MONTHS[[7,8,9,10,11,0].indexOf(today.getMonth())] || '';
-  const ck=(list,key,defIdx)=>{ const sel=v(key,defIdx.map(i=>list[i])); return list.map((n,i)=>`<label class="chkline"><input type="checkbox" data-iepck="${key}" value="${esc(n)}" ${sel.includes(n)?'checked':''}> ${esc(n)}</label>`).join(''); };
+  const ck=(base,key,defIdx)=>{ const rm=v('rm_'+key,[]), add=v('add_'+key,[]), list=base.filter(n=>!rm.includes(n)).concat(add.filter(n=>!base.includes(n)||rm.includes(n)));
+    const sel=v(key,defIdx.map(i=>base[i]));
+    return `<div data-ieplist="${key}" data-rm="${esc(JSON.stringify(rm))}" data-add="${esc(JSON.stringify(add))}">`+list.map(n=>`<div class="chkline"><label class="chkline" style="flex:1"><input type="checkbox" data-iepck="${key}" value="${esc(n)}" ${sel.includes(n)?'checked':''}> ${esc(n)}</label><button type="button" class="iep-x noprint" data-a="iepdelopt" data-k="${key}" data-v="${esc(n)}" title="حذف «${esc(n)}» من هذا التحضير" aria-label="حذف ${esc(n)}">✕</button></div>`).join('')+
+      `<div class="iep-add noprint"><input type="text" data-iepadd="${key}" placeholder="إضافة بند…" aria-label="إضافة بند"><button type="button" data-a="iepaddopt" data-k="${key}" aria-label="إضافة">+</button></div></div>`; };
   const ed=(k,def,multi)=>`<div contenteditable="true" data-iep="${k}" style="${multi?'white-space:pre-wrap':''}">${esc(v(k,def))}</div>`;
   const list=students().filter(s=>s.grade==L.grade);
-  return `<div class="noprint">${head('التحضير: '+T(L.title), 'نموذج الخطة التعليمية الفردية. كل الخانات قابلة للتعديل، ثم احفظي أو اطبعي.', `<button class="btn" data-a="iepback">${ICON.back} رجوع</button>`)}
-  <div class="card row" style="margin-bottom:14px"><label class="f" style="flex:1">الطالب<select id="iep-sid" data-a2="iepsid"><option value="">تحضير عام للمجموعة</option>${list.map(s=>`<option value="${s.id}" ${sid===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
-  <button class="btn primary" data-a="iepsave">${ICON.check} حفظ التحضير</button>${!IN_FRAME?`<button class="btn" data-a="print">${ICON.print} طباعة</button>`:''}${saved._ts?`<span class="small muted">آخر حفظ ${fmtDate(ymd(new Date(saved._ts)))}</span>`:''}</div></div>
+  return `<div class="noprint">${head('التحضير: '+T(L.title), 'نموذج الخطة التعليمية الفردية. اضغطي على أي نص لتعديله، و ✕ لحذف بند، و «إضافة بند» لإضافة جديد. يُحفظ تلقائيًا.', `<button class="btn" data-a="iepback">${ICON.back} رجوع</button>`)}
+  <div class="card row" style="margin-bottom:14px;flex-wrap:wrap"><label class="f" style="flex:1 1 220px;min-width:200px">الطالب<select id="iep-sid" data-a2="iepsid"><option value="">تحضير عام للمجموعة</option>${list.map(s=>`<option value="${s.id}" ${sid===s.id?'selected':''}>${esc(s.name)}</option>`).join('')}</select></label>
+  <button class="btn primary" data-a="iepsave">${ICON.check} حفظ التحضير</button>${!IN_FRAME?`<button class="btn" data-a="print">${ICON.print} طباعة</button>`:''}${saved._ts?`<button class="btn" data-a="iepreset" style="color:var(--rose)">استعادة التحضير الأصلي</button><span class="small muted" id="iep-saved">آخر حفظ ${fmtDate(ymd(new Date(saved._ts)))} ${fmtTime(saved._ts)}</span>`:'<span class="small muted" id="iep-saved"></span>'}</div></div>
   <div class="iep" id="iepform"><h2>الخطة التعليمية الفردية</h2>
   <table><tbody>
    <tr><td>الفصل الدراسي: ${esc(SCHOOL.term)}</td><td>العام الدراسي: ${esc(SCHOOL.year)}</td><td colspan="2">الاسم: ${ed('name', st?st.name:'')}</td><td>المادة: ${esc(SCHOOL.subject)}</td><td>الصف: ${esc(GRADE_NAME[L.grade])}</td></tr>
@@ -1470,6 +1485,7 @@ function collectIEP(){
   f.querySelectorAll('[data-iep]').forEach(el=>out[el.dataset.iep]=el.innerText.trim());
   ['strat','asp','mat','eval'].forEach(k=>out[k]=[...f.querySelectorAll(`[data-iepck="${k}"]:checked`)].map(x=>x.value));
   f.querySelectorAll('[data-iepr]:checked').forEach(el=>out[el.dataset.iepr]=el.value);
+  f.querySelectorAll('[data-ieplist]').forEach(el=>{ const k=el.dataset.ieplist; try{ out['rm_'+k]=JSON.parse(el.dataset.rm||'[]'); out['add_'+k]=JSON.parse(el.dataset.add||'[]'); }catch(e){} });
   return out;
 }
 
@@ -1492,7 +1508,7 @@ function tTools(){
       <svg viewBox="0 0 120 120" width="180" style="margin:10px auto;display:block"><circle cx="60" cy="60" r="52" fill="none" stroke="var(--bg-2)" stroke-width="10"/><circle cx="60" cy="60" r="52" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(2*Math.PI*52).toFixed(1)}" stroke-dashoffset="${((1-frac)*2*Math.PI*52).toFixed(1)}" transform="rotate(-90 60 60)" id="timerring"/><text x="60" y="68" text-anchor="middle" class="svgtext" font-size="24" id="timertxt">${D(mm+':'+String(ss).padStart(2,'0'))}</text></svg>
       <div class="row" style="justify-content:center">${[1,3,5,10].map(m=>`<button class="btn sm soft" data-a="timer" data-m="${m}">${T(m)} د</button>`).join('')}<button class="btn sm" data-a="timer" data-m="0">إيقاف</button></div></div>
     <div class="card"><div class="row"><h3>الحضور</h3><span class="spacer"></span><input type="date" id="att-date" value="${S.attDate}" style="width:auto"></div>
-      ${list.length?`<div class="col" style="gap:6px;margin-top:10px">${list.map(s=>`<div class="row">${avatar(s.name,34)}<b style="flex:1">${esc(s.name)}</b><button class="btn sm ${att[s.id]==='p'?'primary':''}" data-a="att" data-id="${s.id}" data-v="p">حاضر</button><button class="btn sm ${att[s.id]==='a'?'danger':''}" data-a="att" data-id="${s.id}" data-v="a" style="${att[s.id]==='a'?'background:var(--rose-soft)':''}">غائب</button></div>`).join('')}</div><p class="small muted" style="margin-top:8px">حاضر ${T(Object.entries(att).filter(([k,v])=>v==='p'&&list.some(s=>s.id===k)).length)} من ${T(list.length)}</p>`:'<p class="muted">أضيفي الطلبة أولاً.</p>'}</div>
+      ${list.length?`<div class="col" style="gap:6px;margin-top:10px">${list.map(s=>`<div class="row">${avatar(s,34)}<b style="flex:1">${esc(s.name)}</b><button class="btn sm ${att[s.id]==='p'?'primary':''}" data-a="att" data-id="${s.id}" data-v="p">حاضر</button><button class="btn sm ${att[s.id]==='a'?'danger':''}" data-a="att" data-id="${s.id}" data-v="a" style="${att[s.id]==='a'?'background:var(--rose-soft)':''}">غائب</button></div>`).join('')}</div><p class="small muted" style="margin-top:8px">حاضر ${T(Object.entries(att).filter(([k,v])=>v==='p'&&list.some(s=>s.id===k)).length)} من ${T(list.length)}</p>`:'<p class="muted">أضيفي الطلبة أولاً.</p>'}</div>
     <div class="card" style="text-align:center"><h3>تنفّس جماعي</h3><p class="muted small">دقيقة هدوء قبل بدء الدرس.</p><div class="breath"><i></i></div></div>
   </div>`;
 }
@@ -1569,10 +1585,11 @@ const ACTIONS = {
   pin(el){ pinPress(el.dataset.n); },
   ttab(el){ S.ttab=el.dataset.t; S.iep=null; go('teacher'); },
   tgrade(el){ S.tgrade=+el.dataset.g; S.tsel=null; rerender(); },
-  async addstudent(){ const n=$('#ns-name').value.trim(), g=+$('#ns-grade').value; if(!n){ toast('اكتبي اسم الطالب'); return; } S.tgrade=g; await setStudents([...students(),{id:uid(),name:n,grade:g}]); toast('أُضيف '+n); setTimeout(()=>{ const i=$('#ns-name'); if(i) i.focus(); },50); },
-  async addbulk(){ const g=+$('#ns-grade').value, names=$('#ns-bulk').value.split('\n').map(s=>s.trim()).filter(Boolean); if(!names.length) return; S.tgrade=g; await setStudents([...students(),...names.map(n=>({id:uid(),name:n,grade:g}))]); toast(`أُضيف ${D(names.length)} طالب`); },
-  renamestudent(el){ const s=studentById(el.dataset.id); modal(`<h3>تعديل بيانات الطالب</h3><label class="f">الاسم<input type="text" id="rn-name" value="${esc(s.name)}"></label><label class="f">الصف<select id="rn-grade">${[2,3,4].map(g=>`<option value="${g}" ${s.grade==g?'selected':''}>الصف ${GRADE_NAME[g]}</option>`).join('')}</select></label><button class="btn primary" data-a="dorename" data-id="${s.id}">حفظ</button>`); },
-  async dorename(el){ const n=$('#rn-name').value.trim(), g=+$('#rn-grade').value; if(!n) return; await setStudents(students().map(s=>s.id===el.dataset.id?{...s,name:n,grade:g}:s)); closeModal(); },
+  async addstudent(){ const n=$('#ns-name').value.trim(), g=+$('#ns-grade').value; if(!n){ toast('اكتبي اسم الطالب'); return; } S.tgrade=g; await setStudents([...students(),{id:uid(),name:n,grade:g,av:freeAv(g)}]); toast('أُضيف '+n); setTimeout(()=>{ const i=$('#ns-name'); if(i) i.focus(); },50); },
+  async addbulk(){ const g=+$('#ns-grade').value, names=$('#ns-bulk').value.split('\n').map(s=>s.trim()).filter(Boolean); if(!names.length) return; S.tgrade=g; const tk=[]; await setStudents([...students(),...names.map(n=>{ const av=freeAv(g,tk); tk.push(av); return {id:uid(),name:n,grade:g,av}; })]); toast(`أُضيف ${D(names.length)} طالب`); },
+  renamestudent(el){ const s=studentById(el.dataset.id); modal(`<h3>تعديل بيانات الطالب</h3><label class="f">الاسم<input type="text" id="rn-name" value="${esc(s.name)}"></label><label class="f">الصف<select id="rn-grade">${[2,3,4].map(g=>`<option value="${g}" ${s.grade==g?'selected':''}>الصف ${GRADE_NAME[g]}</option>`).join('')}</select></label><div class="f">الشخصية<input type="hidden" id="rn-av" value="${esc(s.av||'')}"><div class="avpick">${AVS.map(a=>`<button type="button" class="${(s.av||AVS[hashHue(s.name)%AVS.length])===a?'on':''}" data-a="pickav" data-v="${a}" aria-label="اختيار ${a}">${a}</button>`).join('')}</div></div><button class="btn primary" data-a="dorename" data-id="${s.id}">حفظ</button>`); },
+  pickav(el){ $('#rn-av').value=el.dataset.v; el.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===el)); },
+  async dorename(el){ const n=$('#rn-name').value.trim(), g=+$('#rn-grade').value; if(!n) return; const av=($('#rn-av')||{}).value||''; await setStudents(students().map(s=>s.id===el.dataset.id?{...s,name:n,grade:g,...(av?{av}:{})}:s)); closeModal(); },
   delstudent(el){ const s=studentById(el.dataset.id); confirmBox(`حذف ${esc(s.name)} من القائمة؟ تبقى سجلاته محفوظة.`, 'حذف', ()=>setStudents(students().filter(x=>x.id!==s.id))); },
   tsel(el){ S.tsel=el.dataset.id; rerender(); },
   async mpts(el){ const st=studentById(S.tsel), n=+el.dataset.n, note=($('#mp-note')?.value||'').trim()||(n>0?'نقاط من المعلمة':'خصم نقطة'); await Store.addEvent({sid:st.id,sname:st.name,grade:st.grade,kind:'manual',points:n,note,title:note}); toast(`${n>0?'+':''}${D(n)} لـ${st.name}`); },
@@ -1589,7 +1606,15 @@ const ACTIONS = {
   delgoal(el){ const g=Store.get('goals',{items:[]}); Store.set('goals',{items:g.items.filter(x=>x.id!==el.dataset.id)}); },
   iep(el){ S.iep={lessonId:el.dataset.l, sid:''}; rerender(); window.scrollTo(0,0); },
   iepback(){ S.iep=null; rerender(); },
-  async iepsave(){ await Store.set(iepKey(), collectIEP()); toast('حُفظ التحضير'); },
+  async iepsave(){ clearTimeout(iepAuto._t); await Store.set(iepKey(), collectIEP()); toast('حُفظ التحضير'); },
+  async iepdelopt(el){ const k=el.dataset.k, val=el.dataset.v, cur=collectIEP();
+    const add=cur['add_'+k]||[], rm=cur['rm_'+k]||[];
+    if(add.includes(val)) cur['add_'+k]=add.filter(x=>x!==val); if(!rm.includes(val)) cur['rm_'+k]=[...rm,val];
+    cur[k]=(cur[k]||[]).filter(x=>x!==val); await Store.set(iepKey(), cur); rerender(); toast('حُذف «'+val+'» من التحضير'); },
+  async iepaddopt(el){ const k=el.dataset.k, inp=document.querySelector(`[data-iepadd="${k}"]`), val=(inp&&inp.value||'').trim(); if(!val){ toast('اكتبي البند أولًا'); if(inp) inp.focus(); return; }
+    const cur=collectIEP(); cur['rm_'+k]=(cur['rm_'+k]||[]).filter(x=>x!==val); if(!(cur['add_'+k]||[]).includes(val)) cur['add_'+k]=[...(cur['add_'+k]||[]),val];
+    if(!(cur[k]||[]).includes(val)) cur[k]=[...(cur[k]||[]),val]; inp.blur(); await Store.set(iepKey(), cur); rerender(); toast('أُضيف «'+val+'»'); },
+  iepreset(){ confirmBox('استعادة التحضير الأصلي لهذا الدرس؟ تُحذف كل تعديلاتك عليه.','استعادة',async ()=>{ await Store.remove(iepKey()); rerender(); toast('أُعيد التحضير الأصلي'); }); },
   print(){ window.print(); },
   preview(el){ startPlay({lessonId:el.dataset.l, type:el.dataset.t, game:el.dataset.g, preview:true}); },
   quickopen(el){ S.of={...S.of, grade:lessonById(el.dataset.l).grade, lessonId:el.dataset.l, date:ymd()}; S.ttab='open'; go('teacher'); toast('اختاري النوع ثم «افتحي للطلبة»'); },
@@ -1607,8 +1632,12 @@ document.addEventListener('click', e=>{
   const el=e.target.closest('[data-a]'); if(!el || el.disabled) return;
   const f=ACTIONS[el.dataset.a]; if(f){ e.preventDefault(); f(el); }
 });
+function iepAuto(){ clearTimeout(iepAuto._t); iepAuto._t=setTimeout(async()=>{ if(!S.iep||!$('#iepform')) return; await Store.set(iepKey(), collectIEP()); const sv=$('#iep-saved'); if(sv) sv.textContent='حُفظ تلقائيًا '+fmtTime(Date.now()); },900); }
+document.addEventListener('input', e=>{ if(e.target.closest && e.target.closest('#iepform') && !e.target.matches('[data-iepadd]')) iepAuto(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Enter' && e.target.matches && e.target.matches('[data-iepadd]')){ e.preventDefault(); const b=e.target.parentNode.querySelector('[data-a="iepaddopt"]'); if(b) b.click(); } });
 document.addEventListener('change', async e=>{
   const el=e.target;
+  if(el.closest && el.closest('#iepform') && (el.dataset.iepck||el.dataset.iepr)){ iepAuto(); return; }
   if(el.dataset.sc){ const [sid,iid]=el.dataset.sc.split('|'), a=Store.get('assess',{items:[],scores:{}}), item=a.items.find(i=>i.id===iid);
     let v=el.value===''?'':Math.max(0,Math.min(+item.max,+el.value)); const scores={...(a.scores||{})}; scores[sid]={...(scores[sid]||{}),[iid]:v}; if(v==='') delete scores[sid][iid];
     await Store.set('assess',{items:a.items,scores}); return; }
