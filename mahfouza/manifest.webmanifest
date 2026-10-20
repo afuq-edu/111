@@ -1,0 +1,18 @@
+{
+ "name": "منصة المعلمة الأولى",
+ "short_name": "المعلمة الأولى",
+ "description": "منصة المعلمة الأولى أ. محفوظة بنت سليمان السابقية",
+ "lang": "ar",
+ "dir": "rtl",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#173F55",
+ "theme_color": "#173F55",
+ "icons": [
+  {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+  {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+  {"src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ]
+}
